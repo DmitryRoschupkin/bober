@@ -75,13 +75,43 @@ body {
 
 }
 
-.layers__caption {
-}
+/*.layers__caption {*/
+/*    position: relative;*/
+/*    display: inline-block;*/
+/*    width: 100%;*/
+/*    height: auto;*/
+/*}*/
+
+/*.clean_logo {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*}*/
+
+/*.logo_overlay {*/
+/*    position: absolute;*/
+/*    opacity: 0;*/
+/*    top: 0;*/
+/*    left: 5px;*/
+/*    animation: logoShadowFadeIn 2s ease-in-out forwards;*/
+/*}*/
+
+/*@keyframes logoShadowFadeIn {*/
+/*    to{opacity: 1}*/
+/*}*/
 
 .layers__title {
     font-size: calc(var(--index));
     letter-spacing: calc(var(--index) / 20);
-    color: #fff6db;
+    color: #ffefcc;
+    animation-name: shadowFadeIn;
+    animation-duration: 1s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes shadowFadeIn {
+    to {text-shadow: 0 0 18.2px #ffe4b7;}
 }
 
 .layers__base {
@@ -136,4 +166,16 @@ body {
     flex-direction: column;
     letter-spacing: calc(var(--index) / 10);
     text-shadow: 0 0 5px black;
+}
+
+.avg-btn {
+    color: #ffefcc;
+    border: #ffefcc solid;
+    border-radius: 8px;
+    padding: 10px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.avg-btn:hover {
+    box-shadow: 0 0 8px #ffe4b7;
 }

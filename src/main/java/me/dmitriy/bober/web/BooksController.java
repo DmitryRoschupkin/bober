@@ -15,7 +15,7 @@ public class BooksController {
 
     @GetMapping
     public String allBooks(Model model) {
-        model.addAttribute(bookRepository.getBooks());
+//        model.addAttribute(bookRepository.findAll());
         return "books-listing";
     }
 }

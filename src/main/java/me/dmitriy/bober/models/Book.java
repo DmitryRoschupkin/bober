@@ -1,32 +1,39 @@
 package me.dmitriy.bober.models;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Data
+@Entity
+@Table(name = "book")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false, length = 255)
     private String title;
-    private String author;
+
+    private String genre;
     private String publisher;
     private int year;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return year == book.year && id == book.id &&
-                Objects.equals(title, book.title) &&
-                Objects.equals(author, book.author) &&
-                Objects.equals(publisher, book.publisher) &&
-                Objects.equals(description, book.description);
-    }
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, author, publisher, year, description);
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private List<Author> authors;
 }

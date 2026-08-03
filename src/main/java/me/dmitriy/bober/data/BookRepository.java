@@ -1,10 +1,9 @@
 package me.dmitriy.bober.data;
 
-
 import me.dmitriy.bober.models.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
-public interface BookRepository {
-    List<Book> getBooks();
+public interface BookRepository extends JpaRepository<Book, Integer> {
+
 }

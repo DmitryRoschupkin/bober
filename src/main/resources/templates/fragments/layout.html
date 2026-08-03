@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="header" class="site-header">
+    <div class="site-header__logo">
+        <img th:src="@{/img/light_bober.png}" alt="бобр лого" style="height: 40px; width: auto;">
+    </div>
+    <nav class="site-header__nav">
+        <a th:href="@{/}">Книги</a>
+        <a th:href="@{/}">Авторы</a>
+        <a th:href="@{/}">О нас</a>
+    </nav>
+    <a th:href="@{/}" class="site-header__login">Войти</a>
+</header>
+
+<footer th:fragment="footer" class="footer">
+    <div class="footer__logo">
+        BOBER PUBLISHING
+    </div>
+    <div class="footer__authors">
+        &copy; Dmitriy Rochshupkin &amp; Khamzat Akayev, 2022-2026
+    </div>
+</footer>
+
+</body>
+</html>

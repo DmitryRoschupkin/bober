@@ -8,31 +8,35 @@
 </head>
 <body>
     <header th:replace="~{fragments/layout::header}"></header>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Автор</th>
-                <th>Год издания</th>
-                <th>Дата публикации</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="book : ${books}">
-                <td th:text="${book.id}"></td>
-                <td th:text="${book.title}"></td>
-                <td>
-                    <span th:each="author, iter : ${book.authors}">
-                        <span th:text="${author.firstName} + ' ' + ${author.lastName}"></span>
-                        <span th:if="${!iter.last}">, </span>
-                    </span>
-                </td>
-                <td th:text="${book.year}"></td>
-                <td th:text="${book.createdAt}"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="books-listing__page">
+        <table class="common__table">
+            <thead class="common__thead">
+                <tr>
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th>Год издания</th>
+                </tr>
+            </thead>
+            <tbody class="common__tbody">
+                <tr th:each="book : ${books}">
+                    <td>
+                        <a th:href="@{/books/{id}(id=${book.id})}"
+                           th:text="${book.title}"
+                           class="table-link"
+                        >
+                        </a>
+                    </td>
+                    <td>
+                        <span th:each="author, iter : ${book.authors}">
+                            <span th:text="${author.firstName} + ' ' + ${author.lastName}"></span>
+                            <span th:if="${!iter.last}">, </span>
+                        </span>
+                    </td>
+                    <td th:text="${book.year}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <footer th:replace="~{fragments/layout::footer}"></footer>
 </body>
 </html>

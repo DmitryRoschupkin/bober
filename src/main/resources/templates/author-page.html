@@ -3,8 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Author page</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-
+    <div class="author-page__page">
+        <header th:replace="~{fragments/layout::header}"></header>
+        <div class="author-page__table">
+            <table class="common__table">
+                <thead class="common__thead">
+                <tr>
+                    <td>Имя</td>
+                    <td>Фамилия</td>
+                    <td>Возраст</td>
+                    <td>Количество книг</td>
+                    <td>Биография</td>
+                </tr>
+                </thead>
+                <tbody class="common__tbody">
+                <tr>
+                    <td th:text="${author.firstName}"></td>
+                    <td th:text="${author.lastName}"></td>
+                    <td th:text="${author.getAge()}"></td>
+                    <td th:text="${author.getBooksAmount()}"></td>
+                    <td th:text="${author.bio}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="author__books">
+            <h1 class="author__books-title">Великие творения великого автора</h1>
+            <table class="common__table">
+                <thead class="common_thead">
+                    <tr>
+                        <td>Название</td>
+                        <td>Жанр</td>
+                        <td>Год издания</td>
+                    </tr>
+                </thead>
+                <tbody class="common_tbody">
+                    <tr th:each="book, iter:  ${author.books}">
+                        <td>
+                            <a th:href="@{/books/{id}(id=${book.id})}"
+                                th:text="${book.title}"
+                                class="table-link"
+                            >
+                            </a>
+                        </td>
+                        <td th:text="${book.genre}"></td>
+                        <td th:text="${book.year}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer th:replace="~{fragments/layout::footer}"></footer>
+    </div>
 </body>
 </html>

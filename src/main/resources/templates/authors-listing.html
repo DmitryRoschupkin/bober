@@ -3,12 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Авторы</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <table>
-        <thead>
+    <div class="authors-listing__page">
+        <header th:replace="~{fragments/layout::header}"></header>
+        <div class="authors-listing__title">
+            <h1>Наши величайшие авторы</h1>
+            <h2>А.С.Пушкин, Ф.М.Достоевский, Абай Кунанбаев, Оскар Уайльд</h2>
+            <h3>Все эти имена никак не связаны с нашим издательством</h3>
+        </div>
+        <div class="authors-listing__table">
+            <table class="common__table">
+                <thead class="common__thead">
+                <tr>
+                    <td>Имя</td>
+                    <td>Возраст</td>
+                </tr>
+                </thead>
+                <tbody class="common_tbody">
+                <tr th:each="author: ${authors}">
+                    <td>
+                        <a th:text="${author.firstName} + ' ' + ${author.lastName}"
+                           th:href="@{/authors/{id}(id=${author.id})}"
+                           class="table-link"
+                        >
 
-        </thead>
-    </table>
+                        </a>
+                    </td>
+                    <td th:text="${author.getAge()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer th:replace="~{fragments/layout::footer}"></footer>
+    </div>
 </body>
 </html>

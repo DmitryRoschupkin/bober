@@ -19,9 +19,9 @@ public class AuthorViewController {
     private AuthorRepository authorRepository;
 
     @GetMapping("/{id}")
-    public String getAuthor(Model model, @PathVariable long id) {
+    public String getAuthor(Model model, @PathVariable int id) {
         Author author = authorRepository
-                .findById(id)
+                .findByIdWithBooks(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Author not found"));

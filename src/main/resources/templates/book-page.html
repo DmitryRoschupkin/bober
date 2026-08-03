@@ -24,9 +24,11 @@
             <td th:text="${book.id}"></td>
             <td th:text="${book.title}"></td>
             <td>
-            <span th:each="author, iter : ${book.authors}"
-                  th:text="${author.firstName} + ' ' + ${author.lastName ?: ''} + (${iter.last} ? '' : ', ')">
-            </span>
+            <a th:each="author, iter : ${book.authors}"
+               th:text="${author.firstName} + ' ' + ${author.lastName ?: ''} + (${iter.last} ? '' : ', ')"
+                th:href="@{/authors/{id}(id=${author.id})}"
+            >
+            </a>
             </td>
             <td th:text="${book.year}"></td>
             <td th:text="${book.description}"></td>

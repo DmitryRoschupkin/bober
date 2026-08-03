@@ -19,7 +19,7 @@ public class AuthorsController {
 
     @GetMapping
     public String allAuthors(Model model) {
-        model.addAttribute(authorRepository.findAll());
+        model.addAttribute("authors", authorRepository.findAll());
         return "authors-listing";
     }
 }

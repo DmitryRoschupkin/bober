@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <title>Book</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
     <div class="book-page__page">
-        <header th:replace="~{fragments/layout::header}"></header>
+        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
         <table class="common__table">
             <thead class="common__thead">
             <tr class="common__thead_row">

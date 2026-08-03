@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Авторы</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
     <div class="authors-listing__page">
-        <header th:replace="~{fragments/layout::header}"></header>
+        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
         <div class="authors-listing__title">
             <h1>Наши величайшие авторы</h1>
             <h2>А.С.Пушкин, Ф.М.Достоевский, Абай Кунанбаев, Оскар Уайльд</h2>

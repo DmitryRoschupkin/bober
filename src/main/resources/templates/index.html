@@ -14,10 +14,11 @@
 
 
     <script th:src="@{/js/index.js}" defer></script>
+    <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
 
-    <header th:replace="~{fragments/layout :: header}"></header>
+    <header th:replace="~{fragments/layout :: header(hero=true)}"></header>
     <div class="wrapper">
         <div class="content">
             <div class="main-header">

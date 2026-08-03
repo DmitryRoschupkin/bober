@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<header th:fragment="header" class="site-header">
+<header th:fragment="header(hero)"
+        class="site-header"
+        th:classappend="${hero} ? 'site-header--hero' : ''">
     <div class="site-header__logo">
         <a href="/">
             <img th:src="@{/img/light_bober.png}" alt="бобр лого" style="height: 40px; width: auto;">

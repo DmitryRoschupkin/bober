@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <title>All Books</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
     <div class="books-listening__page">
-        <header th:replace="~{fragments/layout::header}"></header>
+        <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
         <div class="books-listing__page">
             <table class="common__table">
                 <thead class="common__thead">

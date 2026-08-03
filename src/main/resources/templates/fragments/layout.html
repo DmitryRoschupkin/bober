@@ -4,7 +4,9 @@
 
 <header th:fragment="header" class="site-header">
     <div class="site-header__logo">
-        <img th:src="@{/img/light_bober.png}" alt="бобр лого" style="height: 40px; width: auto;">
+        <a href="/">
+            <img th:src="@{/img/light_bober.png}" alt="бобр лого" style="height: 40px; width: auto;">
+        </a>
     </div>
     <nav class="site-header__nav">
         <a th:href="@{/books}">Книги</a>

@@ -13,9 +13,13 @@ public class AuthorsController {
 
     private AuthorRepository authorRepository;
 
+    public AuthorsController(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
     @GetMapping
     public String allAuthors(Model model) {
-//        model.addAttribute(authorRepository.findAll());
+        model.addAttribute(authorRepository.findAll());
         return "authors-listing";
     }
 }

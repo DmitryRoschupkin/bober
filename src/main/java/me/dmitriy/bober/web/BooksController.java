@@ -13,9 +13,13 @@ public class BooksController {
 
     private BookRepository bookRepository;
 
+    public BooksController(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
     @GetMapping
     public String allBooks(Model model) {
-//        model.addAttribute(bookRepository.findAll());
+        model.addAttribute("books", bookRepository.findAll());
         return "books-listing";
     }
 }

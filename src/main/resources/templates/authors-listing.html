@@ -11,28 +11,27 @@
         <div class="authors-listing__title">
             <h1>Наши величайшие авторы</h1>
             <h2>А.С.Пушкин, Ф.М.Достоевский, Абай Кунанбаев, Оскар Уайльд</h2>
-            <h3>Все эти имена никак не связаны с нашим издательством</h3>
+            <h3>Все эти имена... <span>никак не связаны с нашим издательством(</span></h3>
         </div>
         <div class="authors-listing__table">
             <table class="common__table">
                 <thead class="common__thead">
-                <tr>
-                    <td>Имя</td>
-                    <td>Возраст</td>
-                </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td>Возраст</td>
+                    </tr>
                 </thead>
                 <tbody class="common_tbody">
-                <tr th:each="author: ${authors}">
-                    <td>
-                        <a th:text="${author.firstName} + ' ' + ${author.lastName}"
-                           th:href="@{/authors/{id}(id=${author.id})}"
-                           class="table-link"
-                        >
-
-                        </a>
-                    </td>
-                    <td th:text="${author.getAge()}"></td>
-                </tr>
+                    <tr th:each="author: ${authors}" class="common__tbody_row">
+                        <td class="common__tbody_item">
+                            <a th:text="${author.firstName} + ' ' + ${author.lastName}"
+                               th:href="@{/authors/{id}(id=${author.id})}"
+                               class="table-link"
+                            >
+                            </a>
+                        </td>
+                        <td th:text="${author.getAge()}" class="common__tbody_item"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

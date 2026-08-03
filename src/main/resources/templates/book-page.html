@@ -7,10 +7,11 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <header th:replace="~{fragments/layout::header}"></header>
-    <table>
-        <thead>
-            <tr>
+    <div class="book-page__page">
+        <header th:replace="~{fragments/layout::header}"></header>
+        <table class="common__table">
+            <thead class="common__thead">
+            <tr class="common__thead_row">
                 <th>ID</th>
                 <th>Название</th>
                 <th>Автор</th>
@@ -18,24 +19,26 @@
                 <th>Описание</th>
                 <th>Дата публикации</th>
             </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${book.id}"></td>
-            <td th:text="${book.title}"></td>
-            <td>
-            <a th:each="author, iter : ${book.authors}"
-               th:text="${author.firstName} + ' ' + ${author.lastName ?: ''} + (${iter.last} ? '' : ', ')"
-                th:href="@{/authors/{id}(id=${author.id})}"
-            >
-            </a>
-            </td>
-            <td th:text="${book.year}"></td>
-            <td th:text="${book.description}"></td>
-            <td th:text="${book.createdAt}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <footer th:replace="~{fragments/layout::footer}"></footer>
+            </thead>
+            <tbody class="common__tbody">
+            <tr class="common__tbody_row">
+                <td th:text="${book.id}" class="common__tbody_item"></td>
+                <td th:text="${book.title}" class="common__tbody_item"></td>
+                <td class="common__tbody_item">
+                    <a th:each="author, iter : ${book.authors}"
+                       th:text="${author.firstName} + ' ' + ${author.lastName ?: ''} + (${iter.last} ? '' : ', ')"
+                       th:href="@{/authors/{id}(id=${author.id})}"
+                       class="table-link"
+                    >
+                    </a>
+                </td>
+                <td th:text="${book.year}" class="common__tbody_item"></td>
+                <td th:text="${book.description}" class="common__tbody_item"></td>
+                <td th:text="${book.createdAt}" class="common__tbody_item"></td>
+            </tr>
+            </tbody>
+        </table>
+        <footer th:replace="~{fragments/layout::footer}"></footer>
+    </div>
 </body>
 </html>

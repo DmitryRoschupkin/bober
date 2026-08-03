@@ -228,3 +228,109 @@ body {
 .avg-btn:hover {
     text-shadow: 0 0 8px #ffe4b7;
 }
+
+.authors-listing__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.authors-listing__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: calc(var(--index) * 2);
+    margin-bottom: calc(var(--index) * 2);
+}
+
+.authors-listing__title h1 {
+    text-transform: uppercase;
+    letter-spacing: calc(var(--index) / 15);
+    margin-bottom: calc(var(--index));
+}
+
+.authors-listing__title h2 {
+    font-size: 20px;
+    margin-bottom: calc(var(--index)) / 2;
+    letter-spacing: calc(var(--index) / 25);
+}
+
+.authors-listing__title h3 {
+    font-size: 16px;
+}
+
+.authors-listing__title h3 span {
+    font-style: italic;
+}
+
+.common__table {
+    border: #ffefcc 1px solid;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.common__thead {
+    border-bottom: #ffefcc 1px solid;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: calc(var(--index) / 30);
+}
+
+.common__thead_row{
+
+}
+
+.common__tbody_row{
+
+}
+
+.common__tbody_item {
+
+}
+
+.table-link {
+    text-decoration: none;
+    color: #ffefcc;
+    transition: text-shadow 1s;
+}
+
+.table-link:hover {
+    text-shadow: 0 0 3px #ffefcc;
+}
+
+.author-page__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.author-page__page .common__table {
+    margin-top: calc(var(--index) * 2);
+    margin-bottom: calc(var(--index) * 2);
+    width: 75vw;
+}
+
+.book-page__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-page__page .common__table {
+    margin-top: 25vh;
+    width: 75vw;
+}
+
+.books-listening__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.books-listening__page .common__table {
+    margin-top: 25vh;
+    width: 50vw;
+}

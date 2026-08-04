@@ -5,7 +5,10 @@
 <header th:fragment="header(hero)"
         class="site-header"
         th:classappend="${hero} ? 'site-header--hero' : ''">
-    <div class="site-header__logo">
+    <div class="site-header__effect" th:classappend="${hero} ? 'site-header--hero' : ''"></div>
+    <div class="site-header__tint" th:classappend="${hero} ? 'site-header--hero' : ''"></div>
+    <div class="site-header__shine" th:classappend="${hero} ? 'site-header--hero' : ''"></div>
+    <div class="site-header__logo" >
         <a href="/">
             <img th:src="@{/img/light_bober.png}" alt="бобр лого" style="height: 40px; width: auto;">
         </a>
@@ -13,9 +16,15 @@
     <nav class="site-header__nav">
         <a th:href="@{/books}">Книги</a>
         <a th:href="@{/authors}">Авторы</a>
-        <a th:href="@{/}">О нас</a>
+        <a th:href="@{/about}">О нас</a>
     </nav>
     <a th:href="@{/}" class="site-header__login">Войти</a>
+    <svg style="display: none;" aria-hidden="true">
+        <filter id="glass-distortion">
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
 </header>
 
 <footer th:fragment="footer" class="footer">

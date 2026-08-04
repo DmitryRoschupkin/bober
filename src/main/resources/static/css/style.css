@@ -42,18 +42,54 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: calc(var(--index) / 2) calc(var(--index) * 1.5);
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(10px);
+    background: #0000008C;
+    /*backdrop-filter: blur(5px);*/
+    /*-webkit-backdrop-filter: blur(10px);*/
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    transition: opacity .4s ease, transform .4s ease;
+    transition: opacity .4s ease, transform .4s ease, all .4s cubic-bezier(.175, .885, .32, 2.2);
     pointer-events: auto;
+    box-shadow: 0 0 10px rgba(3, 3, 41, 0.55);
+}
+
+.site-header__effect {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    backdrop-filter: blur(3px);
+    filter: url("#glass-distortion");
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.site-header__tint {
+    z-index: 1;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgba(3, 3, 41, 0.55);
+}
+
+.site-header__shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+    box-shadow:
+        inset 2px 2px 1px 0 rgba(19, 19, 87, 0.55),
+        inset -1px -1px 1px 1px rgba(19, 19, 87, 0.55);
+}
+
+.site-header__logo {
+    z-index: 4;
 }
 
 .site-header--hero {
     background: none;
     backdrop-filter: none;
+    box-shadow: none;
+    filter: none;
     opacity: 0;
     transform: translate3d(0, -100%, 0);
     pointer-events: none;
@@ -68,10 +104,12 @@ body {
 .site-header__nav {
     display: flex;
     gap: calc(var(--index) * 1.2);
+    z-index: 4;
 }
 
 .site-header__nav a,
 .site-header__login {
+    z-index: 4;
     color: #ffefcc;
     text-decoration: none;
     font-size: 13px;

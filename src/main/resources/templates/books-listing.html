@@ -12,6 +12,21 @@
 <body>
     <div class="books-listening__page">
         <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
+
+        <div class="search-bar">
+            <form th:action="@{/books}" method="get">
+                <input type="text"
+                       class="search-bar__input"
+                       placeholder="Найти книги"
+                       name="title"
+                       th:value="${title}">
+                <button type="submit">Ехала!</button>
+                <a th:if="${title != null and !title.isBlank()}"
+                   th:href="@{/books}"
+                   class="search-bar__reset">Сбросить</a>
+            </form>
+        </div>
+
         <div class="genre-tabs">
             <button class="genre-tab is-active" data-filter="all">Все</button>
             <button class="genre-tab" data-filter="fantasy">Фентези</button>

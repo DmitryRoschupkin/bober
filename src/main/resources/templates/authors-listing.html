@@ -17,6 +17,20 @@
             <h3>Все эти имена... <span>никак не связаны с нашим издательством(</span></h3>
         </div>
 
+        <div class="search-bar">
+            <form th:action="@{/authors}" method="get">
+                <input type="text"
+                       class="search-bar__input"
+                       placeholder="Найти автора"
+                       name="name"
+                       th:value="${requiredAuthors}">
+                <button type="submit" class="search-bar__submit">Ехала!</button>
+                <a th:if="${requiredAuthors != null and !requiredAuthors.isBlank()}"
+                   th:href="@{/authors}"
+                    class="search-bar__reset">Сбросить</a>
+            </form>
+        </div>
+
         <div class="authors-grid">
             <a      th:each="author: ${authors}"
                     th:href="@{/authors/{id}(id=${author.id})}"

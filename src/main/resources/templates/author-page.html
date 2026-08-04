@@ -4,57 +4,44 @@
     <meta charset="UTF-8">
     <title>Author page</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+
     <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
     <div class="author-page__page">
         <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-        <div class="author-page__table">
-            <table class="common__table">
-                <thead class="common__thead">
-                <tr>
-                    <td>Имя</td>
-                    <td>Фамилия</td>
-                    <td>Возраст</td>
-                    <td>Количество книг</td>
-                    <td>Биография</td>
-                </tr>
-                </thead>
-                <tbody class="common__tbody">
-                <tr>
-                    <td th:text="${author.firstName}"></td>
-                    <td th:text="${author.lastName}"></td>
-                    <td th:text="${author.getAge()}"></td>
-                    <td th:text="${author.getBooksAmount()}"></td>
-                    <td th:text="${author.bio}"></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="author-detail">
+            <div class="author-detail__avatar"
+                 th:text="${#strings.substring(author.firstName, 0, 1)}"></div>
+
+            <div>
+                <h1 class="author-detail__name"
+                    th:text="${author.firstName + ' ' + (author.lastName ?: '')}"></h1>
+
+                <p class="author-detail__bio" th:if="${author.bio}" th:text="${author.bio}"></p>
+
+                <div class="author-details__stats">
+                    <span>
+                        <strong th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг' :
+                        '0 книг'}"></strong> книги
+                    </span>
+                    <span th:if="${author.birthDate != null}">
+                        <strong th:text="${author.getAge()}"></strong> лет
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="author__books">
-            <h1 class="author__books-title">Великие творения великого автора</h1>
-            <table class="common__table">
-                <thead class="common_thead">
-                    <tr>
-                        <td>Название</td>
-                        <td>Жанр</td>
-                        <td>Год издания</td>
-                    </tr>
-                </thead>
-                <tbody class="common_tbody">
-                    <tr th:each="book, iter:  ${author.books}">
-                        <td>
-                            <a th:href="@{/books/{id}(id=${book.id})}"
-                                th:text="${book.title}"
-                                class="table-link"
-                            >
-                            </a>
-                        </td>
-                        <td th:text="${book.genre}"></td>
-                        <td th:text="${book.year}"></td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <h1 class="section-label">Великие творения великого автора</h1>
+
+        <div class="books-grid">
+            <a th:each="book: ${author.books}"
+                th:href="@{/books/{id}(id=${book.id})}"
+                class="book-card">
+                <div class="book-card__cover"></div>
+                <p class="book-card__title" th:text="${book.title}"></p>
+            </a>
         </div>
         <footer th:replace="~{fragments/layout::footer}"></footer>
     </div>

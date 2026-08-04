@@ -5,40 +5,37 @@
     <meta charset="UTF-8">
     <title>Book</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+
     <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
     <div class="book-page__page">
         <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-        <table class="common__table">
-            <thead class="common__thead">
-            <tr class="common__thead_row">
-                <th>ID</th>
-                <th>Название</th>
-                <th>Автор</th>
-                <th>Год издания</th>
-                <th>Описание</th>
-                <th>Дата публикации</th>
-            </tr>
-            </thead>
-            <tbody class="common__tbody">
-            <tr class="common__tbody_row">
-                <td th:text="${book.id}" class="common__tbody_item"></td>
-                <td th:text="${book.title}" class="common__tbody_item"></td>
-                <td class="common__tbody_item">
-                    <a th:each="author, iter : ${book.authors}"
-                       th:text="${author.firstName} + ' ' + ${author.lastName ?: ''} + (${iter.last} ? '' : ', ')"
-                       th:href="@{/authors/{id}(id=${author.id})}"
-                       class="table-link"
-                    >
-                    </a>
-                </td>
-                <td th:text="${book.year}" class="common__tbody_item"></td>
-                <td th:text="${book.description}" class="common__tbody_item"></td>
-                <td th:text="${book.createdAt}" class="common__tbody_item"></td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div class="book-detail">
+            <div class="book-detail__cover"></div>
+            <div>
+                <h1 class="book-detail__title" th:text="${book.title}"></h1>
+
+                <p class="book-detail__authors">
+                    <span th:each="author, iter:${book.authors}">
+                        <a th:href="@{/authors/{id}(id=${author.id})}"
+                            th:text="${author.firstName} + ' ' + ${author.lastName ?: ''}"></a>
+                        <span th:if="${!iter.last}">,</span>
+                    </span>
+                </p>
+
+                <div class="book-detail__meta">
+                    <span th:if="${book.genre}" th:text="${book.genre}"></span>
+                    <span th:if="${book.year}" th:text="${book.year}"></span>
+                    <span th:if="${book.publisher}" th:text="${book.publisher}"></span>
+                </div>
+
+                <p class="book-detail__description" th:text="${book.description}"></p>
+            </div>
+        </div>
+
         <footer th:replace="~{fragments/layout::footer}"></footer>
     </div>
 </body>

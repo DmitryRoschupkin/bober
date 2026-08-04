@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Авторы</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+
     <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
@@ -14,28 +16,23 @@
             <h2>А.С.Пушкин, Ф.М.Достоевский, Абай Кунанбаев, Оскар Уайльд</h2>
             <h3>Все эти имена... <span>никак не связаны с нашим издательством(</span></h3>
         </div>
-        <div class="authors-listing__table">
-            <table class="common__table">
-                <thead class="common__thead">
-                    <tr>
-                        <td>Имя</td>
-                        <td>Возраст</td>
-                    </tr>
-                </thead>
-                <tbody class="common_tbody">
-                    <tr th:each="author: ${authors}" class="common__tbody_row">
-                        <td class="common__tbody_item">
-                            <a th:text="${author.firstName} + ' ' + ${author.lastName}"
-                               th:href="@{/authors/{id}(id=${author.id})}"
-                               class="table-link"
-                            >
-                            </a>
-                        </td>
-                        <td th:text="${author.getAge()}" class="common__tbody_item"></td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <div class="authors-grid">
+            <a      th:each="author: ${authors}"
+                    th:href="@{/authors/{id}(id=${author.id})}"
+                    class="author-card">
+                <div class="author-card__avatar"
+                    th:text="${#strings.substring(author.firstName, 0, 1)}"></div>
+                <div>
+                    <p class="author-card__name"
+                        th:text="${author.firstName} + ' ' + ${author.lastName}"></p>
+                    <p class="author-card__meta"
+                        th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг' :
+                        '0 книг'}"></p>
+                </div>
+            </a>
         </div>
+
         <footer th:replace="~{fragments/layout::footer}"></footer>
     </div>
 </body>

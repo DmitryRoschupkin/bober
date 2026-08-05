@@ -10,33 +10,33 @@
     <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
-    <div class="book-page__page">
-        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+<div class="page">
+    <header th:replace="~{fragments/layout::header(hero=false)}"></header>
 
-        <div class="book-detail">
-            <div class="book-detail__cover"></div>
-            <div>
-                <h1 class="book-detail__title" th:text="${book.title}"></h1>
+    <div class="book-detail">
+        <div class="book-detail__cover"></div>
+        <div>
+            <h1 class="book-detail__title" th:text="${book.title}"></h1>
 
-                <p class="book-detail__authors">
+            <p class="book-detail__authors">
                     <span th:each="author, iter:${book.authors}">
                         <a th:href="@{/authors/{id}(id=${author.id})}"
-                            th:text="${author.firstName} + ' ' + ${author.lastName ?: ''}"></a>
+                           th:text="${author.firstName} + ' ' + ${author.lastName ?: ''}"></a>
                         <span th:if="${!iter.last}">,</span>
                     </span>
-                </p>
+            </p>
 
-                <div class="book-detail__meta">
-                    <span th:if="${book.genre}" th:text="${book.genre}"></span>
-                    <span th:if="${book.year}" th:text="${book.year}"></span>
-                    <span th:if="${book.publisher}" th:text="${book.publisher}"></span>
-                </div>
-
-                <p class="book-detail__description" th:text="${book.description}"></p>
+            <div class="book-detail__meta">
+                <span th:if="${book.genre}" th:text="${book.genre}"></span>
+                <span th:if="${book.year}" th:text="${book.year}"></span>
+                <span th:if="${book.publisher}" th:text="${book.publisher}"></span>
             </div>
-        </div>
 
-        <footer th:replace="~{fragments/layout::footer}"></footer>
+            <p class="book-detail__description" th:text="${book.description}"></p>
+        </div>
     </div>
+
+    <footer th:replace="~{fragments/layout::footer}"></footer>
+</div>
 </body>
 </html>

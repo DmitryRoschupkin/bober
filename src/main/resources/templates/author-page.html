@@ -9,41 +9,41 @@
     <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
-    <div class="author-page__page">
-        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-        <div class="author-detail">
-            <div class="author-detail__avatar"
-                 th:text="${#strings.substring(author.firstName, 0, 1)}"></div>
+<div class="page">
+    <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+    <div class="author-detail">
+        <div class="author-detail__avatar"
+             th:text="${#strings.substring(author.firstName, 0, 1)}"></div>
 
-            <div>
-                <h1 class="author-detail__name"
-                    th:text="${author.firstName + ' ' + (author.lastName ?: '')}"></h1>
+        <div>
+            <h1 class="author-detail__name"
+                th:text="${author.firstName + ' ' + (author.lastName ?: '')}"></h1>
 
-                <p class="author-detail__bio" th:if="${author.bio}" th:text="${author.bio}"></p>
+            <p class="author-detail__bio" th:if="${author.bio}" th:text="${author.bio}"></p>
 
-                <div class="author-details__stats">
+            <div class="author-detail__stats">
                     <span>
-                        <strong th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг' :
-                        '0 книг'}"></strong> книги
+                        <strong th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг,' :
+                        '0 книг'}"></strong>
                     </span>
-                    <span th:if="${author.birthDate != null}">
+                <span th:if="${author.birthDate != null}">
                         <strong th:text="${author.getAge()}"></strong> лет
                     </span>
-                </div>
             </div>
         </div>
-
-        <h1 class="section-label">Великие творения великого автора</h1>
-
-        <div class="books-grid">
-            <a th:each="book: ${author.books}"
-                th:href="@{/books/{id}(id=${book.id})}"
-                class="book-card">
-                <div class="book-card__cover"></div>
-                <p class="book-card__title" th:text="${book.title}"></p>
-            </a>
-        </div>
-        <footer th:replace="~{fragments/layout::footer}"></footer>
     </div>
+
+    <h1 class="section-label">Великие творения великого автора</h1>
+
+    <div class="books-grid">
+        <a th:each="book: ${author.books}"
+           th:href="@{/books/{id}(id=${book.id})}"
+           class="book-card">
+            <div class="book-card__cover"></div>
+            <p class="book-card__title" th:text="${book.title}"></p>
+        </a>
+    </div>
+    <footer th:replace="~{fragments/layout::footer}"></footer>
+</div>
 </body>
 </html>

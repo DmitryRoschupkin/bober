@@ -9,45 +9,45 @@
     <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
-    <div class="authors-listing__page">
-        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-        <div class="authors-listing__title">
-            <h1>Наши величайшие авторы</h1>
-            <h2>А.С.Пушкин, Ф.М.Достоевский, Абай Кунанбаев, Оскар Уайльд</h2>
-            <h3>Все эти имена... <span>никак не связаны с нашим издательством(</span></h3>
-        </div>
-
-        <div class="search-bar">
-            <form th:action="@{/authors}" method="get">
-                <input type="text"
-                       class="search-bar__input"
-                       placeholder="Найти автора"
-                       name="name"
-                       th:value="${requiredAuthors}">
-                <button type="submit" class="search-bar__submit">Ехала!</button>
-                <a th:if="${requiredAuthors != null and !requiredAuthors.isBlank()}"
-                   th:href="@{/authors}"
-                    class="search-bar__reset">Сбросить</a>
-            </form>
-        </div>
-
-        <div class="authors-grid">
-            <a      th:each="author: ${authors}"
-                    th:href="@{/authors/{id}(id=${author.id})}"
-                    class="author-card">
-                <div class="author-card__avatar"
-                    th:text="${#strings.substring(author.firstName, 0, 1)}"></div>
-                <div>
-                    <p class="author-card__name"
-                        th:text="${author.firstName} + ' ' + ${author.lastName}"></p>
-                    <p class="author-card__meta"
-                        th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг' :
-                        '0 книг'}"></p>
-                </div>
-            </a>
-        </div>
-
-        <footer th:replace="~{fragments/layout::footer}"></footer>
+<div class="page">
+    <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+    <div class="authors-listing__title">
+        <h1>Наши величайшие авторы</h1>
+        <h2>А.С.Пушкин, Ф.М.Достоевский, Абай Кунанбаев, Оскар Уайльд</h2>
+        <h3>Все эти имена... <span>никак не связаны с нашим издательством(</span></h3>
     </div>
+
+    <div class="search-bar">
+        <form th:action="@{/authors}" method="get">
+            <input type="text"
+                   class="search-bar__input"
+                   placeholder="Найти автора"
+                   name="name"
+                   th:value="${requiredAuthors}">
+            <button type="submit" class="search-bar__submit">Ехала!</button>
+            <a th:if="${requiredAuthors != null and !requiredAuthors.isBlank()}"
+               th:href="@{/authors}"
+               class="search-bar__reset">Сбросить</a>
+        </form>
+    </div>
+
+    <div class="authors-grid">
+        <a      th:each="author: ${authors}"
+                th:href="@{/authors/{id}(id=${author.id})}"
+                class="author-card">
+            <div class="author-card__avatar"
+                 th:text="${#strings.substring(author.firstName, 0, 1)}"></div>
+            <div>
+                <p class="author-card__name"
+                   th:text="${author.firstName} + ' ' + ${author.lastName ?: ''}"></p>
+                <p class="author-card__meta"
+                   th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг' :
+                        '0 книг'}"></p>
+            </div>
+        </a>
+    </div>
+
+    <footer th:replace="~{fragments/layout::footer}"></footer>
+</div>
 </body>
 </html>

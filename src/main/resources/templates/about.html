@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>About</title>
+    <title>О нас — Бобёр</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script th:src="@{/js/header.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
-    <div>
-        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+<div class="page">
+    <header th:replace="~{fragments/layout::header(hero=false)}"></header>
 
+    <h1 class="page__title">О нас</h1>
 
-        <footer th:replace="~{fragments/layout::footer}"></footer>
-    </div>
+    <p class="author-detail__bio">
+        «Бобёр» начинался как штамп на школьных тетрадках — теперь это издательство,
+        где истории, придуманные когда-то по фану, находят настоящих читателей.
+    </p>
+
+    <footer th:replace="~{fragments/layout::footer}"></footer>
+</div>
 </body>
 </html>

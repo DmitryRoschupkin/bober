@@ -3,6 +3,7 @@ package me.dmitriy.bober.web;
 
 import me.dmitriy.bober.data.AuthorRepository;
 import me.dmitriy.bober.models.Author;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +23,19 @@ public class AuthorsController {
     }
 
     @GetMapping
-    public String showAuthors(Model model, @RequestParam(value = "name", required = false) String name) {
-        List<Author> authors;
-        if (name != null && !name.isBlank()) {
-            authors = authorRepository.findByName("%"+name.trim()+"%");
-        } else {
-            authors = authorRepository.findAll();
-        }
+    public String showAuthors(Model model,
+                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(required = false, defaultValue = "name") String sort) {
+
+        String normalizedName = (name != null && !name.isBlank()) ? name.trim() : null;
+
+        List<Author> authors = "books".equals(sort)
+                ? authorRepository.findByNameOrderByBookCountDesc(normalizedName)
+                : authorRepository.findByName(normalizedName, Sort.by("firstName").ascending());
+
         model.addAttribute("authors", authors);
         model.addAttribute("requiredAuthors", name);
+        model.addAttribute("sort", sort);
         return "authors-listing";
     }
 }

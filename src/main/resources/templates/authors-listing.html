@@ -24,11 +24,19 @@
                    placeholder="Найти автора"
                    name="name"
                    th:value="${requiredAuthors}">
+            <input type="hidden" name="sort" th:value="${sort}">
             <button type="submit" class="search-bar__submit">Ехала!</button>
             <a th:if="${requiredAuthors != null and !requiredAuthors.isBlank()}"
-               th:href="@{/authors}"
+               th:href="@{/authors(sort=${sort})}"
                class="search-bar__reset">Сбросить</a>
         </form>
+    </div>
+
+    <div class="sort-tabs">
+        <a th:href="@{/authors(name=${requiredAuthors}, sort='name')}"
+           class="sort-tab" th:classappend="${sort == 'name'} ? 'is-active'">По алфавиту</a>
+        <a th:href="@{/authors(name=${requiredAuthors}, sort='books')}"
+           class="sort-tab" th:classappend="${sort == 'books'} ? 'is-active'">По кол-ву книг</a>
     </div>
 
     <div class="authors-grid">

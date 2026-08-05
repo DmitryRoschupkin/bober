@@ -22,18 +22,33 @@
                    placeholder="Найти книги"
                    name="title"
                    th:value="${title}">
+            <input type="hidden" name="genre" th:value="${genre}">
+            <input type="hidden" name="sort" th:value="${sort}">
+
             <button type="submit" class="search-bar__submit">Ехала!</button>
+
             <a th:if="${title != null and !title.isBlank()}"
-               th:href="@{/books}"
+               th:href="@{/books(genre=${genre}, sort=${sort})}"
                class="search-bar__reset">Сбросить</a>
         </form>
     </div>
 
     <div class="genre-tabs">
-        <button class="genre-tab is-active" data-filter="all">Все</button>
-        <button class="genre-tab" th:each="genre : ${genres}"
-                th:text="${genre}"
-                th:attr="data-filter=${genre}"></button>
+        <a th:href="@{/books(title=${title}, genre = 'all', sort=${sort})}"
+           class="genre-tab" th:classappend="${genre == 'all'} ? 'is-active'">Все</a>
+        <a th:each="g : ${genres}"
+           th:href="@{/books(title=${title}, genre=${g}, sort=${sort})}"
+           th:text="${g}"
+           class="genre-tab" th:classappend="${genre == g} ? 'is-active'"></a>
+    </div>
+
+    <div class="sort-tabs">
+        <a th:href="@{/books(title=${title}, genre=${genre}, sort='newest')}"
+           class="sort-tab" th:classappend="${sort == 'newest'} ? 'is-active'">Сначала новые</a>
+        <a th:href="@{/books(title=${title}, genre=${genre}, sort='title')}"
+           class="sort-tab" th:classappend="${sort == 'title'} ? 'is-active'">По названию</a>
+        <a th:href="@{/books(title=${title}, genre=${genre}, sort='year')}"
+           class="sort-tab" th:classappend="${sort == 'year'} ? 'is-active'">По году</a>
     </div>
 
     <div class="books-grid">

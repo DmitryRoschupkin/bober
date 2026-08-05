@@ -1,7 +1,7 @@
 .page {
     max-width: 1200px;
-    padding: calc(var(--index) * 5) calc(var(--index) * 1.5) calc(var(--index) * 3);
     margin: 0 auto;
+    padding: calc(var(--index) * 5) calc(var(--index) * 1.5) calc(var(--index) * 3);
 }
 
 .page__title {
@@ -124,6 +124,8 @@
 }
 
 .genre-tab {
+    display: inline-block;
+    text-decoration: none;
     background: transparent;
     border: 1px solid rgba(255, 239, 204, 0.25);
     color: #cfc6ab;
@@ -146,6 +148,33 @@
     background: #ffefcc;
     border-color: #ffefcc;
     color: #1a1305;
+}
+
+.sort-tabs {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: calc(var(--index) * 1.8);
+}
+
+.sort-tab {
+    text-decoration: none;
+    color: #a89d7c;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: color .25s, border-color .25s;
+}
+
+.sort-tab:hover {
+    color: #ffefcc;
+}
+
+.sort-tab.is-active {
+    color: #ffe4b7;
+    border-color: #ffe4b7;
 }
 
 .books-grid {

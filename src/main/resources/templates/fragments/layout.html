@@ -27,7 +27,9 @@
     </svg>
 </header>
 
-<footer th:fragment="footer" class="footer">
+<footer th:fragment="footer(hero)"
+        class="footer"
+        th:classappend="${hero} ? 'footer-hero' : ''">
     <div class="footer__logo">
         BOBER PUBLISHING
     </div>

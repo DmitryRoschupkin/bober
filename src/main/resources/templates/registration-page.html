@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title>Войти</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
 </head>
 <body>
-
+<div class="page">
+    <header th:fragment="~{fragments/layout::header(hero=false)}"></header>
+    <div class="login-page__title">
+        <h1>Регистрация</h1>
+        <h3>Чем-то похоже на вступление в Анклав</h3>
+    </div>
+    <div class="registration-page__img"></div>
+    <div class="form-security__container">
+        <form th:action="@{/registration}" method="post" class="form-secutiry__form">
+            <input type="text" name="nickname" placeholder="Ваш никнейм" class="form-security__input" required>
+            <input type="email" name="email" placeholder="Почта" class="form-security__input" required>
+            <input type="password" name="password" placeholder="Пароль" class="form-security__input" required>
+            <button type="submit" class="form-secutiry__button">Стать бобром!</button>
+        </form>
+    </div>
+    <div class="redirect-link">
+        <span class="redirect-link__text">
+            Ты уже шаришь за нишевый фандом Бобра? Предлагаю просто <a th:href="@{/login}">войти</a>
+        </span>
+    </div>
+    <footer th:fragment="~{fragments/layout::footer(hero=false)}"></footer>
+</div>
 </body>
 </html>

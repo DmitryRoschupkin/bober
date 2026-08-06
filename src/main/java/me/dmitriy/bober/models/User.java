@@ -2,7 +2,9 @@ package me.dmitriy.bober.models;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.time.Period;
 @Data
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +38,20 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    public User(String nickname, String email, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.role = "USER";
+        this.createdAt = LocalDateTime.now();
+    }
+
     public Integer getAge() {
         if (birthDate == null) {
             return null;
         }
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
+
+
 }

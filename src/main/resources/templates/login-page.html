@@ -6,9 +6,13 @@
     <meta charset="UTF-8">
     <title>Войти</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
+
 </head>
 <body>
     <div class="page">
+        <header th:fragment="~{fragments/layout::header(hero=false)}"></header>
+
         <div class="login-page__title">
             <h1>Войдите</h1>
             <h3>А то не войдёте</h3>
@@ -24,6 +28,8 @@
         <div class="redirect-link">
             <span class="redirect-link__text">Ещё нет аккаута? Непорядок!<a th:href="@{/registration}">К регистрации!</a></span>
         </div>
+        <footer th:fragment="~{fragments/layout::footer(hero=false)}"></footer>
+
     </div>
 </body>
 </html>

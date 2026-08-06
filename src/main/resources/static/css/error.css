@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --index: calc(1vw + 1vh);
+}
+
+@font-face {
+    font-family: "ITC Avant Garde Gothic";
+    src: url("../fonts/avantgarde_demi.ttf") format("trueType");
+    font-style: normal;
+    font-weight: normal;
+}
+
+body {
+    background: #000;
+    color: white;
+    font-family: "ITC Avant Garde Gothic", sans-serif;
+    line-height: 1.55;
+}
+
+.avg-btn {
+    color: white;
+    border: white solid;
+    border-radius: 8px;
+    padding: 10px;
+    text-decoration: none;
+    transition: .3s;
+    text-transform: uppercase;
+}
+.avg-btn:hover {
+    text-shadow: 0 0 8px #ffe4b7;
+}
+
+.error-page {
+    height: 100vh;
+    background-image: url("../img/stars.jpg");
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: calc(var(--index)*10);
+    padding-top: calc(var(--index)*5);
+}
+
+.error-page__content {
+
+}
+
+.error-page__status {
+    font-size: 96px;
+    padding: 0;
+    color: gray;
+}
+
+.error-page__quotation {
+    font-size: 18px;
+    font-style: italic;
+    color: gray;
+    margin-bottom: calc(var(--index)*2);
+}
+
+.error-page__message {
+    font-size: 20px;
+    margin-bottom: calc(var(--index)*2);
+    text-transform: uppercase;
+    letter-spacing: calc(var(--index)/15);
+    max-width: 700px;
+}
+
+.error-page__img {
+    position: absolute;
+    right: 10%;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+}

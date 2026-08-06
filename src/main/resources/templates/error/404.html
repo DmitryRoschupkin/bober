@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html   xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ничего нет</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-page__content">
+            <h1 class="error-page__status">404</h1>
+            <h2 class="error-page__quotation">Если долго смотреть в бездну, то бездна начнёт смотреть в тебя</h2>
+            <p class="error-page__message">Такой страницы не существует</p>
+            <a th:href="@{/}" class="avg-btn">Домой</a>
+        </div>
+        <div class="error-page__img">
+            <img style="max-height: 100vh" th:src="@{../img/404.png}" alt="404">
+        </div>
+    </div>
+</body>
+</html>

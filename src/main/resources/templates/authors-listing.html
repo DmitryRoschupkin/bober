@@ -49,8 +49,7 @@
                 <p class="author-card__name"
                    th:text="${author.firstName} + ' ' + ${author.lastName ?: ''}"></p>
                 <p class="author-card__meta"
-                   th:text="${author.getBooksAmount() != 0 ? author.getBooksAmount() + ' книг' :
-                        '0 книг'}"></p>
+                   th:text="${author.getBooksAmount() +' '+author.getWordCase()}"></p>
             </div>
         </a>
     </div>

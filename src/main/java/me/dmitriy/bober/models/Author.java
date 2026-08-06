@@ -40,4 +40,19 @@ public class Author {
     public int getBooksAmount() {
         return books == null ? 0 : books.size();
     }
+
+    public String getWordCase(){
+        int amount = getBooksAmount();
+        String wordCase = "";
+        if (amount == 0 || (amount > 4 && amount <= 20)) {
+            wordCase = "книг";
+        } else if ((amount % 10 == 1)) {
+            wordCase = "книга";
+        } else if ((amount % 10 >= 2) && (amount % 10 <= 4)) {
+            wordCase = "книги";
+        } else {
+            wordCase = "книг";
+        }
+        return wordCase;
+    }
 }

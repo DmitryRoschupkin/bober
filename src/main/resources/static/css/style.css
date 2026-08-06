@@ -54,7 +54,7 @@ body {
     position: absolute;
     z-index: 0;
     inset: 0;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(2px);
     filter: url("#glass-distortion");
     overflow: hidden;
     pointer-events: none;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Author page</title>
+    <title th:text="${author.firstName} + ' ' + ${author.lastName}"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">

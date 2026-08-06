@@ -18,4 +18,25 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void update(User user, int id) {
+        User existingUser = userRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
+        if(user.getFirstName() != null) {
+            existingUser.setFirstName(user.getFirstName());
+        }
+        if(user.getLastName() != null) {
+            existingUser.setLastName(user.getLastName());
+        }
+        if(user.getEmail() != null) {
+            existingUser.setEmail(user.getEmail());
+        }
+        if(user.getBirthDate() != null) {
+            existingUser.setBirthDate(user.getBirthDate());
+        }
+        if(user.getBio() != null) {
+            existingUser.setBio(user.getBio());
+        }
+    }
+
 }

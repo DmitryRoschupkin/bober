@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html   xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать профиль</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
+
+
+</head>
+<body>
+    <div class="page">
+      <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+      <div class="profile-edit">
+        <h1>Редактируемся</h1>
+        <form th:action="@{/account/edit/{id}(id=${user.id})}" th:object="${user}" method="post">
+          <div th:each="field : ${fieldNames}">
+            <label th:text="${field}" th:for="${field}"></label>
+            <input th:if="${#strings.contains(field, 'birthDate')}"
+                   type="date"
+                   th:id="${field}"
+                   th:field="*{__${field}__}">
+            <input th:if="${!#strings.contains(field, 'birthDate')}"
+                   type="text"
+                   th:id="${field}"
+                   th:field="*{__${field}__}">
+          </div>
+          <button type="submit">Сохранить изменения</button>
+          <a th:href="@{/account/{id}(id=${user.id})}">Отмена</a>
+        </form>
+      </div>
+        <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+    </div>
+</body>
+</html>

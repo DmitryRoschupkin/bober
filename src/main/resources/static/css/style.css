@@ -276,3 +276,8 @@ body {
 .avg-btn:hover {
     text-shadow: 0 0 8px #ffe4b7;
 }
+
+.profile-info,
+.profile-edit{
+    margin-top: calc(var(--index)*5);
+}

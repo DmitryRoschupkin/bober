@@ -2,18 +2,20 @@ package me.dmitriy.bober.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +48,30 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
+    public List<String> fieldNames() {
+        List<String> fieldNames = new ArrayList<>();
+        List<String> prohibitedToEdit = new ArrayList<>();
+        prohibitedToEdit.add("fieldNames");
+        prohibitedToEdit.add("id");
+        prohibitedToEdit.add("password");
+        prohibitedToEdit.add("role");
+        prohibitedToEdit.add("createdAt");
+        prohibitedToEdit.add("nickname");
+
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (!prohibitedToEdit.contains(field.getName())) {
+                fieldNames.add(field.getName());
+            }
+        }
+        return fieldNames;
+    }
+
     public Integer getAge() {
         if (birthDate == null) {
             return null;
         }
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
-
 
 }

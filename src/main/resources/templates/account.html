@@ -6,11 +6,28 @@
     <meta charset="UTF-8">
     <title th:text="${user.get().nickname}"></title>
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/header.js}" defer></script>
 
 </head>
 <body>
     <div class="page">
-
+        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+        <div class="profile-info">
+            <p th:text="${user.get().id}"></p>
+            <p th:text="${user.get().nickname}"></p>
+            <p th:text="${user.get().email}"></p>
+            <p>Имя: <span th:text="${user.get().firstName}"></span></p>
+            <p>Фамилия: <span th:text="${user.get().lastName}"></span></p>
+            <p>
+                День рождения: <span th:text="${user.get().birthDate}">, </span>
+                <span th:text="${user.get().getAge()}"></span>
+                <span> лет</span>
+            </p>
+            <p>О себе: <span th:text="${user.get().bio}"></span></p>
+            <a th:href="@{/account/edit/{id}(id=${user.get().id})}">Редактировать профиль</a>
+        </div>
+        <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
     </div>
 </body>
 </html>

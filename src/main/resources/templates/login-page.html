@@ -20,8 +20,9 @@
         <div class="login-page__img"></div>
         <div class="form-security__container">
             <form th:action="@{/login}" method="post" class="form-secutiry__form">
-                <input type="text" name="login" placeholder="Ваш никнейм/почта" class="form-security__input" required>
+                <input type="text" name="nickname" placeholder="Ваш никнейм" class="form-security__input" required>
                 <input type="password" name="password" placeholder="Пароль" class="form-security__input" required>
+                <span th:if="${isAuthenticationFailed}" class="from-security__warning">Смит вас не узнаёт. Неверный ник или пароль.</span>
                 <button type="submit" class="form-secutiry__button">Войти!</button>
             </form>
         </div>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Войти</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="page">
+        <div class="login-page__title">
+            <h1>Войдите</h1>
+            <h3>А то не войдёте</h3>
+        </div>
+        <div class="login-page__img"></div>
+        <div class="form-security__container">
+            <form th:action="@{/login}" method="post" class="form-secutiry__form">
+                <input type="text" name="login" placeholder="Ваш никнейм/почта" class="form-security__input" required>
+                <input type="password" name="password" placeholder="Пароль" class="form-security__input" required>
+                <button type="submit" class="form-secutiry__button">Войти!</button>
+            </form>
+        </div>
+        <div class="redirect-link">
+            <span class="redirect-link__text">Ещё нет аккаута? Непорядок!<a th:href="@{/registration}">К регистрации!</a></span>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,31 +6,45 @@
     <meta charset="UTF-8">
     <title>Войти</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
     <script th:src="@{/js/header.js}" defer></script>
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
 </head>
 <body>
-    <div class="page">
-        <header th:fragment="~{fragments/layout::header(hero=false)}"></header>
+<div class="page">
+    <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
 
-        <div class="login-page__title">
-            <h1>Войдите</h1>
-            <h3>А то не войдёте</h3>
+    <div class="auth-layout">
+        <div class="auth-panel login-page__img">
+            <div class="auth-seal">
+                Б
+                <span class="auth-seal__caption">est. 2022</span>
+            </div>
         </div>
-        <div class="login-page__img"></div>
-        <div class="form-security__container">
-            <form th:action="@{/login}" method="post" class="form-secutiry__form">
-                <input type="text" name="nickname" placeholder="Ваш никнейм" class="form-security__input" required>
-                <input type="password" name="password" placeholder="Пароль" class="form-security__input" required>
-                <span th:if="${isAuthenticationFailed}" class="from-security__warning">Смит вас не узнаёт. Неверный ник или пароль.</span>
-                <button type="submit" class="form-secutiry__button">Войти!</button>
-            </form>
-        </div>
-        <div class="redirect-link">
-            <span class="redirect-link__text">Ещё нет аккаута? Непорядок!<a th:href="@{/registration}">К регистрации!</a></span>
-        </div>
-        <footer th:fragment="~{fragments/layout::footer(hero=false)}"></footer>
 
+        <div>
+            <div class="login-page__title">
+                <h1>Войдите</h1>
+                <h3>А то не войдёте</h3>
+            </div>
+
+            <div class="form-security__container">
+                <form th:action="@{/login}" method="post" class="form-security__form">
+                    <input type="text" name="nickname" placeholder="Ваш никнейм" class="form-security__input" required>
+                    <input type="password" name="password" placeholder="Пароль" class="form-security__input" required>
+                    <span th:if="${isAuthenticationFailed}" class="form-security__warning">Смит вас не узнаёт. Неверный ник или пароль.</span>
+                    <button type="submit" class="form-security__button">Войти!</button>
+                </form>
+            </div>
+
+            <div class="redirect-link">
+                <span class="redirect-link__text">Ещё нет аккаунта? Непорядок!<a th:href="@{/registration}">К регистрации!</a></span>
+            </div>
+        </div>
     </div>
+
+    <footer th:replace="~{fragments/layout :: footer(hero=false)}"></footer>
+</div>
 </body>
 </html>

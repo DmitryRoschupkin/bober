@@ -1,37 +1,48 @@
 <!DOCTYPE html>
-<html   xmlns:th="http://www.thymeleaf.org"
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
         lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Редактировать профиль</title>
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
     <script th:src="@{/js/header.js}" defer></script>
-
-
 </head>
 <body>
-    <div class="page">
-      <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-      <div class="profile-edit">
-        <h1>Редактируемся</h1>
-        <form th:action="@{/account/edit/{id}(id=${user.id})}" th:object="${user}" method="post">
-          <div th:each="field : ${fieldNames}">
-            <label th:text="${field}" th:for="${field}"></label>
-            <input th:if="${#strings.contains(field, 'birthDate')}"
-                   type="date"
-                   th:id="${field}"
-                   th:field="*{__${field}__}">
-            <input th:if="${!#strings.contains(field, 'birthDate')}"
-                   type="text"
-                   th:id="${field}"
-                   th:field="*{__${field}__}">
-          </div>
-          <button type="submit">Сохранить изменения</button>
-          <a th:href="@{/account/{id}(id=${user.id})}">Отмена</a>
-        </form>
-      </div>
-        <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+<div class="page">
+    <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
+
+    <div class="profile-edit">
+        <h1 class="page__title">Редактируемся</h1>
+
+        <div class="form-security__container profile-edit__container">
+            <form th:action="@{/account/edit/{id}(id=${user.id})}" th:object="${user}" method="post" class="form-security__form">
+                <div class="profile-edit__field" th:each="field : ${fieldNames}">
+                    <label class="profile-edit__label" th:text="${field}" th:for="${field}"></label>
+                    <input th:if="${#strings.contains(field, 'birthDate')}"
+                           type="date"
+                           th:id="${field}"
+                           th:field="*{__${field}__}"
+                           class="form-security__input">
+                    <input th:if="${!#strings.contains(field, 'birthDate')}"
+                           type="text"
+                           th:id="${field}"
+                           th:field="*{__${field}__}"
+                           class="form-security__input">
+                </div>
+
+                <button type="submit" class="form-security__button">Сохранить изменения</button>
+            </form>
+
+            <a th:href="@{/account/{id}(id=${user.id})}" class="profile-edit__cancel">Отмена</a>
+        </div>
     </div>
+
+    <footer th:replace="~{fragments/layout :: footer(hero=false)}"></footer>
+</div>
 </body>
 </html>

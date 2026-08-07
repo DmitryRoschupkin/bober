@@ -1,33 +1,59 @@
 <!DOCTYPE html>
 <html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:th=http://www.thymeleaf.org
+        xmlns:th="http://www.thymeleaf.org"
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${user.get().nickname}"></title>
+    <title th:text="${user.nickname}"></title>
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
     <script th:src="@{/js/header.js}" defer></script>
-
 </head>
 <body>
-    <div class="page">
-        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-        <div class="profile-info">
-            <p th:text="${user.get().id}"></p>
-            <p th:text="${user.get().nickname}"></p>
-            <p th:text="${user.get().email}"></p>
-            <p>Имя: <span th:text="${user.get().firstName}"></span></p>
-            <p>Фамилия: <span th:text="${user.get().lastName}"></span></p>
-            <p>
-                День рождения: <span th:text="${user.get().birthDate}">, </span>
-                <span th:text="${user.get().getAge()}"></span>
-                <span> лет</span>
-            </p>
-            <p>О себе: <span th:text="${user.get().bio}"></span></p>
-            <a th:href="@{/account/edit/{id}(id=${user.get().id})}">Редактировать профиль</a>
+<div class="page">
+    <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
+
+    <div class="profile-card">
+        <div class="profile-card__header">
+            <div class="profile-card__avatar" th:text="${#strings.substring(user.nickname, 0, 1)}"></div>
+            <div>
+                <h1 class="profile-card__name" th:text="${user.nickname}"></h1>
+                <p class="profile-card__email" th:text="${user.email}"></p>
+            </div>
         </div>
-        <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+
+        <div class="profile-card__body">
+            <div class="profile-field" th:if="${user.firstName != null}">
+                <span class="profile-field__label">Имя</span>
+                <span class="profile-field__value" th:text="${user.firstName}"></span>
+            </div>
+
+            <div class="profile-field" th:if="${user.lastName != null}">
+                <span class="profile-field__label">Фамилия</span>
+                <span class="profile-field__value" th:text="${user.lastName}"></span>
+            </div>
+
+            <div class="profile-field" th:if="${user.birthDate != null}">
+                <span class="profile-field__label">День рождения</span>
+                <span class="profile-field__value">
+                        <span th:text="${user.birthDate}"></span>
+                        <span class="profile-field__meta">(<span th:text="${user.getAge()}"></span> лет)</span>
+                    </span>
+            </div>
+
+            <div class="profile-field" th:if="${user.bio != null and !user.bio.isBlank()}">
+                <span class="profile-field__label">О себе</span>
+                <span class="profile-field__value" th:text="${user.bio}"></span>
+            </div>
+        </div>
+
+        <a th:href="@{/account/edit/{id}(id=${user.id})}" class="form-security__button profile-card__edit">Редактировать профиль</a>
     </div>
+
+    <footer th:replace="~{fragments/layout :: footer(hero=false)}"></footer>
+</div>
 </body>
 </html>

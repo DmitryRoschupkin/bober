@@ -3,6 +3,7 @@ package me.dmitriy.bober.service;
 import jakarta.transaction.Transactional;
 import me.dmitriy.bober.data.UserRepository;
 import me.dmitriy.bober.models.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,6 +38,13 @@ public class UserService {
         if(user.getBio() != null) {
             existingUser.setBio(user.getBio());
         }
+    }
+
+    public User getCurrentUser() {
+        String nickname = SecurityContextHolder.getContext().getAuthentication().getName();
+         return userRepository
+                .findByNicknameIgnoreCase(nickname)
+                .orElseThrow(() -> new IllegalArgumentException("User with name " + nickname + " not found"));
     }
 
 }

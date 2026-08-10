@@ -22,16 +22,18 @@
             <div>
                 <h1 class="profile-card__name" th:text="${user.nickname}"></h1>
                 <p class="profile-card__email" th:text="${user.email}"></p>
+                <p class="profile-card__privilege" th:text="${privilege}"></p>
+
             </div>
         </div>
 
         <div class="profile-card__body">
-            <div class="profile-field" th:if="${user.firstName != null}">
+            <div class="profile-field" th:if="${user.firstName != ''}">
                 <span class="profile-field__label">Имя</span>
                 <span class="profile-field__value" th:text="${user.firstName}"></span>
             </div>
 
-            <div class="profile-field" th:if="${user.lastName != null}">
+            <div class="profile-field" th:if="${user.lastName != ''}">
                 <span class="profile-field__label">Фамилия</span>
                 <span class="profile-field__value" th:text="${user.lastName}"></span>
             </div>
@@ -50,7 +52,9 @@
             </div>
         </div>
 
-        <a th:href="@{/account/edit/{id}(id=${user.id})}" class="form-security__button profile-card__edit">Редактировать профиль</a>
+        <a      th:if="${user} == ${currentUser}"
+                th:href="@{/account/edit/{id}(id=${user.id})}"
+           class="form-security__button profile-card__edit">Редактировать профиль</a>
     </div>
 
     <footer th:replace="~{fragments/layout :: footer(hero=false)}"></footer>

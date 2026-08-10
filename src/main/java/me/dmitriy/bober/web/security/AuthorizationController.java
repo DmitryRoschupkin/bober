@@ -2,7 +2,6 @@ package me.dmitriy.bober.web.security;
 
 
 import me.dmitriy.bober.models.User;
-import me.dmitriy.bober.models.UserRole;
 import me.dmitriy.bober.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 @Controller

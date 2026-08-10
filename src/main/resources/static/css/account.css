@@ -39,6 +39,11 @@
     font-size: 13px;
 }
 
+.profile-card__privilege {
+    color: #a89d7c;
+    font-size: 13px;
+}
+
 .profile-card__body {
     display: flex;
     flex-direction: column;

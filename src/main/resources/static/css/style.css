@@ -281,3 +281,98 @@ body {
 .profile-edit{
     margin-top: calc(var(--index)*5);
 }
+
+.site-header__user {
+    position: relative;
+    z-index: 4;
+}
+
+.site-header__user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 2px solid #ffefcc;
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: #ffefcc;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: calc(var(--index) / 30);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: text-shadow .3s;
+}
+
+.site-header__user-trigger:hover {
+    text-shadow: 0 0 8px #ffe4b7;
+}
+
+.site-header__chevron {
+    color: #ffefcc;
+    transition: transform .25s ease;
+}
+
+.site-header__user.is-open .site-header__chevron {
+    transform: rotate(180deg);
+}
+
+.site-header__dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 160px;
+    background: rgba(13, 13, 13, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 239, 204, 0.2);
+    border-radius: 10px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.site-header__user.is-open .site-header__dropdown {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.site-header__dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: #d8cfb2;
+    font-family: inherit;
+    font-size: 13px;
+    text-decoration: none;
+    text-transform: none;
+    padding: 9px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+
+.site-header__dropdown-item:hover {
+    background: rgba(255, 239, 204, 0.08);
+    color: #ffefcc;
+}
+
+.site-header__dropdown-item--logout {
+    color: #e8846b;
+}
+
+.site-header__dropdown-item--logout:hover {
+    background: rgba(232, 132, 107, 0.1);
+    color: #e8846b;
+}
+
+.site-header__logout-form {
+    margin: 0;
+}

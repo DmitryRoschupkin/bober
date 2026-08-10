@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <body>
 
 <header th:fragment="header(hero)"
@@ -18,7 +19,24 @@
         <a th:href="@{/authors}">Авторы</a>
         <a th:href="@{/about}">О нас</a>
     </nav>
-    <a th:href="@{/login}" class="site-header__login">Войти</a>
+    <a th:href="@{/login}" class="site-header__login" sec:authorize="isAnonymous()">Войти</a>
+
+    <div class="site-header__user" sec:authorize="isAuthenticated()">
+        <button class="site-header__user-trigger" type="button">
+            <span sec:authentication="name"></span>
+            <svg class="site-header__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <div class="site-header__dropdown">
+            <a th:href="@{/account}" class="site-header__dropdown-item">Профиль</a>
+            <form th:action="@{/logout}" method="post" class="site-header__logout-form">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="site-header__dropdown-item site-header__dropdown-item--logout">Выйти</button>
+            </form>
+        </div>
+    </div>
+
     <svg style="display: none;" aria-hidden="true">
         <filter id="glass-distortion">
             <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />

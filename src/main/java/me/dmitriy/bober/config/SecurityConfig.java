@@ -5,6 +5,7 @@ import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.models.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     //Finally, Smith bot is employed after several years in New Koluton!
@@ -43,7 +45,8 @@ public class SecurityConfig {
                         .requestMatchers("/account/**").hasAnyRole(
                                 UserRole.USER.name(),
                                 UserRole.ADMIN.name(),
-                                UserRole.SUDO.name())
+                                UserRole.SUDO.name(),
+                                UserRole.AUTHOR.name())
                         .requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.SUDO.name()))
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -72,7 +75,14 @@ public class SecurityConfig {
                 Set<SimpleGrantedAuthority> roles =
                         Collections.singleton(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
                 return new org.springframework.security.core.userdetails.
-                        User(user.getNickname(), user.getPassword(), roles);
+                        User(
+                                user.getNickname(),
+                                user.getPassword(),
+                                true,
+                                true,
+                                true,
+                                !(user.isBlocked()),
+                                roles);
             }
         };
     }

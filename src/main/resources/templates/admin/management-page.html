@@ -1,119 +1,145 @@
 <!DOCTYPE html>
 <html   xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
         lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Adminka</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
 </head>
 <body>
-    <h1>Админ панель</h1>
-    <h2>Пользователи: </h2>
+<h1>Админ панель</h1>
+<h2>Пользователи: </h2>
 
-    <table>
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td>Никнейм</td>
-                <td>Имя</td>
-                <td>Фамилия</td>
-                <td>Email</td>
-                <td>Дата рождения + возраст</td>
-                <td>Роль</td>
-                <td>О себе</td>
-                <td>Дата регистрации</td>
-                <td>Действие</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user: ${users}">
-                <td th:text="${user.id}"></td>
-                <td th:text="${user.nickname}"></td>
-                <td th:text="${user.firstName}"></td>
-                <td th:text="${user.lastName}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.birthDate}+', '+${user.getAge()}+' лет'"></td>
-                <td th:text="${user.role}"></td>
-                <td th:text="${user.bio}"></td>
-                <td th:text="${user.createdAt}"></td>
-                <td>
-                    <button type="reset">Удалить</button>
-                    <button type="reset">Заблокировать</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<table>
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Никнейм</td>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Email</td>
+        <td>Дата рождения + возраст</td>
+        <td>Роль</td>
+        <td>Статус</td>
+        <td>О себе</td>
+        <td>Дата регистрации</td>
+        <td>Действие</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.nickname}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.birthDate}+', '+${user.getAge()}+' лет'"></td>
+        <td th:text="${user.role}"></td>
+        <td th:text="${user.blocked} ? 'Заблокирован' : 'Активен'"></td>
+        <td th:text="${user.bio}"></td>
+        <td th:text="${user.createdAt}"></td>
+        <td>
+            <form sec:authorize="hasRole('SUDO')"
+                  th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display:inline">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Удалить</button>
+            </form>
+            <form th:if="${!user.blocked}"
+                  th:action="@{/admin/users/{id}/block(id=${user.id})}" method="post" style="display:inline">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Заблокировать</button>
+            </form>
+            <form th:if="${user.blocked}"
+                  th:action="@{/admin/users/{id}/unblock(id=${user.id})}" method="post" style="display:inline">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Разблокировать</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-    <h2>Авторы: </h2>
-    <table>
-        <thead>
-        <tr>
-            <td>ID</td>
-            <td>Имя</td>
-            <td>Фамилия</td>
-            <td>Дата рождения + возраст</td>
-            <td>О себе</td>
-            <td>Кол-во книг</td>
-            <td>Действие</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="author: ${authors}">
-            <td th:text="${author.id}"></td>
-            <td th:text="${author.firstName}"></td>
-            <td th:text="${author.lastName}"></td>
-            <td th:text="${author.birthDate} + ', ' + ${author.getAge()} + ' лет'"></td>
-            <td th:text="${author.bio}"></td>
-            <td th:text="${author.getBooksAmount()}"></td>
-            <td>
-                <button type="reset">Удалить</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<h2>Авторы: </h2>
+<table>
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Дата рождения + возраст</td>
+        <td>О себе</td>
+        <td>Кол-во книг</td>
+        <td>Действие</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author: ${authors}">
+        <td th:text="${author.id}"></td>
+        <td th:text="${author.firstName}"></td>
+        <td th:text="${author.lastName}"></td>
+        <td th:text="${author.birthDate} + ', ' + ${author.getAge()} + ' лет'"></td>
+        <td th:text="${author.bio}"></td>
+        <td th:text="${author.getBooksAmount()}"></td>
+        <td>
+            <form th:action="@{/admin/authors/{id}/delete(id=${author.id})}" method="post">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-    <h2>Книги: </h2>
-    <table>
-        <thead>
-        <tr>
-            <td>ID</td>
-            <td>Название</td>
-            <td>Авторы</td>
-            <td>Жанр</td>
-            <td>Издательство</td>
-            <td>Год</td>
-            <td>Описание</td>
-            <td>Добавлена на сайт</td>
-            <td>Действие</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book: ${books}">
-            <td th:text="${book.id}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:each="bauthor, iter: ${book.authors}">
-                <span th:text="${bauthor.firstName+' '+bauthor.lastName}"></span><span th:if="${!iter.last}">,</span>
-            </td>
-            <td th:text="${book.genre}"></td>
-            <td th:text="${book.publisher}"></td>
-            <td th:text="${book.year}"></td>
-            <td th:text="${book.description}"></td>
-            <td th:text="${book.createdAt}"></td>
-            <td>
-                <button type="reset">Удалить</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<h2>Книги: </h2>
+<table>
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Название</td>
+        <td>Авторы</td>
+        <td>Жанр</td>
+        <td>Издательство</td>
+        <td>Год</td>
+        <td>Описание</td>
+        <td>Добавлена на сайт</td>
+        <td>Действие</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book: ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:each="bauthor, iter: ${book.authors}">
+            <span th:text="${bauthor.firstName+' '+bauthor.lastName}"></span><span th:if="${!iter.last}">,</span>
+        </td>
+        <td th:text="${book.genre}"></td>
+        <td th:text="${book.publisher}"></td>
+        <td th:text="${book.year}"></td>
+        <td th:text="${book.description}"></td>
+        <td th:text="${book.createdAt}"></td>
+        <td>
+            <form th:action="@{/admin/books/{id}/delete(id=${book.id})}" method="post">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
+<div sec:authorize="hasRole('SUDO')">
     <h2>Назначить модератора: </h2>
-    <form>
+    <form th:action="@{/admin/users/promote}" method="post">
+        <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <select name="id">
-            <option th:each="user: ${users}">
-                <span th:text="${user.nickname}"></span>
-            </option>
+            <option th:each="user: ${users}"
+                    th:value="${user.id}"
+                    th:text="${user.nickname}"></option>
         </select>
         <button type="submit">Подтвердить</button>
     </form>
+</div>
 
 
 </body>

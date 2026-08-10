@@ -18,6 +18,7 @@
         <a th:href="@{/books}">Книги</a>
         <a th:href="@{/authors}">Авторы</a>
         <a th:href="@{/about}">О нас</a>
+        <a th:href="@{/admin}" sec:authorize="hasAnyRole('ADMIN', 'SUDO')" style="font-weight: bold">Админ</a>
     </nav>
     <a th:href="@{/login}" class="site-header__login" sec:authorize="isAnonymous()">Войти</a>
 

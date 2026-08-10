@@ -40,6 +40,9 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "is_blocked")
+    private boolean blocked;
+
     public User(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
@@ -57,6 +60,7 @@ public class User {
         prohibitedToEdit.add("role");
         prohibitedToEdit.add("createdAt");
         prohibitedToEdit.add("nickname");
+        prohibitedToEdit.add("blocked");
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {

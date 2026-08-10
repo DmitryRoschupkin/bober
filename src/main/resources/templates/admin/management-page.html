@@ -1,10 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html   xmlns:th="http://www.thymeleaf.org"
+        lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Adminka</title>
 </head>
 <body>
-    <h1>Скоро тут будет админка!</h1>
+    <h1>Админ панель</h1>
+    <h2>Пользователи: </h2>
+
+    <table>
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Никнейм</td>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>Email</td>
+                <td>Дата рождения + возраст</td>
+                <td>Роль</td>
+                <td>О себе</td>
+                <td>Дата регистрации</td>
+                <td>Действие</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user: ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.nickname}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.birthDate}+', '+${user.getAge()}+' лет'"></td>
+                <td th:text="${user.role}"></td>
+                <td th:text="${user.bio}"></td>
+                <td th:text="${user.createdAt}"></td>
+                <td>
+                    <button type="reset">Удалить</button>
+                    <button type="reset">Заблокировать</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Авторы: </h2>
+    <table>
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Имя</td>
+            <td>Фамилия</td>
+            <td>Дата рождения + возраст</td>
+            <td>О себе</td>
+            <td>Кол-во книг</td>
+            <td>Действие</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="author: ${authors}">
+            <td th:text="${author.id}"></td>
+            <td th:text="${author.firstName}"></td>
+            <td th:text="${author.lastName}"></td>
+            <td th:text="${author.birthDate} + ', ' + ${author.getAge()} + ' лет'"></td>
+            <td th:text="${author.bio}"></td>
+            <td th:text="${author.getBooksAmount()}"></td>
+            <td>
+                <button type="reset">Удалить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Книги: </h2>
+    <table>
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Авторы</td>
+            <td>Жанр</td>
+            <td>Издательство</td>
+            <td>Год</td>
+            <td>Описание</td>
+            <td>Добавлена на сайт</td>
+            <td>Действие</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book: ${books}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:each="bauthor, iter: ${book.authors}">
+                <span th:text="${bauthor.firstName+' '+bauthor.lastName}"></span><span th:if="${!iter.last}">,</span>
+            </td>
+            <td th:text="${book.genre}"></td>
+            <td th:text="${book.publisher}"></td>
+            <td th:text="${book.year}"></td>
+            <td th:text="${book.description}"></td>
+            <td th:text="${book.createdAt}"></td>
+            <td>
+                <button type="reset">Удалить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Назначить модератора: </h2>
+    <form>
+        <select name="id">
+            <option th:each="user: ${users}">
+                <span th:text="${user.nickname}"></span>
+            </option>
+        </select>
+        <button type="submit">Подтвердить</button>
+    </form>
+
+
 </body>
 </html>

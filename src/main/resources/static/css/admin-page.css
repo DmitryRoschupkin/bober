@@ -1,0 +1,48 @@
+.admin-page {
+    margin-top: calc(var(--index)*5);
+}
+
+.admin-page__title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: calc(var(--index));
+    text-transform: uppercase;
+    letter-spacing: calc(var(--index)/2.5);
+}
+
+.admin-page__button {
+
+}
+
+.admin-page__table {
+    width: 100vw;
+    padding: 0 calc(var(--index)*2);
+    margin-bottom: 30px;
+}
+
+.admin-page__table-title {
+    text-transform: uppercase;
+    font-size: 10px;
+    padding-left: calc(var(--index));
+    color: rgba(255, 246, 219, 0.4);
+}
+
+.admin-page__tbody {
+
+}
+
+.admin-page__thead {
+
+}
+
+.admin-page__tr {
+
+}
+
+td {
+    padding: 10px;
+}
+
+footer {
+    margin-bottom: 15px;
+}

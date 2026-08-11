@@ -30,6 +30,10 @@ public class Author {
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Integer getAge() {
         if (birthDate == null) {
             return null;
@@ -43,16 +47,18 @@ public class Author {
 
     public String getWordCase(){
         int amount = getBooksAmount();
-        String wordCase = "";
-        if (amount == 0 || (amount > 4 && amount <= 20)) {
-            wordCase = "книг";
-        } else if ((amount % 10 == 1)) {
-            wordCase = "книга";
-        } else if ((amount % 10 >= 2) && (amount % 10 <= 4)) {
-            wordCase = "книги";
-        } else {
-            wordCase = "книг";
+        int lastTwoDigits = amount % 100;
+        int lastDigit = amount % 10;
+
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+            return "книг";
         }
-        return wordCase;
+        if (lastDigit == 1) {
+            return  "книга";
+        }
+        if (lastDigit >= 2 && lastDigit <= 4) {
+            return "книги";
+        }
+        return "книг";
     }
 }

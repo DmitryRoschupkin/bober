@@ -1,0 +1,1 @@
+ALTER TABLE author ADD COLUMN user_id INT REFERENCES users(id);

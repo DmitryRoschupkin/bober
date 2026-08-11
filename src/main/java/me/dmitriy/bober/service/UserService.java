@@ -78,6 +78,13 @@ public class UserService {
         user.setRole("ADMIN");
     }
 
+    public void promoteToAuthor(int id) {
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
+        user.setRole("AUTHOR");
+    }
+
     public void delete(int id) {
         User currentUser = getCurrentUser();
         if(currentUser.getId() == id) {

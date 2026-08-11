@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Стать автором</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <script th:src="@{/js/header.js}" defer></script>
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
+
+    <div class="login-page__title">
+        <h1>Стать автором</h1>
+        <h3>Расскажи, почему ты достоин печататься в издательстве БОБЁР</h3>
+    </div>
+
+    <div class="form-security__container">
+        <form th:action="@{/become-author}" method="post" class="form-security__form">
+            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <textarea name="resume" placeholder="Немного о себе и своих текстах" class="form-security__input" rows="6" required></textarea>
+            <button type="submit" class="form-security__button">Подать заявку</button>
+        </form>
+    </div>
+
+    <footer th:replace="~{fragments/layout :: footer(hero=false)}"></footer>
+</div>
+</body>
+</html>

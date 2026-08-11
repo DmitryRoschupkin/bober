@@ -18,6 +18,7 @@
 
     <div class="profile-edit">
         <h1 class="page__title">Редактируемся</h1>
+        <a th:href="@{/become-author}" class="avg-link">Стать автором!</a>
 
         <div class="form-security__container profile-edit__container">
             <form th:action="@{/account/edit/{id}(id=${user.id})}" th:object="${user}" method="post" class="form-security__form">

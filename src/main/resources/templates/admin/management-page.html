@@ -157,6 +157,47 @@
         </form>
     </div>
 
+    <div sec:authorize="hasAnyRole('SUDO', 'ADMIN')">
+        <div class="admin-page__table-title"><h2>Подтвердить автора: </h2></div>
+        <table class="admin-page__table">
+            <thead class="admin-page__thead">
+                    <tr class="admin-page__tr">
+                        <td>ID заявки</td>
+                        <td>Кандидат</td>
+                        <td>Резюме кандидата</td>
+                        <td>Решение по кандидату</td>
+                    </tr>
+                </thead>
+            <tbody class="admin-page__tbody">
+                    <tr th:each="request: ${authorRequests}" th:if="${request?.status?.name() == 'PENDING'}" class="admin-page__tr">
+                        <td th:text="${request.id}"></td>
+                        <td th:text="${request.user.nickname}"></td>
+                        <td th:text="${request.resume}"></td>
+                        <td>
+                            <form th:action="@{/admin/author-requests/{id}/approve(id=${request.id})}"
+                                    method="post"
+                                    style="display: inline">
+                                <input th:if="${_csrf}"
+                                       type="hidden"
+                                       th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}"/>
+                                <button type="submit" class="admin-page__button">Одобрить</button>
+                            </form>
+                            <form th:action="@{/admin/author-requests/{id}/reject(id=${request.id})}"
+                                  method="post"
+                                  style="display: inline">
+                                <input th:if="${_csrf}"
+                                       type="hidden"
+                                       th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}"/>
+                                <button type="submit" class="admin-page__button">Отклонить</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+
     <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
 </div>
 

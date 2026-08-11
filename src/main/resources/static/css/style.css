@@ -376,3 +376,18 @@ body {
 .site-header__logout-form {
     margin: 0;
 }
+
+.avg-link {
+    display: block;
+    color: #ffefcc;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: calc(var(--index)/20);
+    transition: text-shadow .4s, letter-spacing .4s;
+    margin-bottom: 20px;
+}
+
+.avg-link:hover{
+    text-shadow: 0 0 10px #ffdda0;
+    letter-spacing: calc(var(--index)/17);
+}

@@ -22,12 +22,14 @@ public class AccountEditController {
 
     @GetMapping("/edit/{id}")
     public String editAccountForm(Model model, @PathVariable int id) {
+        User currentUser = userService.getCurrentUser();
         User user = userRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
         List<String> fieldNames = user.fieldNames();
         model.addAttribute("user", user);
         model.addAttribute("fieldNames", fieldNames);
+        model.addAttribute("currentUser", currentUser);
         return "account-edit";
     }
 

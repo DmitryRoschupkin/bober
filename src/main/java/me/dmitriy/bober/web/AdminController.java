@@ -1,8 +1,10 @@
 package me.dmitriy.bober.web;
 
 import me.dmitriy.bober.data.AuthorRepository;
+import me.dmitriy.bober.data.AuthorRequestRepository;
 import me.dmitriy.bober.data.BookRepository;
 import me.dmitriy.bober.data.UserRepository;
+import me.dmitriy.bober.service.AuthorRequestService;
 import me.dmitriy.bober.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,11 +19,16 @@ public class AdminController {
     private final UserService userService;
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
-    public AdminController(UserRepository userRepository, UserService userService, AuthorRepository authorRepository, BookRepository bookRepository) {
+    private final AuthorRequestRepository authorRequestRepository;
+    private final AuthorRequestService authorRequestService;
+
+    public AdminController(UserRepository userRepository, UserService userService, AuthorRepository authorRepository, BookRepository bookRepository, AuthorRequestRepository authorRequestRepository, AuthorRequestService authorRequestService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.authorRequestRepository = authorRequestRepository;
+        this.authorRequestService = authorRequestService;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUDO')")
@@ -30,6 +37,7 @@ public class AdminController {
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("authors", authorRepository.findAll());
+        model.addAttribute("authorRequests", authorRequestRepository.findAll());
         return "admin/management-page";
     }
 
@@ -72,6 +80,20 @@ public class AdminController {
     @PostMapping("/books/{id}/delete")
     public String deleteBook(@PathVariable int id) {
         bookRepository.deleteById(id);
+        return "redirect:/admin";
+    }
+
+    @PreAuthorize("hasAnyRole('SUDO', 'ADMIN')")
+    @PostMapping("/author-requests/{id}/approve")
+    public String approveAuthorRequest(@PathVariable int id) {
+        authorRequestService.approve(id);
+        return "redirect:/admin";
+    }
+
+    @PreAuthorize("hasAnyRole('SUDO', 'ADMIN')")
+    @PostMapping("/author-requests/{id}/reject")
+    public String rejectAuthorRequest(@PathVariable int id) {
+        authorRequestService.reject(id);
         return "redirect:/admin";
     }
 }

@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 UserRole.ADMIN.name(),
                                 UserRole.SUDO.name(),
                                 UserRole.AUTHOR.name())
-                        .requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.SUDO.name()))
+                        .requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.SUDO.name())
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll()

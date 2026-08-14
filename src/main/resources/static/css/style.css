@@ -391,3 +391,36 @@ body {
     text-shadow: 0 0 10px #ffdda0;
     letter-spacing: calc(var(--index)/17);
 }
+
+.about__chapter {
+    margin-bottom: calc(var(--index)*2);
+}
+
+.about__text {
+    color: #d8cfb2;
+    max-width: 60ch;
+    line-height: 1.7;
+}
+
+.about__title {
+    text-transform: uppercase;
+    font-size: calc(var(--index) * 1.4);
+    letter-spacing: calc(var(--index) / 20);
+    color: #ffefcc;
+    margin-bottom: calc(var(--index)/2);
+}
+
+
+.about__logo {
+    font-style: italic;
+}
+
+.about__logo::after {
+    content: "\2122";
+    font-size: 0.6em;
+    vertical-align: super;
+}
+
+.about__text span {
+    font-style: italic;
+}

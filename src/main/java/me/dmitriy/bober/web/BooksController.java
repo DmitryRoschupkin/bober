@@ -3,6 +3,8 @@ package me.dmitriy.bober.web;
 
 import me.dmitriy.bober.data.BookRepository;
 import me.dmitriy.bober.models.Book;
+import me.dmitriy.bober.models.User;
+import me.dmitriy.bober.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +19,11 @@ import java.util.List;
 public class BooksController {
 
     private final BookRepository bookRepository;
+    private final UserService userService;
 
-    public BooksController(BookRepository bookRepository) {
+    public BooksController(BookRepository bookRepository, UserService userService) {
         this.bookRepository = bookRepository;
+        this.userService = userService;
     }
 
     @GetMapping

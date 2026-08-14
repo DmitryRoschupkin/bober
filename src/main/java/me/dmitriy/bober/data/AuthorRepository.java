@@ -30,4 +30,6 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             " OR LOWER(CONCAT(a.lastName,  ' ', a.firstName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
             " GROUP BY a ORDER BY COUNT(b) DESC")
     List<Author> findByNameOrderByBookCountDesc(@Param("name") String name);
+
+    Optional<Author> findByUserId(int userId);
 }

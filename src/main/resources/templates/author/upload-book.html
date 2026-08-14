@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузить книгу</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <script th:src="@{/js/header.css}" defer></script>
+</head>
+<body>
+    <div class="page">
+        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+
+        <div class="login-page__title">
+            <h1>Загрузить книгу</h1>
+            <h3>Поддерживаем и перевариваем только PDF, FB2, EPUB, TXT</h3>
+        </div>
+
+        <div class="form-security__container">
+            <form th:action="@{/authors/books/upload}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="form-security__form">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                <label>Файл книги (обязательно!)</label>
+                <input type="file"
+                       name="bookFile"
+                       accept=".pdf, .fb2, .epub, .txt"
+                       class="form-security__input" required>
+
+                <label>Обложка (необязательно - для FB2/EPUB наш робот Смит попробует достать сам)</label>
+                <input type="file" name="coverFile" accept="image/*" class="form-security__input">
+
+                <label>Название (необязательно, тоже работа Смита, если не напишешь)</label>
+                <input type="text" name="title" placeholder="Название книги" class="form-security__input">
+
+                <label>Издательство (необязательно)</label>
+                <input type="text" name="publisher" placeholder="Издательство" class="form-security__input">
+
+                <label>Жанр</label>
+                <input type="text" name="genre" placeholder="Жанр" class="form-security__input">
+
+                <label>Год</label>
+                <input type="number" name="year" placeholder="Год издания" class="form-security__input">
+
+                <button type="submit" class="form-security__button">Загрузить</button>
+            </form>
+        </div>
+
+        <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+    </div>
+</body>
+</html>

@@ -29,6 +29,15 @@ public class Book {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Column(name = "file_format")
+    private String fileFormat;
+
+    @Column(name = "cover_path")
+    private String coverPath;
+
     @ManyToMany
     @JoinTable(
             name = "book_authors",

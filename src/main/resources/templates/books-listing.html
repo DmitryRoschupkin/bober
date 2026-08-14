@@ -14,9 +14,11 @@
 <div class="page">
     <header th:replace="~{fragments/layout :: header(hero=false)}"></header>
 
-    <h1 class="page__title">Книги</h1>
+    <div class="page__title-wrapper">
+        <h1 class="page__title">Книги</h1>
+        <a th:href="@{authors/books/upload}" class="books-listing__post-btn">Опубликовать книгу</a>
+    </div>
 
-    <a th:href="@{authors/books/upload}">Опубликовать книгу</a>
 
     <div class="search-bar">
         <form th:action="@{/books}" method="get">
@@ -59,7 +61,17 @@
                 th:href="@{/books/{id}(id=${book.id})}"
                 class="book-card"
                 th:attr="data-genre=${book.genre}">
-            <div class="book-card__cover"></div>
+            <div class="book-card__cover">
+                <img th:if="${book.coverPath}"
+                     th:src="@{/files/{path}(path=${book.coverPath})}"
+                     th:alt="${book.title}"
+                     class="book-cover-img" />
+                <!-- default cover will be designed soon -->
+                <img th:unless="${book.coverPath}"
+                     th:src="@{/img/default-cover.png}"
+                     alt="No cover"
+                     class="book-cover-img" />
+            </div>
             <p class="book-card__title" th:text="${book.title}"></p>
             <p class="book-card__authors">
                     <span th:each="author, iter: ${book.authors}">

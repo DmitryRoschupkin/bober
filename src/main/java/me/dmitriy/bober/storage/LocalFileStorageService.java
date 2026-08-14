@@ -2,12 +2,16 @@ package me.dmitriy.bober.storage;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,5 +72,21 @@ public class LocalFileStorageService implements FileStorageService {
     @Override
     public Path resolve(String storedPath) {
         return Paths.get(rootDir, storedPath).normalize();
+    }
+
+    @Override
+    public Resource loadAsResource(String storedPath) {
+        try {
+            Path file = resolve(storedPath);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not find file " + storedPath);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Could not build file URI " + storedPath, e);
+        }
     }
 }

@@ -62,7 +62,8 @@ public class AuthorBookUploadController {
                              @RequestParam(required = false) String title,
                              @RequestParam(required = false) String publisher,
                              @RequestParam(required = false) String genre,
-                             @RequestParam(required = false) Integer year) throws IOException {
+                             @RequestParam(required = false) Integer year,
+                             @RequestParam(required = false) String description) throws IOException {
         String extension = extensionOf(bookFile.getOriginalFilename());
         if (!ALLOWED_EXTENSIONS.contains(extension)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Расширение не поддерживается: "+extension);
@@ -102,6 +103,7 @@ public class AuthorBookUploadController {
         book.setFileFormat(extension);
         book.setCreatedAt(LocalDateTime.now());
         book.setAuthors(new ArrayList<>(List.of(author)));
+        book.setDescription(description);
 
         bookRepository.save(book);
 
@@ -109,7 +111,7 @@ public class AuthorBookUploadController {
     }
 
     private String extensionOf(String filename) {
-        if (filename == null || !!filename.contains(".")) return "";
+        if (filename == null || !filename.contains(".")) return "";
         return filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
     }
 

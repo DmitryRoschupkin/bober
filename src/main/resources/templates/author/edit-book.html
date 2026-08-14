@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать книгу</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <script th:src="@{/js/header.css}" defer></script>
+</head>
+<body>
+<div class="page">
+    <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+
+    <div class="login-page__title">
+        <h1>Редактировать книгу</h1>
+        <h3>Повторяю, поддерживаем и перевариваем только PDF, FB2, EPUB, TXT!</h3>
+    </div>
+
+    <div class="form-security__container">
+        <form th:action="@{/authors/books/edit/{id}(id=${book.id})}"
+              th:object="${book}"
+              method="post"
+              enctype="multipart/form-data"
+              class="form-security__form">
+            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+
+            <div class="form-group">
+                <label for="title">Название</label>
+                <input id="title" type="text" name="title" placeholder="Название книги"
+                       class="form-security__input"
+                       th:field="*{title}">
+            </div>
+
+            <div class="form-group">
+                <label for="publisher">Издательство</label>
+                <input id="publisher" type="text" name="publisher" placeholder="Издательство"
+                       class="form-security__input"
+                       th:field="*{publisher}">
+            </div>
+
+            <div class="from-group">
+                <label for="genre">Жанр</label>
+                <input id="genre" type="text" name="genre" placeholder="Жанр"
+                       class="form-security__input"
+                       th:field="*{genre}">
+            </div>
+
+            <div class="form-group">
+                <label for="year">Год</label>
+                <input id="year" type="number" name="year" placeholder="Год издания"
+                       class="form-security__input"
+                       th:field="*{year}">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <textarea id="description" name="description"
+                          rows="7" cols="80" placeholder="О чём книга?"
+                          class="form-textarea"
+                          th:field="*{description}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Текущая обложка: </label>
+                <div>
+                    <img    th:if="${book.coverPath}"
+                            th:src="@{/files/{path}(path=book.coverPath)}"
+                            alt="Cover"
+                            style="max-width: 120px; border-radius: 4px;">
+                    <span th:unless="${book.coverPath}">Обложка отсутствует</span>
+                </div>
+
+                <label for="coverFile">Заменить обложку (необяз)</label>
+                <input type="file" id="coverFile" name="coverFile" accept="image/*">
+            </div>
+
+            <button type="submit" class="form-security__button">Сохранить</button>
+            <a th:href="@{/books/{id}(id=${book.id})}">Отмена</a>
+        </form>
+    </div>
+
+    <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+</div>
+</body>
+</html>

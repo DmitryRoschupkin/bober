@@ -39,7 +39,17 @@
         <a th:each="book: ${author.books}"
            th:href="@{/books/{id}(id=${book.id})}"
            class="book-card">
-            <div class="book-card__cover"></div>
+            <div class="book-card__cover">
+                <img th:if="${book.coverPath}"
+                     th:src="@{/files/{path}(path=${book.coverPath})}"
+                     th:alt="${book.title}"
+                     class="book-cover-img" />
+                <!-- default cover will be designed soon -->
+                <img th:unless="${book.coverPath}"
+                     th:src="@{/img/default-cover.png}"
+                     alt="No cover"
+                     class="book-cover-img" />
+            </div>
             <p class="book-card__title" th:text="${book.title}"></p>
         </a>
     </div>

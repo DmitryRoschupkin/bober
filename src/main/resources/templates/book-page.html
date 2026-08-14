@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html   xmlns:th="http://www.thymeleaf.org"
-        lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title th:text="${book.title}"></title>
@@ -15,7 +15,17 @@
     <header th:replace="~{fragments/layout::header(hero=false)}"></header>
 
     <div class="book-detail">
-        <div class="book-detail__cover"></div>
+        <div class="book-detail__cover">
+            <img th:if="${book.coverPath}"
+                 th:src="@{/files/{path}(path=${book.coverPath})}"
+                 th:alt="${book.title}"
+                 class="book-cover-img" />
+            <!-- default cover will be designed soon -->
+            <img th:unless="${book.coverPath}"
+                 th:src="@{/img/default-cover.png}"
+                 alt="No cover"
+                 class="book-cover-img" />
+        </div>
         <div>
             <h1 class="book-detail__title" th:text="${book.title}"></h1>
 
@@ -34,6 +44,22 @@
             </div>
 
             <p class="book-detail__description" th:text="${book.description}"></p>
+
+            <div class="book-detail__actions">
+                <a sec:authorize="isAuthenticated()"
+                   th:href="@{/books/{id}/download(id=${book.id})}"
+                   class="book-detail__actions-btn">
+                    Скачать книгу ([[${#strings.toUpperCase(book.fileFormat)}]])
+                </a>
+                <a th:if="${book.authors.contains(author)}"
+                   th:href="@{/authors/books/edit/{id}(id=${book.id})}"
+                   class="book-detail__actions-btn">
+                    Редактировать
+                </a>
+                <div sec:authorize="isAnonymous()" class="download-login-prompt">
+                    <p>Чтобы скачать книгу, <a th:href="@{/login}">войдите в аккаунт</a>.</p>
+                </div>
+            </div>
         </div>
     </div>
 

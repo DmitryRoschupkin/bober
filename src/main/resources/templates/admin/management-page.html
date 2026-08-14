@@ -1,201 +1,219 @@
 <!DOCTYPE html>
-<html   xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
-        lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Adminka</title>
+    <title>Админ-панель</title>
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/admin-page.css}">
     <script th:src="@{/js/header.js}" defer></script>
-
 </head>
 <body>
+
+<header th:replace="~{fragments/layout::header(hero=false)}"></header>
+
 <div class="admin-page">
-    <header th:replace="~{fragments/layout::header(hero=false)}"></header>
-
     <div class="admin-page__title">
-        <h1>Админ панель</h1>
+        <h1>Админ - 100 р</h1>
+        <h2>Флай - 20 р</h2>
     </div>
 
-    <div class="admin-page__table-title">
-        <h2>Пользователи: </h2>
+    <div class="admin-page__section-header">
+        <h2>Пользователи</h2>
     </div>
-
-    <table class="admin-page__table">
-        <thead class="admin-page__thead">
-        <tr class="admin-page__tr">
-            <td>ID</td>
-            <td>Никнейм</td>
-            <td>Имя</td>
-            <td>Фамилия</td>
-            <td>Email</td>
-            <td>Дата рождения + возраст</td>
-            <td>Роль</td>
-            <td>Статус</td>
-            <td>О себе</td>
-            <td>Дата регистрации</td>
-            <td>Действие</td>
-        </tr>
-        </thead>
-        <tbody class="admin-page__tbody">
-        <tr th:each="user: ${users}" class="admin-page__tr">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.nickname}"></td>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.birthDate}+', '+${user.getAge()}+' лет'"></td>
-            <td th:text="${user.role}"></td>
-            <td th:text="${user.blocked} ? 'Заблокирован' : 'Активен'"></td>
-            <td th:text="${user.bio}"></td>
-            <td th:text="${user.createdAt}"></td>
-            <td>
-                <form sec:authorize="hasRole('SUDO')"
-                      th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display:inline">
-                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <button type="submit" class="admin-page__button">Удалить</button>
-                </form>
-                <form th:if="${!user.blocked}"
-                      th:action="@{/admin/users/{id}/block(id=${user.id})}" method="post" style="display:inline">
-                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <button type="submit" class="admin-page__button">Заблокировать</button>
-                </form>
-                <form th:if="${user.blocked}"
-                      th:action="@{/admin/users/{id}/unblock(id=${user.id})}" method="post" style="display:inline">
-                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <button type="submit" class="admin-page__button">Разблокировать</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="admin-page__table-title">
-        <h2>Авторы: </h2>
+    <div class="admin-page__table-wrapper">
+        <table class="admin-page__table">
+            <thead class="admin-page__thead">
+            <tr class="admin-page__tr">
+                <td>ID</td>
+                <td>Никнейм</td>
+                <td>ФИО</td>
+                <td>Email</td>
+                <td>Возраст</td>
+                <td>Роль</td>
+                <td>Статус</td>
+                <td>О себе</td>
+                <td>Регистрация</td>
+                <td style="text-align: right;">Действия</td>
+            </tr>
+            </thead>
+            <tbody class="admin-page__tbody">
+            <tr th:each="user: ${users}" class="admin-page__tr">
+                <td th:text="${user.id}"></td>
+                <td style="font-weight: bold; color: #ffe4b7;" th:text="${user.nickname}"></td>
+                <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.birthDate != null ? user.birthDate + ' (' + user.getAge() + ')' : '—'}"></td>
+                <td>
+                    <span class="admin-badge admin-badge--role" th:text="${user.role}"></span>
+                </td>
+                <td>
+                    <span th:class="${user.blocked} ? 'admin-badge admin-badge--blocked' : 'admin-badge admin-badge--active'"
+                          th:text="${user.blocked} ? 'Заблокирован' : 'Активен'"></span>
+                </td>
+                <td class="admin-page__cell--truncate" th:text="${user.bio != null ? user.bio : '—'}"></td>
+                <td th:text="${user.createdAt}"></td>
+                <td>
+                    <div class="admin-page__cell--actions" style="justify-content: flex-end;">
+                        <form sec:authorize="hasRole('SUDO')"
+                              th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display:inline">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="admin-btn admin-btn--danger">Удалить</button>
+                        </form>
+                        <form th:if="${!user.blocked}"
+                              th:action="@{/admin/users/{id}/block(id=${user.id})}" method="post" style="display:inline">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="admin-btn admin-btn--danger">Заблокировать</button>
+                        </form>
+                        <form th:if="${user.blocked}"
+                              th:action="@{/admin/users/{id}/unblock(id=${user.id})}" method="post" style="display:inline">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="admin-btn admin-btn--success">Разблокировать</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <table class="admin-page__table">
-        <thead class="admin-page__thead">
-        <tr class="admin-page__tr">
-            <td>ID</td>
-            <td>Имя</td>
-            <td>Фамилия</td>
-            <td>Дата рождения + возраст</td>
-            <td>О себе</td>
-            <td>Кол-во книг</td>
-            <td>Действие</td>
-        </tr>
-        </thead>
-        <tbody class="admin-page__tbody">
-        <tr th:each="author: ${authors}" class="admin-page__tr">
-            <td th:text="${author.id}"></td>
-            <td th:text="${author.firstName}"></td>
-            <td th:text="${author.lastName}"></td>
-            <td th:text="${author.birthDate} + ', ' + ${author.getAge()} + ' лет'"></td>
-            <td th:text="${author.bio}"></td>
-            <td th:text="${author.getBooksAmount()}"></td>
-            <td>
-                <form th:action="@{/admin/authors/{id}/delete(id=${author.id})}" method="post">
-                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <button type="submit">Удалить</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="admin-page__table-title">
-        <h2>Книги: </h2>
-    </div>
-    <table class="admin-page__table">
-        <thead class="admin-page__thead">
-        <tr class="admin-page__tr">
-            <td>ID</td>
-            <td>Название</td>
-            <td>Авторы</td>
-            <td>Жанр</td>
-            <td>Издательство</td>
-            <td>Год</td>
-            <td>Описание</td>
-            <td>Добавлена на сайт</td>
-            <td>Действие</td>
-        </tr>
-        </thead>
-        <tbody class="admin-page__tbody">
-        <tr th:each="book: ${books}" class="admin-page__tr">
-            <td th:text="${book.id}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:each="bauthor, iter: ${book.authors}">
-                <span th:text="${bauthor.firstName+' '+bauthor.lastName}"></span><span th:if="${!iter.last}">,</span>
-            </td>
-            <td th:text="${book.genre}"></td>
-            <td th:text="${book.publisher}"></td>
-            <td th:text="${book.year}"></td>
-            <td th:text="${book.description}"></td>
-            <td th:text="${book.createdAt}"></td>
-            <td>
-                <form th:action="@{/admin/books/{id}/delete(id=${book.id})}" method="post">
-                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <button type="submit">Удалить</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
     <div sec:authorize="hasRole('SUDO')">
-        <div class="admin-page__table-title"><h2>Назначить модератора: </h2></div>
-        <form th:action="@{/admin/users/promote}" method="post">
-            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <select name="id">
-                <option th:each="user: ${users}"
-                        th:value="${user.id}"
-                        th:text="${user.nickname}"></option>
-            </select>
-            <button type="submit">Подтвердить</button>
-        </form>
+        <div class="admin-page__section-header">
+            <h2>Назначить модератора</h2>
+        </div>
+        <div class="admin-action-card">
+            <form th:action="@{/admin/users/promote}" method="post" class="admin-action-form">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <select name="id" class="admin-select">
+                    <option value="" disabled selected>Выберите пользователя...</option>
+                    <option th:each="user: ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.nickname + ' (' + user.email + ')'}"></option>
+                </select>
+                <button type="submit" class="admin-btn">Подтвердить</button>
+            </form>
+        </div>
     </div>
 
     <div sec:authorize="hasAnyRole('SUDO', 'ADMIN')">
-        <div class="admin-page__table-title"><h2>Подтвердить автора: </h2></div>
-        <table class="admin-page__table">
-            <thead class="admin-page__thead">
-                    <tr class="admin-page__tr">
-                        <td>ID заявки</td>
-                        <td>Кандидат</td>
-                        <td>Резюме кандидата</td>
-                        <td>Решение по кандидату</td>
-                    </tr>
+        <div class="admin-page__section-header">
+            <h2>Заявки авторов</h2>
+        </div>
+        <div class="admin-page__table-wrapper">
+            <table class="admin-page__table">
+                <thead class="admin-page__thead">
+                <tr class="admin-page__tr">
+                    <td>ID Заявки</td>
+                    <td>Кандидат</td>
+                    <td>Резюме</td>
+                    <td style="text-align: right;">Решение</td>
+                </tr>
                 </thead>
-            <tbody class="admin-page__tbody">
-                    <tr th:each="request: ${authorRequests}" th:if="${request?.status?.name() == 'PENDING'}" class="admin-page__tr">
-                        <td th:text="${request.id}"></td>
-                        <td th:text="${request.user.nickname}"></td>
-                        <td th:text="${request.resume}"></td>
-                        <td>
-                            <form th:action="@{/admin/author-requests/{id}/approve(id=${request.id})}"
-                                    method="post"
-                                    style="display: inline">
-                                <input th:if="${_csrf}"
-                                       type="hidden"
-                                       th:name="${_csrf.parameterName}"
-                                       th:value="${_csrf.token}"/>
-                                <button type="submit" class="admin-page__button">Одобрить</button>
+                <tbody class="admin-page__tbody">
+                <tr th:each="request: ${authorRequests}" th:if="${request?.status?.name() == 'PENDING'}" class="admin-page__tr">
+                    <td th:text="${request.id}"></td>
+                    <td style="color: #ffe4b7;" th:text="${request.user.nickname}"></td>
+                    <td class="admin-page__cell--truncate" th:text="${request.resume}"></td>
+                    <td>
+                        <div class="admin-page__cell--actions" style="justify-content: flex-end;">
+                            <form th:action="@{/admin/author-requests/{id}/approve(id=${request.id})}" method="post" style="display: inline">
+                                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button type="submit" class="admin-btn admin-btn--success">Одобрить</button>
                             </form>
-                            <form th:action="@{/admin/author-requests/{id}/reject(id=${request.id})}"
-                                  method="post"
-                                  style="display: inline">
-                                <input th:if="${_csrf}"
-                                       type="hidden"
-                                       th:name="${_csrf.parameterName}"
-                                       th:value="${_csrf.token}"/>
-                                <button type="submit" class="admin-page__button">Отклонить</button>
+                            <form th:action="@{/admin/author-requests/{id}/reject(id=${request.id})}" method="post" style="display: inline">
+                                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button type="submit" class="admin-btn admin-btn--danger">Отклонить</button>
                             </form>
-                        </td>
-                    </tr>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- АВТОРЫ -->
+    <div class="admin-page__section-header">
+        <h2>Авторы</h2>
+    </div>
+    <div class="admin-page__table-wrapper">
+        <table class="admin-page__table">
+            <thead class="admin-page__thead">
+            <tr class="admin-page__tr">
+                <td>ID</td>
+                <td>ФИО</td>
+                <td>Возраст</td>
+                <td>О себе</td>
+                <td>Книг</td>
+                <td style="text-align: right;">Действия</td>
+            </tr>
+            </thead>
+            <tbody class="admin-page__tbody">
+            <tr th:each="author: ${authors}" class="admin-page__tr">
+                <td th:text="${author.id}"></td>
+                <td style="color: #ffe4b7;" th:text="${author.firstName + ' ' + author.lastName}"></td>
+                <td th:text="${author.birthDate != null ? author.birthDate + ' (' + author.getAge() + ')' : '—'}"></td>
+                <td class="admin-page__cell--truncate" th:text="${author.bio != null ? author.bio : '—'}"></td>
+                <td th:text="${author.getBooksAmount()}"></td>
+                <td>
+                    <div class="admin-page__cell--actions" style="justify-content: flex-end;">
+                        <form th:action="@{/admin/authors/{id}/delete(id=${author.id})}" method="post">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="admin-btn admin-btn--danger">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- КНИГИ -->
+    <div class="admin-page__section-header">
+        <h2>Книги</h2>
+    </div>
+    <div class="admin-page__table-wrapper">
+        <table class="admin-page__table">
+            <thead class="admin-page__thead">
+            <tr class="admin-page__tr">
+                <td>ID</td>
+                <td>Название</td>
+                <td>Авторы</td>
+                <td>Жанр</td>
+                <td>Издательство</td>
+                <td>Год</td>
+                <td>Описание</td>
+                <td>Добавлена</td>
+                <td style="text-align: right;">Действия</td>
+            </tr>
+            </thead>
+            <tbody class="admin-page__tbody">
+            <tr th:each="book: ${books}" class="admin-page__tr">
+                <td th:text="${book.id}"></td>
+                <td style="font-weight: bold; color: #ffe4b7;" th:text="${book.title}"></td>
+                <td>
+                    <span th:each="bauthor, iter: ${book.authors}">
+                        <span th:text="${bauthor.firstName + ' ' + bauthor.lastName}"></span><span th:if="${!iter.last}">, </span>
+                    </span>
+                </td>
+                <td th:text="${book.genre}"></td>
+                <td th:text="${book.publisher}"></td>
+                <td th:text="${book.year}"></td>
+                <td class="admin-page__cell--truncate" th:text="${book.description}"></td>
+                <td th:text="${book.createdAt}"></td>
+                <td>
+                    <div class="admin-page__cell--actions" style="justify-content: flex-end;">
+                        <form th:action="@{/admin/books/{id}/delete(id=${book.id})}" method="post">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="admin-btn admin-btn--danger">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
     <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>

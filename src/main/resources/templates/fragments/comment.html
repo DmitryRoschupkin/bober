@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<body>
+    <div th:fragment="commentNode(node, bookId)"
+         class="comment"
+         th:attr="data-comment-id=${node.comment.id}">
+
+        <div class="comment__body">
+            <div class="comment__meta">
+                <span class="comment__author"
+                      th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></span>
+                <span class="comment__date"
+                      th:text="${node.comment.createdAt}"></span>
+            </div>
+            <p class="comment__text"
+                th:if="${node.comment.deleted}"
+                th:text="'[комментарий удалён]'">
+            </p>
+            <p class="class__text"
+               th:unless="${node.comment.deleted}"
+               th:text="${node.comment.text}"></p>
+            <button type="button"
+                    class="comment__reply-btn"
+                    sec:authorize="isAuthenticated()"
+                    th:if="${node.comment.deleted}">
+                Ответить
+            </button>
+        </div>
+    </div>
+</body>
+</html>

@@ -2,12 +2,11 @@ package me.dmitriy.bober.web;
 
 import me.dmitriy.bober.data.AuthorRepository;
 import me.dmitriy.bober.data.BookRepository;
+import me.dmitriy.bober.data.CommentRepository;
 import me.dmitriy.bober.data.MarkRepository;
-import me.dmitriy.bober.models.Author;
-import me.dmitriy.bober.models.Book;
-import me.dmitriy.bober.models.Mark;
-import me.dmitriy.bober.models.User;
+import me.dmitriy.bober.models.*;
 import me.dmitriy.bober.service.BookService;
+import me.dmitriy.bober.service.CommentService;
 import me.dmitriy.bober.service.UserService;
 import me.dmitriy.bober.storage.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,8 @@ import org.springframework.core.io.Resource;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -38,14 +39,19 @@ public class BookViewController {
     private final AuthorRepository authorRepository;
     private final MarkRepository markRepository;
     private final BookService bookService;
+    private final CommentRepository commentRepository;
+    private final CommentService commentService;
 
-    public BookViewController(BookRepository bookRepository, FileStorageService fileStorageService, UserService userService, AuthorRepository authorRepository, MarkRepository markRepository, BookService bookService) {
+
+    public BookViewController(BookRepository bookRepository, FileStorageService fileStorageService, UserService userService, AuthorRepository authorRepository, MarkRepository markRepository, BookService bookService, CommentRepository commentRepository, CommentService commentService) {
         this.bookRepository = bookRepository;
         this.fileStorageService = fileStorageService;
         this.userService = userService;
         this.authorRepository = authorRepository;
         this.markRepository = markRepository;
         this.bookService = bookService;
+        this.commentRepository = commentRepository;
+        this.commentService = commentService;
     }
 
     @GetMapping("/{id}")
@@ -68,10 +74,13 @@ public class BookViewController {
             }
         }
 
+        List<Comment> flat = commentRepository.findByBookIdOrderByCreatedAtAsc(book.getId());
+
         model.addAttribute("book", book);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("author", author);
         model.addAttribute("userMark", userMark);
+        model.addAttribute("comments", commentService.buildTree(flat));
         return "book-page";
     }
 
@@ -102,5 +111,21 @@ public class BookViewController {
         User currentUser = userService.getCurrentUser();
         bookService.toggleMark(id, currentUser.getId(), type);
         return "redirect:/books/" + id;
+    }
+
+    @PostMapping("/{id}/comments")
+    @PreAuthorize("isAuthenticated()")
+    public String addComment(@PathVariable int id,
+                             @RequestParam String text,
+                             @RequestParam(required = false) Integer parentId) {
+        commentService.addComment(id, parentId, text);
+        return "redirect:/books/" + id + "#comments";
+    }
+
+    @PostMapping("/{commentId}/comments/delete")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteComment(@PathVariable int commentId, @RequestParam int bookId) {
+        commentService.softDelete(commentId);
+        return "redirect:/books/" + bookId + "#comments";
     }
 }

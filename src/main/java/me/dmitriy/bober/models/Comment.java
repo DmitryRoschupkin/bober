@@ -28,5 +28,9 @@ public class Comment {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "parent_id")
+    private Integer parentId;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

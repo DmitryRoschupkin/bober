@@ -2,6 +2,7 @@ package me.dmitriy.bober.web;
 
 
 import me.dmitriy.bober.data.BookRepository;
+import me.dmitriy.bober.data.CommentRepository;
 import me.dmitriy.bober.models.Book;
 import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.service.UserService;

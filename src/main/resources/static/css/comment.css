@@ -1,0 +1,116 @@
+.comments-section {
+    margin-top: calc(var(--index) * 3);
+}
+
+.comments-list__empty {
+    color: #7d735a;
+    font-size: 13px;
+}
+
+.comment {
+    margin-top: calc(var(--index) * 1.2);
+}
+
+.comment__body {
+    background: #0d0d0d;
+    border: 1px solid rgba(255, 239, 204, 0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.comment__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.comment__author {
+    color: #ffefcc;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.comment__date {
+    color: #7d735a;
+    font-size: 11px;
+}
+
+.comment__text {
+    color: #d8cfb2;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.comment__reply-btn {
+    background: transparent;
+    border: none;
+    color: #a89d7c;
+    font-family: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 0;
+    transition: color .25s;
+}
+
+.comment__reply-btn:hover {
+    color: #ffe4b7;
+}
+
+.comment__reply-form {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.comment__reply-form.is-open {
+    display: flex;
+}
+
+.comment__reply-input {
+    background: #000;
+    border: 1px solid rgba(255, 239, 204, 0.25);
+    color: #fff6db;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 60px;
+    outline: none;
+}
+
+.comment__reply-input:focus {
+    border-color: #ffe4b7;
+}
+
+.comment__reply-submit {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid rgba(255, 239, 204, 0.3);
+    color: #ffefcc;
+    font-family: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color .25s;
+}
+
+.comment__reply-submit:hover {
+    border-color: #ffe4b7;
+}
+
+.comment__replies {
+    margin-top: 10px;
+    padding-left: calc(var(--index) * 1.2);
+    border-left: 1px solid rgba(255, 239, 204, 0.15);
+}

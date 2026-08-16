@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      lang="en">
 <body>
     <div th:fragment="commentNode(node, bookId)"
          class="comment"
+         th:if="${node != null and node.comment != null}"
          th:attr="data-comment-id=${node.comment.id}">
 
         <div class="comment__body">
@@ -10,7 +13,7 @@
                 <span class="comment__author"
                       th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></span>
                 <span class="comment__date"
-                      th:text="${node.comment.createdAt}"></span>
+                      th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
             </div>
             <p class="comment__text"
                 th:if="${node.comment.deleted}"
@@ -22,9 +25,25 @@
             <button type="button"
                     class="comment__reply-btn"
                     sec:authorize="isAuthenticated()"
-                    th:if="${node.comment.deleted}">
+                    th:unless="${node.comment.deleted}">
                 Ответить
             </button>
+
+            <form th:action="@{/books/{id}/comments(id=${bookId})}"
+                  class="comment__reply-form"
+                  sec:authorize="isAuthenticated()"
+                  method="post">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="parentId" th:value="${node.comment.id}"/>
+                <textarea name="text" class="comment__reply-input" placeholder="Что скажем?" required></textarea>
+                <button type="submit" class="comment__reply-submit">Опозориться</button>
+            </form>
+        </div>
+
+        <div class="comment__replies" th:if="${!node.replies.isEmpty() and node.replies != null}">
+            <div th:each="reply : ${node.replies}">
+                <div th:replace="~{fragments/comment :: commentNode(${reply}, ${bookId})}"></div>
+            </div>
         </div>
     </div>
 </body>

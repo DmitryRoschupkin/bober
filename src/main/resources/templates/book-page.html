@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head>
     <meta charset="UTF-8">
     <title th:text="${book.title}"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/listing.css}">
+    <link rel="stylesheet" th:href="@{/css/comment.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/comment.js}" defer></script>
 </head>
 <body>
 <div class="page">
@@ -85,6 +88,31 @@
                     <p>Чтобы скачать книгу, <a th:href="@{/login}">войдите в аккаунт</a>.</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="page comments-section">
+        <h2 class="page__title">Комментарии</h2>
+        <div class="form-security__container" sec:authorize="isAuthenticated()">
+            <form th:action="@{/books/{id}/comments(id=${book.id})}"
+                  class="form-security__form"
+                  method="post">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <textarea name="text" class="form-security__input" placeholder="Что думаете?" rows="3" required></textarea>
+                <button type="submit" class="form-security__button">Оставить комментарий</button>
+            </form>
+        </div>
+        <p class="comments-section__login-prompt" sec:authorize="isAnonymous()">
+            Чтобы оставить комментарий, <a th:href="@{/login}">войдите в аккаунт</a>.
+        </p>
+        <div class="comments-list">
+            <div th:each="root : ${comments}">
+                <div th:replace="~{fragments/comment :: commentNode(${root}, ${book.id})}"></div>
+            </div>
+
+            <p class="comments-list__empty" th:if="${comments == null or comments.isEmpty()}">
+                Комментариев пока нет — будь первым.
+            </p>
         </div>
     </div>
 

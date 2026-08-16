@@ -26,6 +26,7 @@ public class CommentService {
 
     public List<CommentNode> buildTree(List<Comment> flatComments) {
         Map<Integer, CommentNode> nodesById = new LinkedHashMap<>();
+
         for (Comment comment : flatComments) {
             nodesById.put(comment.getId(), new CommentNode(comment));
         }
@@ -53,7 +54,7 @@ public class CommentService {
                 .findById(bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
 
-        if(parentId == null) {
+        if(parentId != null) {
             Comment parent = commentRepository
                     .findById(parentId)
                     .orElseThrow(() ->
@@ -96,6 +97,6 @@ public class CommentService {
         }
 
         comment.setDeleted(true);
-        comment.setText(null);
+        comment.setText("[удалённый комментарий]");
     }
 }

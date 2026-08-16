@@ -424,3 +424,99 @@ body {
 .about__text span {
     font-style: italic;
 }
+
+.book-detail__marks {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.book-detail__marks form {
+    margin: 0;
+    padding: 0;
+}
+
+.book-detail__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffefcc;
+    background-color: black;
+    border: 1px solid #ffefcc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    outline: none;
+}
+
+.book-detail__mark:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.book-detail__mark:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.book-detail__mark i {
+    font-size: 1.05rem;
+    transition: transform .3s ease;
+}
+
+.book-detail__mark:hover:not(:disabled) i {
+    transform: scale(1.15);
+}
+
+.book-detail__marks-count {
+    font-variant-numeric: tabular-nums;
+}
+
+.btn-like:hover:not(:disabled) {
+    background-color: #403c28;
+    color: #8ac989;
+}
+
+.btn-like.active {
+    color: #ffefcc;
+    background-color: #403c28;
+    box-shadow: 0 4px 12px rgb(88, 78, 56);
+}
+
+.btn-like.active:hover:not(:disabled) {
+    background-color: black;
+    border-color: darkgreen;
+}
+
+.btn-dislike:hover:not(:disabled) {
+    background-color: #613e2a;
+    color: #e8846b;
+    border-color: #fecaca;
+}
+
+.btn-dislike.active {
+    color: #ffefcc;
+    background-color: #613e2a;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.btn-dislike.active:hover:not(:disabled) {
+    background-color: black;
+    border-color: #b91c1c;
+}
+
+
+.book-detail__mark:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background-color: #edf2f7;
+    border-color: #e2e8f0;
+    color: #a0aec0;
+    transform: none !important;
+    box-shadow: none !important;
+}

@@ -5,6 +5,7 @@ import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.models.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,10 +39,11 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/about",
+                        .requestMatchers(HttpMethod.GET, "/", "/home", "/about",
                                 "/books/**", "/authors/**",
-                                "/registration", "/error",
-                                "/css/**", "/img/**", "/js/**", "/fonts/**").permitAll()
+                                "/error", "/authors/books/**",
+                                "/css/**", "/img/**", "/js/**", "/fonts/**", "/files/covers/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/registration").permitAll()
                         .requestMatchers("/account/**").hasAnyRole(
                                 UserRole.USER.name(),
                                 UserRole.ADMIN.name(),

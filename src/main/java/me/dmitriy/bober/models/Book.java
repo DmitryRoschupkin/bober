@@ -21,7 +21,7 @@ public class Book {
 
     private String genre;
     private String publisher;
-    private int year;
+    private Integer year;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -37,6 +37,12 @@ public class Book {
 
     @Column(name = "cover_path")
     private String coverPath;
+
+    @Column(name = "likes_count", nullable = false)
+    private int likesCount = 0;
+
+    @Column(name = "dislikes_count", nullable = false)
+    private int dislikesCount = 0;
 
     @ManyToMany
     @JoinTable(

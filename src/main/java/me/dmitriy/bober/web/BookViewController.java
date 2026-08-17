@@ -82,12 +82,15 @@ public class BookViewController {
                 .map(User::getId)
                 .collect(Collectors.toSet());
 
+        int commentsAmount = book.getCommentsAmount();
+
         model.addAttribute("book", book);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("author", author);
         model.addAttribute("userMark", userMark);
         model.addAttribute("comments", commentService.buildTree(flat));
         model.addAttribute("bookAuthorUserIds", bookAuthorUserIds);
+        model.addAttribute("commentsAmount", commentsAmount);
         return "book-page";
     }
 
@@ -129,10 +132,26 @@ public class BookViewController {
         return "redirect:/books/" + id + "#comments";
     }
 
-    @PostMapping("/{commentId}/comments/delete")
+    @PostMapping("/comments/{commentId}/delete")
     @PreAuthorize("isAuthenticated()")
-    public String deleteComment(@PathVariable int commentId, @RequestParam int bookId) {
+    public String deleteComment(@PathVariable int commentId,
+                                @RequestParam(required = false) Integer bookId) {
+        if (bookId == null) {
+            bookId = commentService.getBookIdByCommentId(commentId);
+        }
         commentService.softDelete(commentId);
+        return "redirect:/books/" + bookId + "#comments";
+    }
+
+    @PostMapping("comments/{commentId}/edit")
+    @PreAuthorize("isAuthenticated()")
+    public String editComment(@PathVariable int commentId,
+                              @RequestParam(required = false) Integer bookId,
+                              @RequestParam String text) {
+        if (bookId == null) {
+            bookId = commentService.getBookIdByCommentId(commentId);
+        }
+        commentService.editComment(commentId, text);
         return "redirect:/books/" + bookId + "#comments";
     }
 }

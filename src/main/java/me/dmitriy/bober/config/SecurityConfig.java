@@ -41,8 +41,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/", "/home", "/about",
                                 "/books/**", "/authors/**",
+                                "/login", "/registration",
                                 "/error", "/authors/books/**",
-                                "/css/**", "/img/**", "/js/**", "/fonts/**", "/files/covers/**").permitAll()
+                                "/css/**", "/img/**", "/js/**",
+                                "/fonts/**", "/files/covers/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/registration").permitAll()
                         .requestMatchers("/account/**").hasAnyRole(
                                 UserRole.USER.name(),

@@ -99,4 +99,28 @@ public class CommentService {
         comment.setDeleted(true);
         comment.setText("[удалённый комментарий]");
     }
+
+    @Transactional
+    public void editComment(int commentId, String newText) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found"));
+        User currentUser = userService.getCurrentUser();
+        boolean isOwner = comment.getUser() != null && comment.getUser().getId() == currentUser.getId();
+        if(!isOwner) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Не редактируй чужие комментарии");
+        }
+        if (newText == null || newText.isBlank()) {
+            throw new IllegalArgumentException("Комментарий не может быть пустым. Мы знаем, что у вас нет" +
+                    "собственного мнения, но хоть что-то можно же написать!");
+        }
+        comment.setText(newText.trim());
+        comment.setUpdatedAt(LocalDateTime.now());
+        commentRepository.save(comment);
+    }
+
+    public Integer getBookIdByCommentId(int commentId) {
+        return commentRepository.findById(commentId)
+                .map(comment -> comment.getBook().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found"));
+    }
 }

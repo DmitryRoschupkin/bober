@@ -2,6 +2,14 @@
     margin-top: calc(var(--index) * 3);
 }
 
+.comments-section__title-wrapper {
+    display: flex;
+}
+
+.comments-section__title-wrapper h2 {
+    margin-right: 30px;
+}
+
 .comments-list__empty {
     color: #7d735a;
     font-size: 13px;
@@ -45,35 +53,73 @@
     word-break: break-word;
 }
 
-.comment__reply-btn {
+.comment__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.comment__reply-btn,
+.comment__edit-btn,
+.comment__delete-btn {
     background: transparent;
     border: none;
-    color: #a89d7c;
     font-family: inherit;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     cursor: pointer;
     padding: 0;
-    transition: color .25s;
+    transition: color .25s, opacity .25s;
+}
+
+.comment__reply-btn {
+    color: #a89d7c;
 }
 
 .comment__reply-btn:hover {
     color: #ffe4b7;
 }
 
-.comment__reply-form {
+.comment__edit-btn {
+    color: #a89d7c;
+}
+
+.comment__edit-btn:hover {
+    color: #ffe4b7;
+}
+
+.comment__delete-btn {
+    color: #e8846b;
+    opacity: 0.8;
+}
+
+.comment__delete-btn:hover {
+    color: #ff6b6b;
+    opacity: 1;
+}
+
+.comment__delete-form {
+    display: inline-flex;
+    align-items: center;
+}
+
+.comment__reply-form,
+.comment__edit-form {
     display: none;
     flex-direction: column;
     gap: 8px;
     margin-top: 10px;
 }
 
-.comment__reply-form.is-open {
+.comment__reply-form.is-open,
+.comment__edit-form.is-open {
     display: flex;
 }
 
-.comment__reply-input {
+.comment__reply-input,
+.comment__edit-input {
     background: #000;
     border: 1px solid rgba(255, 239, 204, 0.25);
     color: #fff6db;
@@ -86,11 +132,13 @@
     outline: none;
 }
 
-.comment__reply-input:focus {
+.comment__reply-input:focus,
+.comment__edit-input:focus {
     border-color: #ffe4b7;
 }
 
-.comment__reply-submit {
+.comment__reply-submit,
+.comment__edit-submit {
     align-self: flex-start;
     background: transparent;
     border: 1px solid rgba(255, 239, 204, 0.3);
@@ -102,11 +150,20 @@
     padding: 6px 14px;
     border-radius: 6px;
     cursor: pointer;
-    transition: border-color .25s;
+    transition: border-color .25s, background-color .25s;
 }
 
-.comment__reply-submit:hover {
+.comment__reply-submit:hover,
+.comment__edit-submit:hover {
     border-color: #ffe4b7;
+    background: rgba(255, 228, 183, 0.05);
+}
+
+.comment__edited {
+    color: #7d735a;
+    font-size: 11px;
+    font-style: italic;
+    cursor: help;
 }
 
 .comment__replies {
@@ -127,8 +184,8 @@
 }
 
 .role-badge--sudo {
-    color: #ffe4b7;
-    border-color: #ffe4b7;
+    color: #cd74cd;
+    border-color: #cd74cd;
 }
 
 .role-badge--admin {

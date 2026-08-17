@@ -92,7 +92,10 @@
     </div>
 
     <div class="page comments-section">
-        <h2 class="page__title">Комментарии</h2>
+        <div class="comments-section__title-wrapper">
+            <h2 class="page__title">Комментарии</h2>
+            <h2 class="page__title" th:text="'('+${commentsAmount}+')'"></h2>
+        </div>
         <div class="form-security__container" sec:authorize="isAuthenticated()">
             <form th:action="@{/books/{id}/comments(id=${book.id})}"
                   class="form-security__form"

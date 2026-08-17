@@ -54,4 +54,8 @@ public class Book {
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    public int getCommentsAmount() {
+        return comments.size();
+    }
 }

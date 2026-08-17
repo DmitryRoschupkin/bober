@@ -33,4 +33,7 @@ public class Comment {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

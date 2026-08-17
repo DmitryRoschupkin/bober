@@ -2,6 +2,7 @@ package me.dmitriy.bober.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "author")
+@ToString(exclude = {"books", "subscriptions"})
 public class Author {
 
     @Id
@@ -45,8 +47,7 @@ public class Author {
         return books == null ? 0 : books.size();
     }
 
-    public String getWordCase(){
-        int amount = getBooksAmount();
+    public String getWordCase(int amount){
         int lastTwoDigits = amount % 100;
         int lastDigit = amount % 10;
 

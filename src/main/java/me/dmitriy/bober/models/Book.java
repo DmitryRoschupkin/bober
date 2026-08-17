@@ -2,6 +2,7 @@ package me.dmitriy.bober.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "book")
+@ToString(exclude = "authors")
 public class Book {
 
     @Id

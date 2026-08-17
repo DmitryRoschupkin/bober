@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html   xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Подписки</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/subscriptions.css}">
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/comment.js}" defer></script>
+</head>
+<body>
+    <div class="page">
+        <header th:replace="~{fragments/layout::header(hero=false)}"></header>
+        <div class="subscriptions__content">
+            <div th:if="${!subscribedAuthors.isEmpty()}" class="subscriptions__new">
+                <h1 class="subscriptions__title">Свежее за неделю: </h1>
+                <div class="subscriptions__fresh-listing" th:each="entry : ${recentBooksByAuthor}">
+                    <div class="subscriptions__frest-card">
+                        <h3 th:text="${entry.key.firstName}+' '+
+                    ${entry.key.lastName}+' ('+
+                    ${entry.value.size()}+' '+
+                    ${entry.key.getWordCase(entry.value.size())}+')'">Кто написал этот текст?</h3>
+                        <ul>
+                            <li th:each="book: ${entry.value}">
+                                <a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.title}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div th:if="${recentBooksByAuthor.isEmpty()}" class="subscriptions__empty">
+                    <p>За последнюю неделю ничего нового у отслеживаемых авторов не выходило</p>
+                </div>
+            </div>
+            <div th:if="${!subscribedAuthors.isEmpty()}" class="subscriptions__list">
+                <h3>Подписки: </h3>
+                <div class="subscriptions__list-row" th:each="author: ${subscribedAuthors}">
+                    <ul>
+                        <li>
+                            <a th:href="@{authors/{id}(id=${author.id})}"
+                               th:text="${author.firstName}+' '+${author.lastName}"></a>
+                            <form th:action="@{subscriptions/{id}/unsubscribe(id=${author.id})}"
+                                  method="post"
+                                  class="author__subscribe-form">
+                                <button type="submit" class="author__subscribe-button">Отписаться</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div th:unless="${!subscribedAuthors.isEmpty()}" class="subscriptions__empty">
+                <p>Вы пока не подписаны ни на одного автора</p>
+            </div>
+        </div>
+        <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+    </div>
+</body>
+</html>

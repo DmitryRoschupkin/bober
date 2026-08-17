@@ -36,10 +36,12 @@ public class AuthorViewController {
                         "Author not found"));
         User currentUser = userService.getCurrentUser();
         int subscribersCount = author.getSubscriptions().size();
+        int booksAmount = author.getBooksAmount();
         boolean isSubscribed = subscriptionService.isSubscribed(currentUser, author);
         model.addAttribute("author", author);
         model.addAttribute("subscribersCount", subscribersCount);
         model.addAttribute("isSubscribed", isSubscribed);
+        model.addAttribute("booksAmount", booksAmount);
         return "author-page";
     }
 

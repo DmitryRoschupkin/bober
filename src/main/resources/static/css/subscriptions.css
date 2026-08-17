@@ -1,0 +1,16 @@
+.subscriptions__content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page {
+    margin-top: calc(var(--index)*7);
+}
+
+.subscriptions__title {
+    text-transform: uppercase;
+    font-size: calc(var(--index) * 1.4);
+    letter-spacing: calc(var(--index) / 20);
+    color: #ffefcc;
+    margin-bottom: calc(var(--index)/1.5);
+}

@@ -24,7 +24,7 @@
 
             <div class="author-detail__stats">
                     <span>
-                        <strong th:text="${author.getBooksAmount() + ' ' + author.getWordCase()}"></strong>
+                        <strong th:text="${booksAmount + ' ' + author.getWordCase(booksAmount)}"></strong>
                     </span>
                 <span th:if="${author.birthDate != null}">
                         <strong th:text="${author.getAge()}"></strong> лет

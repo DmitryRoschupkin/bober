@@ -18,7 +18,6 @@
         <a th:href="@{/books}">Книги</a>
         <a th:href="@{/authors}">Авторы</a>
         <a th:href="@{/about}">О нас</a>
-        <a th:href="@{/subscriptions}">Подписки</a>
         <a th:href="@{/admin}" sec:authorize="hasAnyRole('ADMIN', 'SUDO')" style="font-weight: bold">Админ</a>
     </nav>
     <a th:href="@{/login}" class="site-header__login" sec:authorize="isAnonymous()">Войти</a>
@@ -32,6 +31,7 @@
         </button>
         <div class="site-header__dropdown">
             <a th:href="@{/account}" class="site-header__dropdown-item">Профиль</a>
+            <a th:href="@{/subscriptions}" class="site-header__dropdown-item">Подписки</a>
             <form th:action="@{/logout}" method="post" class="site-header__logout-form">
                 <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <button type="submit" class="site-header__dropdown-item site-header__dropdown-item--logout">Выйти</button>

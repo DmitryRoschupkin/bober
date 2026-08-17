@@ -6,22 +6,23 @@
     <title>Подписки</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/subscriptions.css}">
+    <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <script th:src="@{/js/header.js}" defer></script>
     <script th:src="@{/js/comment.js}" defer></script>
 </head>
 <body>
-    <div class="page">
+    <div class="subscriptions__page">
         <header th:replace="~{fragments/layout::header(hero=false)}"></header>
         <div class="subscriptions__content">
             <div th:if="${!subscribedAuthors.isEmpty()}" class="subscriptions__new">
                 <h1 class="subscriptions__title">Свежее за неделю: </h1>
                 <div class="subscriptions__fresh-listing" th:each="entry : ${recentBooksByAuthor}">
-                    <div class="subscriptions__frest-card">
+                    <div class="subscriptions__fresh-card">
                         <h3 th:text="${entry.key.firstName}+' '+
-                    ${entry.key.lastName}+' ('+
-                    ${entry.value.size()}+' '+
-                    ${entry.key.getWordCase(entry.value.size())}+')'">Кто написал этот текст?</h3>
+                            ${entry.key.lastName}+' ('+
+                            ${entry.value.size()}+' '+
+                            ${entry.key.getWordCase(entry.value.size())}+')'">Кто написал этот текст?</h3>
                         <ul>
                             <li th:each="book: ${entry.value}">
                                 <a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.title}"></a>
@@ -50,7 +51,10 @@
                 </div>
             </div>
             <div th:unless="${!subscribedAuthors.isEmpty()}" class="subscriptions__empty">
-                <p>Вы пока не подписаны ни на одного автора</p>
+                <div class="subscriptions__empty-content">
+                    <p>Вы пока не подписаны ни на одного автора</p>
+                    <a th:href="@{/authors}">К авторам!</a>
+                </div>
             </div>
         </div>
         <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>

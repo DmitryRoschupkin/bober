@@ -437,6 +437,92 @@
     padding: 10px;
 }
 
+.author__subscribe {
+    display: inline-block;
+}
+
+.author__subscribe-form {
+    margin: 0;
+    padding: 0;
+}
+
+.author__subscribe-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: #222222;
+    color: #ffefcc;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: .3s all ease-in-out;
+}
+
+.author__subscribe-button-counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px;
+    border-radius: 6px;
+    transition: .3s all ease-in-out;
+}
+
+.author__subscribe-button-text {
+    letter-spacing: calc(var(--index)/20);
+    text-transform: uppercase;
+}
+
+.author__subscribe-button:not(.is-subscribed):hover{
+    background-color: #333333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.author__subscribe-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.author__subscribe-button:focus-visible {
+    outline: 2px solid #4a90e2;
+    outline-offset: 2px;
+}
+
+.author__subscribe-button.is-subscribed {
+    background-color: transparent;
+    border-color: #cccccc;
+}
+
+.author__subscribe-button.is-subscribed .author__subscribe-button-counter {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #555555;
+}
+
+.author__subscribe-button.is-subscribed:hover .author__subscribe-button-text::before {
+    content: "Отписаться";
+}
+
+.author__subscribe-button.is-subscribed:hover .author__subscribe-button-text {
+    font-size: 0;
+}
+
+.author__subscribe-button.is-subscribed:hover .author__subscribe-button-text::before {
+    font-size: 0.8rem;
+}
+
+.author__subscribe-button.is-subscribed:hover .author__subscribe-button-counter {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+}
+
 @media (max-width: 700px) {
     .book-detail {
         grid-template-columns: 1fr;

@@ -32,20 +32,4 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             @Param("authorId") Integer authorId,
             Sort sort
     );
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Book b SET b.likesCount = b.likesCount + 1 WHERE b.id = :id")
-    void incrementLikes(@Param("id") int id);
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Book b SET b.likesCount = b.likesCount - 1 WHERE b.id = :id AND b.likesCount > 0")
-    void decrementLikes(@Param("id") int id);
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Book b SET b.dislikesCount = b.dislikesCount + 1 WHERE b.id = :id")
-    void incrementDislikes(@Param("id") int id);
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE Book b SET b.dislikesCount = b.dislikesCount - 1 WHERE b.id = :id AND b.dislikesCount > 0")
-    void decrementDislikes(@Param("id") int id);
 }

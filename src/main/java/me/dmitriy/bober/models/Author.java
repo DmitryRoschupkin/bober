@@ -61,4 +61,7 @@ public class Author {
         }
         return "книг";
     }
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Subscription> subscriptions;
 }

@@ -1,5 +1,5 @@
 .comments-section {
-    margin-top: calc(var(--index) * 3);
+    margin-top: calc(var(--index) * 1.5);
 }
 
 .comments-section__title-wrapper {

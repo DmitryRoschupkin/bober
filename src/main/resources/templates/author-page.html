@@ -30,6 +30,20 @@
                         <strong th:text="${author.getAge()}"></strong> лет
                     </span>
             </div>
+
+            <div class="author__subscribe">
+                <form th:action="@{/authors/{id}/subscribe(id=${author.id})}"
+                      method="post"
+                      class="author__subscribe-form">
+                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="submit" class="author__subscribe-button"
+                            th:classappend="${isSubscribed ? 'is-subscribed' : ''}">
+                        <p class="author__subscribe-button-text"
+                           th:text="${isSubscribed} ? 'Вы подписаны' : 'Подписаться'">Подписаться</p>
+                        <p class="author__subscribe-button-counter" th:text="${subscribersCount}">0</p>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 

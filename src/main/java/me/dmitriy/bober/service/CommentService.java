@@ -78,7 +78,7 @@ public class CommentService {
     }
 
     public List<CommentNode> getTree(int bookId) {
-        List<Comment> flat = commentRepository.findByBookIdOrderByCreatedAtAsc(bookId);
+        List<Comment> flat = commentRepository.findByBookIdOrderByCreatedAtDesc(bookId);
         return buildTree(flat);
     }
 

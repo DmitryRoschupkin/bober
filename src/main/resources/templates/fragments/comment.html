@@ -8,10 +8,17 @@
          th:if="${node != null and node.comment != null}"
          th:attr="data-comment-id=${node.comment.id}">
 
-        <div class="comment__body">
+        <div class="comment__body"
+             th:with="isBookAuthor=
+             ${node.comment.user != null and
+              bookAuthorUserIds != null and
+               bookAuthorUserIds.contains(node.comment.user.id)}">
+
             <div class="comment__meta">
                 <span class="comment__author"
                       th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></span>
+                <span th:if="${node.comment.user != null}"
+                      th:replace="~{fragments/role-badge :: roleBadge(${node.comment.user.role}, ${isBookAuthor})}"></span>
                 <span class="comment__date"
                       th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
             </div>

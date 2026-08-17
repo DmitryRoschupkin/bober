@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<body>
+    <th:block th:fragment="roleBadge(role, isBookAuthor)">
+        <span th:if="${isBookAuthor}" class="role-badge role-badge--author-of-book">Автор книги</span>
+        <span th:switch="${role}">
+            <span th:case="'SUDO'" class="role-badge role-badge--sudo">Админ</span>
+            <span th:case="'ADMIN'" class="role-badge role-badge--admin">Модератор</span>
+            <span th:case="'AUTHOR'" th:unless="${isBookAuthor}" class="role-badge role-badge--author">Сотрудник Бобра</span>
+            <span th:case="*"></span>
+        </span>
+    </th:block>
+</body>
+</html>

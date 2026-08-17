@@ -25,8 +25,8 @@ import org.springframework.core.io.Resource;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -74,13 +74,20 @@ public class BookViewController {
             }
         }
 
-        List<Comment> flat = commentRepository.findByBookIdOrderByCreatedAtAsc(book.getId());
+        List<Comment> flat = commentRepository.findByBookIdOrderByCreatedAtDesc(book.getId());
+
+        Set<Integer> bookAuthorUserIds = book.getAuthors().stream()
+                .map(Author::getUser)
+                .filter(Objects::nonNull)
+                .map(User::getId)
+                .collect(Collectors.toSet());
 
         model.addAttribute("book", book);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("author", author);
         model.addAttribute("userMark", userMark);
         model.addAttribute("comments", commentService.buildTree(flat));
+        model.addAttribute("bookAuthorUserIds", bookAuthorUserIds);
         return "book-page";
     }
 

@@ -114,3 +114,34 @@
     padding-left: calc(var(--index) * 1.2);
     border-left: 1px solid rgba(255, 239, 204, 0.15);
 }
+
+.role-badge {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid;
+    margin-left: 2px;
+}
+
+.role-badge--sudo {
+    color: #ffe4b7;
+    border-color: #ffe4b7;
+}
+
+.role-badge--admin {
+    color: #e8846b;
+    border-color: rgba(232, 132, 107, 0.4);
+}
+
+.role-badge--author {
+    color: #a89d7c;
+    border-color: rgba(168, 157, 124, 0.4);
+}
+
+.role-badge--author-of-book {
+    color: #8fd19e;
+    border-color: rgba(143, 209, 158, 0.4);
+}

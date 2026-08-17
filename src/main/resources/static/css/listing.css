@@ -323,6 +323,10 @@
     border-bottom: 1px solid rgba(255, 228, 183, 0.4);
 }
 
+.book-detail__coauthors {
+    color: #ffe4b7;
+}
+
 .book-detail__meta {
     display: flex;
     gap: 20px;
@@ -464,6 +468,7 @@
     user-select: none;
     outline: none;
     transition: .3s all ease-in-out;
+    margin-top: 15px;
 }
 
 .author__subscribe-button-counter {

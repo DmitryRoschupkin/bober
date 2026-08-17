@@ -46,6 +46,9 @@ public class Book {
     @Column(name = "dislikes_count", nullable = false)
     private int dislikesCount = 0;
 
+    @Column(name = "coauthors")
+    private String coauthors;
+
     @ManyToMany
     @JoinTable(
             name = "book_authors",

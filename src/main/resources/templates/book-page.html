@@ -38,6 +38,10 @@
                            th:text="${author.firstName} + ' ' + ${author.lastName ?: ''}"></a>
                         <span th:if="${!iter.last}">,</span>
                     </span>
+                    <span class="book-detail__coauthors" th:if="${book.coauthors != null && !book.coauthors.isBlank()}">
+                        <span th:if="${!book.authors.isEmpty()}">, </span>
+                        <span th:text="${book.coauthors}"></span>
+                    </span>
             </p>
 
             <div class="book-detail__meta">

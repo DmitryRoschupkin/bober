@@ -41,4 +41,8 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
     List<Author> findByNameOrderBySubscribersDesc(@Param("name") String name);
 
     Optional<Author> findByUserId(int userId);
+
+    @Query("SELECT DISTINCT a FROM Author a" +
+            " WHERE LOWER(CONCAT(a.firstName, ' ', a.lastName)) LIKE LOWER(CAST(:fullname AS string))")
+    Optional<Author> findByFullNameDistinct(@Param("fullname") String fullname);
 }

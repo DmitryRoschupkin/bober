@@ -64,6 +64,7 @@ public class User {
         prohibitedToEdit.add("createdAt");
         prohibitedToEdit.add("nickname");
         prohibitedToEdit.add("blocked");
+        prohibitedToEdit.add("subscriptions");
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {

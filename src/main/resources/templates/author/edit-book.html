@@ -36,6 +36,14 @@
             </div>
 
             <div class="form-group">
+                <label for="authors">Добавить соавторов</label>
+                <input id = "authors" type="text" name="authors"
+                       placeholder="Введите полные имена соавторов через запятую"
+                       class="form-security__input"
+                       th:field="*{authors}">
+            </div>
+
+            <div class="form-group">
                 <label for="publisher">Издательство</label>
                 <input id="publisher" type="text" name="publisher" placeholder="Издательство"
                        class="form-security__input"
@@ -68,7 +76,7 @@
                 <label>Текущая обложка: </label>
                 <div>
                     <img    th:if="${book.coverPath}"
-                            th:src="@{/files/{path}(path=book.coverPath)}"
+                            th:src="@{/files/{path}(path=${book.coverPath})}"
                             alt="Cover"
                             style="max-width: 120px; border-radius: 4px;">
                     <span th:unless="${book.coverPath}">Обложка отсутствует</span>

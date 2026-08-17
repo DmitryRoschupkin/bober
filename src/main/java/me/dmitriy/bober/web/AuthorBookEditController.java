@@ -8,6 +8,7 @@ import me.dmitriy.bober.models.Book;
 import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.service.UserService;
 import me.dmitriy.bober.storage.FileStorageService;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/authors/books")
@@ -57,6 +58,7 @@ public class AuthorBookEditController {
 
     @PostMapping("/edit/{id}")
     public String updateBook(@PathVariable int id,
+                             @RequestParam(required = false) String authors,
                              @RequestParam(required = false) MultipartFile coverFile,
                              @RequestParam String title,
                              @RequestParam(required = false) String publisher,
@@ -69,6 +71,32 @@ public class AuthorBookEditController {
                         "У вас нет авторского профиля! Вы не Достоевский!"));
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга не найдена, увы и ах"));
+
+        List<Author> bookAuthors = book.getAuthors();
+        List<Author> registeredAuthors = new ArrayList<>(bookAuthors);
+
+        List<String> unlinkedNames = new ArrayList<>();
+
+        if(authors != null && !authors.isBlank()) {
+            String[] authorNames = authors.split(",");
+            for(String authorName : authorNames) {
+                String fullname = authorName.trim();
+                if(fullname.isEmpty()) continue;
+
+                Optional<Author> existingAuthorOpt = authorRepository.findByFullNameDistinct(fullname);
+                if(existingAuthorOpt.isPresent()) {
+                    Author registeredAuthor = existingAuthorOpt.get();
+                    if(!registeredAuthors.contains(registeredAuthor)) {
+                        registeredAuthors.add(registeredAuthor);
+                    }
+                } else {
+                    unlinkedNames.add(fullname);
+                }
+            }
+        }
+
+        String formattedCoauthors = unlinkedNames.isEmpty() ? null : String.join(", ", unlinkedNames);
+
 
         if(!book.getAuthors().contains(author)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "У вас нет прав редактировать чужую книгу!");
@@ -89,6 +117,8 @@ public class AuthorBookEditController {
         book.setPublisher(publisher != null ? publisher.trim() : null);
         book.setYear(year);
         book.setDescription(description);
+        book.setAuthors(registeredAuthors);
+        book.setCoauthors(formattedCoauthors);
 
         bookRepository.save(book);
 

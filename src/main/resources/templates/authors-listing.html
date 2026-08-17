@@ -40,6 +40,10 @@
            class="sort-tab" th:classappend="${sort == 'books'} ? 'is-active'">По кол-ву книг</a>
         <a th:href="@{/authors(name=${requiredAuthors}, sort='subscribers')}"
            class="sort-tab" th:classappend="${sort == 'subscribers'} ? 'is-active'">По подписчикам</a>
+        <a th:href="@{/authors(name=${requiredAuthors}, sort=${sort}, dir=${reverseDir})}"
+           class="reverse-dir-btn">
+            <span th:text="${dir == 'asc' ? 'По убыванию' : 'По возрастанию'}"></span>
+        </a>
     </div>
 
     <div class="authors-grid">

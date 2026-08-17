@@ -22,23 +22,23 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             " OR LOWER(CONCAT(a.lastName,  ' ', a.firstName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))")
     List<Author> findByName(@Param("name") String name, Sort sort);
 
-    @Query("SELECT a FROM Author a LEFT JOIN a.books b" +
+    @Query("SELECT a, COUNT(b) AS bookCount FROM Author a LEFT JOIN a.books b" +
             " WHERE (:name IS NULL )" +
             " OR LOWER(a.firstName) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
             " OR LOWER(a.lastName) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
             " OR LOWER(CONCAT(a.firstName, ' ', a.lastName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
             " OR LOWER(CONCAT(a.lastName,  ' ', a.firstName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
-            " GROUP BY a ORDER BY COUNT(b) DESC")
-    List<Author> findByNameOrderByBookCountDesc(@Param("name") String name);
+            " GROUP BY a")
+    List<Author> findByNameOrderByBooks(@Param("name") String name, Sort sort);
 
-    @Query("SELECT a FROM Author a LEFT JOIN a.subscriptions s" +
+    @Query("SELECT a, COUNT(s) AS subsCount FROM Author a LEFT JOIN a.subscriptions s" +
             " WHERE (:name IS NULL)" +
             " OR LOWER(a.firstName) LIKE LOWER(CONCAT('%', CAST(:name AS string) , '%'))" +
             " OR LOWER(a.lastName) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
             " OR LOWER(CONCAT(a.firstName, ' ', a.lastName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
             " OR LOWER(CONCAT(a.lastName,  ' ', a.firstName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
-            " GROUP BY a ORDER BY COUNT(s) DESC")
-    List<Author> findByNameOrderBySubscribersDesc(@Param("name") String name);
+            " GROUP BY a")
+    List<Author> findByNameOrderBySubscribers(@Param("name") String name, Sort sort);
 
     Optional<Author> findByUserId(int userId);
 

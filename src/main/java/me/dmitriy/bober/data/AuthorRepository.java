@@ -31,5 +31,14 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             " GROUP BY a ORDER BY COUNT(b) DESC")
     List<Author> findByNameOrderByBookCountDesc(@Param("name") String name);
 
+    @Query("SELECT a FROM Author a LEFT JOIN a.subscriptions s" +
+            " WHERE (:name IS NULL)" +
+            " OR LOWER(a.firstName) LIKE LOWER(CONCAT('%', CAST(:name AS string) , '%'))" +
+            " OR LOWER(a.lastName) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
+            " OR LOWER(CONCAT(a.firstName, ' ', a.lastName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
+            " OR LOWER(CONCAT(a.lastName,  ' ', a.firstName)) LIKE LOWER(CONCAT('%', CAST(:name AS string), '%'))" +
+            " GROUP BY a ORDER BY COUNT(s) DESC")
+    List<Author> findByNameOrderBySubscribersDesc(@Param("name") String name);
+
     Optional<Author> findByUserId(int userId);
 }

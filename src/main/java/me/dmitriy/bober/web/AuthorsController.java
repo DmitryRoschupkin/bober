@@ -31,6 +31,8 @@ public class AuthorsController {
 
         List<Author> authors = "books".equals(sort)
                 ? authorRepository.findByNameOrderByBookCountDesc(normalizedName)
+                : "subscribers".equals(sort)
+                ? authorRepository.findByNameOrderBySubscribersDesc(normalizedName)
                 : authorRepository.findByName(normalizedName, Sort.by("firstName").ascending());
 
         model.addAttribute("authors", authors);

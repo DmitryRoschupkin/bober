@@ -38,6 +38,8 @@
            class="sort-tab" th:classappend="${sort == 'name'} ? 'is-active'">По алфавиту</a>
         <a th:href="@{/authors(name=${requiredAuthors}, sort='books')}"
            class="sort-tab" th:classappend="${sort == 'books'} ? 'is-active'">По кол-ву книг</a>
+        <a th:href="@{/authors(name=${requiredAuthors}, sort='subscribers')}"
+           class="sort-tab" th:classappend="${sort == 'subscribers'} ? 'is-active'">По подписчикам</a>
     </div>
 
     <div class="authors-grid">

@@ -41,6 +41,13 @@
                                 th:src="@{/files/{path}(path=${user.userPicturePath})}"
                                 alt="userpic"
                                 style="max-width: 300px; border-radius: 4px;">
+                        <div th:if="${user.userPicturePath != null && !#strings.isEmpty(user.userPicturePath)}"
+                             class="profile-edit__remove-pic">
+                            <label>
+                                <input type="checkbox" name="removePicture" value="true">
+                                Удалить аватарку к едрене бабушке
+                            </label>
+                        </div>
                         <span th:unless="${user.userPicturePath}">Аватарка отсутствует</span>
                     </div>
                     <label class="profile-edit__label" th:if="${#strings.contains(field, 'userPicturePath')}">Загрузить аватарку: </label>

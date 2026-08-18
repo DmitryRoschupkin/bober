@@ -42,13 +42,26 @@ public class AccountEditController {
     @PostMapping("/edit/{id}")
     public String editAccountProcess(@PathVariable int id,
                                      @ModelAttribute User user,
-                                     @RequestParam(required = false) MultipartFile userPictureFile) throws IOException {
-        if (userPictureFile != null &&  !userPictureFile.isEmpty()) {
-            if (user.getUserPicturePath() != null) {
-                fileStorageService.delete(user.getUserPicturePath());
+                                     @RequestParam(required = false) MultipartFile userPictureFile,
+                                     @RequestParam(value = "removePicture", defaultValue = "false") boolean removePicture) throws IOException {
+
+        User existingUser = userRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
+        String currentPath = existingUser.getUserPicturePath();
+        if (removePicture) {
+            if (currentPath != null && !currentPath.isBlank()) {
+                fileStorageService.delete(currentPath);
+            }
+            user.setUserPicturePath(null);
+        } else if (userPictureFile != null &&  !userPictureFile.isEmpty()) {
+            if (currentPath != null && !currentPath.isBlank()) {
+                fileStorageService.delete(currentPath);
             }
             String newUserPicturePath = fileStorageService.store(userPictureFile, "userPictures").storedPath();
             user.setUserPicturePath(newUserPicturePath);
+        } else {
+            user.setUserPicturePath(currentPath);
         }
         userService.update(user, id);
         return "redirect:/account/"+id;

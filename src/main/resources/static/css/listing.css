@@ -432,10 +432,32 @@
     transition: text-shadow .3s, letter-spacing .3s, border .3s ease, padding .3s;
 }
 
+.book-detail__actions-btn-delete {
+    color: #e8846b;
+    background-color: transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 0;
+    border-radius: 8px;
+    transition: text-shadow .3s, letter-spacing .3s, border .3s ease, padding .3s, background .3s, color .3s;
+    margin-top: 20px;
+    letter-spacing: calc(var(--index)/28);
+}
+
+.book-detail__actions-btn-delete:hover{
+    text-shadow: 0 0 5px #e8846b;
+    letter-spacing: calc(var(--index)/24);
+    border-color: #e8846b;
+    padding: 10px;
+    color: red;
+    background-color: #ffefcc;
+}
+
 .book-detail__actions-btn:hover {
     text-shadow: 0 0 5px #d3c599;
     letter-spacing: calc(var(--index)/24);
-    border-color: #ffe4b7;
+    border-color: #ffefcc;
     padding: 10px;
 }
 
@@ -449,6 +471,7 @@
     border-radius: 8px;
     transition: text-shadow .3s, letter-spacing .3s, border .3s ease, padding .3s;
 }
+
 
 .books-listing__post-btn:hover {
     text-shadow: 0 0 5px #d3c599;

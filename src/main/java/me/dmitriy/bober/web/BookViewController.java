@@ -154,4 +154,11 @@ public class BookViewController {
         commentService.editComment(commentId, text);
         return "redirect:/books/" + bookId + "#comments";
     }
+
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteBook(@PathVariable int id) {
+        bookRepository.deleteById(id);
+        return "redirect:/books";
+    }
 }

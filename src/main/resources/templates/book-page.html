@@ -88,6 +88,12 @@
                    class="book-detail__actions-btn">
                     Редактировать
                 </a>
+                <form th:if="${book.authors.contains(author)}"
+                      th:action="@{/books/delete/{id}(id=${book.id})}" method="post"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить эту книгу?');">
+                    <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button class="book-detail__actions-btn-delete" type="submit">Удалить</button>
+                </form>
                 <div sec:authorize="isAnonymous()" class="download-login-prompt">
                     <p>Чтобы скачать книгу, <a th:href="@{/login}">войдите в аккаунт</a>.</p>
                 </div>

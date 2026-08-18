@@ -57,7 +57,7 @@ public class AuthorViewController {
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
         User currentUser = userService.getCurrentUser();
-        boolean isOwner = currentUser.getId() == author.getId();
+        boolean isOwner = currentUser.getId() == author.getUser().getId();
         if (isOwner) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Нельзя подписаться на самого себя");
         } else {

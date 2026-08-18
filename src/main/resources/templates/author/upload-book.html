@@ -8,7 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
-    <script th:src="@{/js/header.css}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/file-input.css}">
+    <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/file-input.js}" defer></script>
 </head>
 <body>
     <div class="page">
@@ -49,7 +51,7 @@
 
                 <label>Описание (максимально желательно)</label>
                 <textarea name="description" rows="7" cols="80" placeholder="О чём книга?"
-                          class="form-textarea"></textarea>
+                          class="form-security__input form-textarea"></textarea>
 
                 <button type="submit" class="form-security__button">Загрузить</button>
             </form>

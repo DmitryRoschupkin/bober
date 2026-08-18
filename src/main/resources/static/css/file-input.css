@@ -1,0 +1,40 @@
+.file-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.file-input__button {
+    background: transparent;
+    border: 1px solid rgba(255, 239, 204, 0.35);
+    color: #ffefcc;
+    font-family: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color .3s, text-shadow .3s;
+}
+
+.file-input__button:hover {
+    border-color: #ffe4b7;
+    text-shadow: 0 0 8px #ffe4b7;
+}
+
+.file-input__name {
+    color: #a89d7c;
+    font-size: 13px;
+}
+
+.file-input__native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}

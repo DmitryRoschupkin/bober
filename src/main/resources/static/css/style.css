@@ -446,8 +446,8 @@ body {
     font-size: 0.95rem;
     font-weight: 600;
     color: #ffefcc;
-    background-color: black;
-    border: 1px solid #ffefcc;
+    background-color: #0d0d0d;
+    border: 1px solid rgba(255, 239, 204, 0.3);
     border-radius: 10px;
     cursor: pointer;
     transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -457,7 +457,6 @@ body {
 
 .book-detail__mark:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .book-detail__mark:active:not(:disabled) {
@@ -478,45 +477,33 @@ body {
 }
 
 .btn-like:hover:not(:disabled) {
-    background-color: #403c28;
+    border-color: #8ac989;
     color: #8ac989;
 }
 
 .btn-like.active {
-    color: #ffefcc;
-    background-color: #403c28;
-    box-shadow: 0 4px 12px rgb(88, 78, 56);
-}
-
-.btn-like.active:hover:not(:disabled) {
-    background-color: black;
-    border-color: darkgreen;
+    color: #8ac989;
+    border-color: #8ac989;
+    box-shadow: 0 0 16px rgba(138, 201, 137, 0.3);
 }
 
 .btn-dislike:hover:not(:disabled) {
-    background-color: #613e2a;
+    border-color: #e8846b;
     color: #e8846b;
-    border-color: #fecaca;
 }
 
 .btn-dislike.active {
-    color: #ffefcc;
-    background-color: #613e2a;
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+    color: #e8846b;
+    border-color: #e8846b;
+    box-shadow: 0 0 16px rgba(232, 132, 107, 0.3);
 }
-
-.btn-dislike.active:hover:not(:disabled) {
-    background-color: black;
-    border-color: #b91c1c;
-}
-
 
 .book-detail__mark:disabled {
-    opacity: 0.55;
+    opacity: 0.4;
     cursor: not-allowed;
-    background-color: #edf2f7;
-    border-color: #e2e8f0;
-    color: #a0aec0;
+    background-color: #0d0d0d;
+    border-color: rgba(255, 239, 204, 0.12);
+    color: #7d735a;
     transform: none !important;
     box-shadow: none !important;
 }

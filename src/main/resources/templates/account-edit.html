@@ -10,7 +10,9 @@
     <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
     <link rel="stylesheet" th:href="@{/css/account.css}">
+    <link rel="stylesheet" th:href="@{/css/file-input.css}">
     <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/file-input.js}" defer></script>
 </head>
 <body>
 <div class="page">
@@ -47,7 +49,7 @@
                            id="userPictureFile"
                            name="userPictureFile"
                            class="form-security__input"
-                           accept="/image/*">
+                           accept="image/*">
                     <input th:if="${!#strings.contains(field, 'birthDate') && !#strings.contains(field, 'userPicturePath')}"
                            type="text"
                            th:id="${field}"

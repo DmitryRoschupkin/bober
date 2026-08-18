@@ -8,7 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
-    <script th:src="@{/js/header.css}" defer></script>
+    <link rel="stylesheet" th:href="@{/css/file-input.css}">
+    <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/file-input.js}" defer></script>
 </head>
 <body>
 <div class="page">
@@ -39,8 +41,7 @@
                 <label for="authors">Добавить соавторов</label>
                 <input id = "authors" type="text" name="authors"
                        placeholder="Введите полные имена соавторов через запятую"
-                       class="form-security__input"
-                       th:field="*{authors}">
+                       class="form-security__input">
             </div>
 
             <div class="form-group">
@@ -68,7 +69,7 @@
                 <label for="description">Описание</label>
                 <textarea id="description" name="description"
                           rows="7" cols="80" placeholder="О чём книга?"
-                          class="form-textarea"
+                          class="form-security__input form-textarea"
                           th:field="*{description}"></textarea>
             </div>
 
@@ -83,7 +84,7 @@
                 </div>
 
                 <label for="coverFile">Заменить обложку (необяз)</label>
-                <input type="file" id="coverFile" name="coverFile" accept="image/*">
+                <input class="form-security__input" type="file" id="coverFile" name="coverFile" accept="image/*">
             </div>
 
             <button type="submit" class="form-security__button">Сохранить</button>

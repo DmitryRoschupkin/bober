@@ -1,6 +1,8 @@
 package me.dmitriy.bober.data;
 
 import me.dmitriy.bober.models.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,17 +21,17 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT DISTINCT b.genre FROM Book b WHERE b.genre IS NOT NULL")
     List<String> findDistinctGenres();
 
-    @Query("SELECT DISTINCT b FROM Book b " +
-            "LEFT JOIN FETCH b.authors a " +
+    @Query("SELECT b FROM Book b " +
+            "LEFT JOIN b.authors a " +
             "WHERE (:title IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', CAST(:title AS string), '%')))" +
             "AND (:genre IS NULL OR b.genre = :genre)" +
             "AND (:year IS NULL OR b.year = :year)" +
             "AND (:authorId IS NULL OR a.id = :authorId)")
-    List<Book> findFiltered(
+    Page<Book> findFiltered(
             @Param("title") String title,
             @Param("genre") String genre,
             @Param("year") Integer year,
             @Param("authorId") Integer authorId,
-            Sort sort
+            Pageable pageable
     );
 }

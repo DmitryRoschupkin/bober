@@ -81,6 +81,24 @@
             <p class="book-card__year" th:text="${book.year}"></p>
         </a>
     </div>
+
+    <div class="pagination" th:if="${totalPages > 1}">
+        <a  th:if="${currentPage > 0}"
+            th:href="@{/books(page=${currentPage - 1}, title=${title}, genre=${genre}, year=${year}, authorId=${authorId}, sort=${sort})}"
+            class="pagination__btn">&laquo; Назад</a>
+
+        <span th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/books(page=${i}, title=${title}, genre=${genre}, year=${year}, authorId=${authorId}, sort=${sort})}"
+                th:text="${i+1}"
+                th:classappend="${i == currentPage} ? 'active' : ''"
+                class="pagination__btn">1</a>
+        </span>
+
+        <a  th:if="${currentPage < totalPages - 1}"
+            th:href="@{/books(page=${currentPage+1}, title=${title}, genre=${genre}, year=${year}, authorId=${authorId}, sort=${sort})}"
+            class="pagination__btn"> Вперёд &raquo;</a>
+    </div>
+
     <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
 </div>
 

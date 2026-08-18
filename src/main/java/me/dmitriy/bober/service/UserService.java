@@ -6,6 +6,7 @@ import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.models.UserRole;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,8 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
 
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
+    private final BCryptPasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void save(User user) {
@@ -94,6 +97,17 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нельзя удалить самого себя");
         }
         userRepository.deleteById(id);
+    }
+
+    public boolean changePassword(User user, String currentPassword, String newPassword, String confirmPassword) {
+        if(!newPassword.equals(confirmPassword)) {
+            return false;
+        }
+        if(!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return false;
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        return true;
     }
 
 }

@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/auth.css}">
     <link rel="stylesheet" th:href="@{/css/account.css}">
     <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/image-modal.js}" defer></script>
 </head>
 <body>
 <div class="page">
@@ -22,7 +23,8 @@
                 <div th:if="${user.userPicturePath}"
                      class="profile-card__avatar-pic">
                     <img th:src="@{/files/{path}(path=${user.userPicturePath})}"
-                        alt="userpic">
+                         alt="userpic"
+                         class="js-pic-preview">
                 </div>
                 <div th:unless="${user.userPicturePath}">
                     <span th:text="${#strings.substring(user.nickname, 0, 1)}"></span>
@@ -66,6 +68,11 @@
     </div>
 
     <footer th:replace="~{fragments/layout :: footer(hero=false)}"></footer>
+</div>
+
+<div id="imageModal" class="image-modal">
+    <span class="image-modal__close">&times;</span>
+    <img class="image-modal__content" id="modalImage" alt="Полноразмерная аватарка">
 </div>
 </body>
 </html>

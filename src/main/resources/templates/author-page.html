@@ -9,6 +9,8 @@
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
 
     <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/image-modal.js}" defer></script>
+
 </head>
 <body>
 <div class="page">
@@ -18,7 +20,8 @@
             <div th:if="${author.user.userPicturePath}"
                  class="profile-card__avatar-pic">
                 <img th:src="@{/files/{path}(path=${author.user.userPicturePath})}"
-                     alt="userpic">
+                     alt="userpic"
+                     class="js-pic-preview">
             </div>
             <div th:unless="${author.user.userPicturePath}">
                 <span style="text-transform: uppercase" th:text="${#strings.substring(author.user.firstName, 0, 1)}"></span>
@@ -77,6 +80,11 @@
         </a>
     </div>
     <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
+</div>
+
+<div id="imageModal" class="image-modal">
+    <span class="image-modal__close">&times;</span>
+    <img class="image-modal__content" id="modalImage" alt="Полноразмерная аватарка">
 </div>
 </body>
 </html>

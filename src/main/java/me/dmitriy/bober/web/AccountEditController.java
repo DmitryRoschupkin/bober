@@ -4,10 +4,12 @@ import me.dmitriy.bober.data.UserRepository;
 import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.service.UserService;
 import me.dmitriy.bober.storage.FileStorageService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,11 +45,19 @@ public class AccountEditController {
     public String editAccountProcess(@PathVariable int id,
                                      @ModelAttribute User user,
                                      @RequestParam(required = false) MultipartFile userPictureFile,
-                                     @RequestParam(value = "removePicture", defaultValue = "false") boolean removePicture) throws IOException {
+                                     @RequestParam(value = "removePicture", defaultValue = "false") boolean removePicture,
+                                     @RequestParam(required = false) String currentPassword,
+                                     @RequestParam(required = false) String newPassword,
+                                     @RequestParam(required = false) String confirmPassword) throws IOException {
 
         User existingUser = userRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setBirthDate(user.getBirthDate());
+        existingUser.setBio(user.getBio());
         String currentPath = existingUser.getUserPicturePath();
         if (removePicture) {
             if (currentPath != null && !currentPath.isBlank()) {
@@ -63,7 +73,15 @@ public class AccountEditController {
         } else {
             user.setUserPicturePath(currentPath);
         }
-        userService.update(user, id);
+
+        if (newPassword != null && !newPassword.isBlank()) {
+            boolean isPasswordChanged = userService.changePassword(existingUser, currentPassword, newPassword, confirmPassword);
+            if (!isPasswordChanged) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ошибка при смене пароля. Проверьте форму смены пароля");
+            }
+        }
+
+        userService.update(existingUser, id);
         return "redirect:/account/"+id;
     }
 }

@@ -6,6 +6,9 @@ import me.dmitriy.bober.data.CommentRepository;
 import me.dmitriy.bober.models.Book;
 import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +36,8 @@ public class BooksController {
                             @RequestParam(required = false, defaultValue = "all") String genre,
                             @RequestParam(required = false) Integer year,
                             @RequestParam(required = false) Integer authorId,
-                            @RequestParam(required = false, defaultValue = "newest") String sort) {
+                            @RequestParam(required = false, defaultValue = "newest") String sort,
+                            @RequestParam(defaultValue = "0") int page) {
 
         Sort sortOrder = switch (sort) {
             case "title" -> Sort.by("title").ascending();
@@ -41,13 +45,21 @@ public class BooksController {
             default -> Sort.by("createdAt").descending();
         };
 
+        Pageable pageable = PageRequest.of(page, 10, sortOrder);
+
         String normalizedTitle = (title != null && !title.isBlank()) ? title.trim() : null;
         String genreFilter = "all".equals(genre) ? null : genre;
-        List<Book> books = bookRepository.findFiltered(normalizedTitle, genreFilter, year, authorId, sortOrder);
 
-        model.addAttribute("books", books);
+        Page<Book> booksPage = bookRepository.findFiltered(normalizedTitle, genreFilter, year, authorId, pageable);
+
+        model.addAttribute("books", booksPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", booksPage.getTotalPages());
+
         model.addAttribute("title", title);
         model.addAttribute("genre", genre);
+        model.addAttribute("year", year);
+        model.addAttribute("authorId", authorId);
         model.addAttribute("sort", sort);
         model.addAttribute("genres", bookRepository.findDistinctGenres());
         return "books-listing";

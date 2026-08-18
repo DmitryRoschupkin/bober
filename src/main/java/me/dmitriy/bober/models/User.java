@@ -62,7 +62,6 @@ public class User {
         List<String> prohibitedToEdit = new ArrayList<>();
         prohibitedToEdit.add("fieldNames");
         prohibitedToEdit.add("id");
-        prohibitedToEdit.add("password");
         prohibitedToEdit.add("role");
         prohibitedToEdit.add("createdAt");
         prohibitedToEdit.add("nickname");

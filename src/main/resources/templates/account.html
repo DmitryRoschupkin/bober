@@ -18,12 +18,20 @@
 
     <div class="profile-card">
         <div class="profile-card__header">
-            <div class="profile-card__avatar" th:text="${#strings.substring(user.nickname, 0, 1)}"></div>
+            <div class="profile-card__avatar">
+                <div th:if="${user.userPicturePath}"
+                     class="profile-card__avatar-pic">
+                    <img th:src="@{/files/{path}(path=${user.userPicturePath})}"
+                        alt="userpic">
+                </div>
+                <div th:unless="${user.userPicturePath}">
+                    <span th:text="${#strings.substring(user.nickname, 0, 1)}"></span>
+                </div>
+            </div>
             <div>
                 <h1 class="profile-card__name" th:text="${user.nickname}"></h1>
                 <p class="profile-card__email" th:text="${user.email}"></p>
                 <p class="profile-card__privilege" th:text="${privilege}"></p>
-
             </div>
         </div>
 

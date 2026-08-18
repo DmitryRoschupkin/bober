@@ -46,6 +46,9 @@ public class Author {
     public int getBooksAmount() {
         return books == null ? 0 : books.size();
     }
+    public int getSubscriptionsAmount() {
+        return subscriptions == null ? 0 : subscriptions.size();
+    }
 
     public String getWordCase(int amount){
         int lastTwoDigits = amount % 100;
@@ -61,6 +64,22 @@ public class Author {
             return "книги";
         }
         return "книг";
+    }
+
+    public String getSubsWordCase(int amount){
+        int lastTwoDigits = amount % 100;
+        int lastDigit = amount % 10;
+
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+            return "подписчиков";
+        }
+        if (lastDigit == 1) {
+            return  "подписчик";
+        }
+        if (lastDigit >= 2 && lastDigit <= 4) {
+            return "подписчика";
+        }
+        return "подписчиков";
     }
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)

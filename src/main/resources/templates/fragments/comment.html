@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <body>
     <div th:fragment="commentNode(node, bookId)"
@@ -10,7 +10,7 @@
 
         <div class="comment__body"
              th:with="isBookAuthor=${node.comment.user != null and bookAuthorUserIds != null and bookAuthorUserIds.contains(node.comment.user.id)},
-                      isCommentAuthor=${node.comment.user != null and #authentication.principal != null and #authentication.principal.username == node.comment.user.nickname},
+                      isCommentAuthor=${node.comment.user != null and #authorization.expression('isAuthenticated()') and #authentication.name == node.comment.user.nickname},
                       canDelete=${isCommentAuthor or isBookAuthor or #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
 
             <div class="comment__meta">
@@ -84,7 +84,7 @@
 
         </div>
 
-        <div class="comment__replies" th:if="${!node.replies.isEmpty() and node.replies != null}">
+        <div class="comment__replies" th:if="${node.replies != null and !node.replies.isEmpty()}">
             <div th:each="reply : ${node.replies}">
                 <div th:replace="~{fragments/comment :: commentNode(${reply}, ${bookId})}"></div>
             </div>

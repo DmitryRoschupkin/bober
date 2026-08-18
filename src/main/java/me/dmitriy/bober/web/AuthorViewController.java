@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/authors")
 public class AuthorViewController {
@@ -28,16 +30,19 @@ public class AuthorViewController {
     }
 
     @GetMapping("/{id}")
-    public String getAuthor(Model model, @PathVariable int id) {
+    public String getAuthor(Model model, @PathVariable int id, Principal principal) {
         Author author = authorRepository
                 .findByIdWithBooks(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Author not found"));
-        User currentUser = userService.getCurrentUser();
         int subscribersCount = author.getSubscriptions().size();
         int booksAmount = author.getBooksAmount();
-        boolean isSubscribed = subscriptionService.isSubscribed(currentUser, author);
+        boolean isSubscribed = false;
+        if(principal != null) {
+            User currentUser = userService.getCurrentUser();
+            isSubscribed = subscriptionService.isSubscribed(currentUser, author);
+        }
         model.addAttribute("author", author);
         model.addAttribute("subscribersCount", subscribersCount);
         model.addAttribute("isSubscribed", isSubscribed);

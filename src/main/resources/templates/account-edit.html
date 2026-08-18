@@ -21,15 +21,34 @@
         <a th:if="${user.role == 'USER'}" th:href="@{/become-author}" class="avg-link">Стать автором!</a>
 
         <div class="form-security__container profile-edit__container">
-            <form th:action="@{/account/edit/{id}(id=${user.id})}" th:object="${user}" method="post" class="form-security__form">
+            <form th:action="@{/account/edit/{id}(id=${user.id})}"
+                  th:object="${user}"
+                  method="post"
+                  class="form-security__form"
+                  enctype="multipart/form-data">
                 <div class="profile-edit__field" th:each="field : ${fieldNames}">
-                    <label class="profile-edit__label" th:text="${field}" th:for="${field}"></label>
+                    <label class="profile-edit__label" th:if="!${field == 'userPicturePath'}" th:text="${field}" th:for="${field}"></label>
                     <input th:if="${#strings.contains(field, 'birthDate')}"
                            type="date"
                            th:id="${field}"
                            th:field="*{__${field}__}"
                            class="form-security__input">
-                    <input th:if="${!#strings.contains(field, 'birthDate')}"
+                    <label class="profile-edit__label" th:if="${#strings.contains(field, 'userPicturePath')}">Текущая аватарка: </label>
+                    <div th:if="${#strings.contains(field, 'userPicturePath')}">
+                        <img    th:if="${user.userPicturePath}"
+                                th:src="@{/files/{path}(path=${user.userPicturePath})}"
+                                alt="userpic"
+                                style="max-width: 300px; border-radius: 4px;">
+                        <span th:unless="${user.userPicturePath}">Аватарка отсутствует</span>
+                    </div>
+                    <label class="profile-edit__label" th:if="${#strings.contains(field, 'userPicturePath')}">Загрузить аватарку: </label>
+                    <input th:if="${#strings.contains(field, 'userPicturePath')}"
+                           type="file"
+                           id="userPictureFile"
+                           name="userPictureFile"
+                           class="form-security__input"
+                           accept="/image/*">
+                    <input th:if="${!#strings.contains(field, 'birthDate') && !#strings.contains(field, 'userPicturePath')}"
                            type="text"
                            th:id="${field}"
                            th:field="*{__${field}__}"

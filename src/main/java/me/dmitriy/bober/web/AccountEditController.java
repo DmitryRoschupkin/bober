@@ -3,10 +3,13 @@ package me.dmitriy.bober.web;
 import me.dmitriy.bober.data.UserRepository;
 import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.service.UserService;
+import me.dmitriy.bober.storage.FileStorageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -14,14 +17,17 @@ import java.util.List;
 public class AccountEditController {
 
     private final UserService userService;
-    UserRepository userRepository;
-    public AccountEditController(UserRepository userRepository, UserService userService) {
+    private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
+    public AccountEditController(UserRepository userRepository, UserService userService, FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.fileStorageService = fileStorageService;
     }
 
     @GetMapping("/edit/{id}")
-    public String editAccountForm(Model model, @PathVariable int id) {
+    public String editAccountForm(Model model,
+                                  @PathVariable int id) {
         User currentUser = userService.getCurrentUser();
         User user = userRepository
                 .findById(id)
@@ -34,7 +40,16 @@ public class AccountEditController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editAccountProcess(@PathVariable int id, @ModelAttribute User user) {
+    public String editAccountProcess(@PathVariable int id,
+                                     @ModelAttribute User user,
+                                     @RequestParam(required = false) MultipartFile userPictureFile) throws IOException {
+        if (userPictureFile != null &&  !userPictureFile.isEmpty()) {
+            if (user.getUserPicturePath() != null) {
+                fileStorageService.delete(user.getUserPicturePath());
+            }
+            String newUserPicturePath = fileStorageService.store(userPictureFile, "userPictures").storedPath();
+            user.setUserPicturePath(newUserPicturePath);
+        }
         userService.update(user, id);
         return "redirect:/account/"+id;
     }

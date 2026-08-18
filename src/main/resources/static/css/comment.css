@@ -202,3 +202,22 @@
     color: #8fd19e;
     border-color: rgba(143, 209, 158, 0.4);
 }
+
+.comment__header {
+    display: flex;
+}
+
+.userpic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #a89d7c;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    text-transform: uppercase;
+    padding: 0;
+    text-decoration: none;
+}

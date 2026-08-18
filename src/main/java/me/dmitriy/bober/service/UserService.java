@@ -41,6 +41,9 @@ public class UserService {
         if(user.getBio() != null) {
             existingUser.setBio(user.getBio());
         }
+        if(user.getUserPicturePath() != null) {
+            existingUser.setUserPicturePath(user.getUserPicturePath());
+        }
     }
 
     public User getCurrentUser() {

@@ -46,6 +46,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Subscription> subscriptions;
 
+    @Column(name = "user_picture_path")
+    private String userPicturePath;
+
     public User(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;

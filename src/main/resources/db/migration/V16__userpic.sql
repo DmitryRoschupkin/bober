@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN user_picture_path VARCHAR(500)

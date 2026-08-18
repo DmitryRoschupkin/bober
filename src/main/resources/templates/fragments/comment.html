@@ -13,28 +13,37 @@
                       isCommentAuthor=${node.comment.user != null and #authorization.expression('isAuthenticated()') and #authentication.name == node.comment.user.nickname},
                       canDelete=${isCommentAuthor or isBookAuthor or #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
 
-            <div class="comment__meta">
-                <span class="comment__author"
-                      th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></span>
-                <span th:if="${node.comment.user != null}"
-                      th:replace="~{fragments/role-badge :: roleBadge(${node.comment.user.role}, ${isBookAuthor})}"></span>
-                <span class="comment__date"
-                      th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
-                <span class="comment__edited"
-                      th:if="${node.comment.updatedAt != null &&
+            <div class="comment__header">
+                <a class="userpic"
+                    th:href="@{/account/{id}(id=${node.comment.user.id})}">
+                    <p th:text="${#strings.substring(node.comment.user.nickname, 0, 1)}"></p>
+                </a>
+                <div class="comment__content">
+                    <div class="comment__meta">
+                        <a class="comment__author"
+                           th:href="@{/account/{id}(id=${node.comment.user.id})}"
+                           th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></a>
+                        <span th:if="${node.comment.user != null}"
+                              th:replace="~{fragments/role-badge :: roleBadge(${node.comment.user.role}, ${isBookAuthor})}"></span>
+                        <span class="comment__date"
+                              th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
+                        <span class="comment__edited"
+                              th:if="${node.comment.updatedAt != null &&
                          node.comment.updatedAt != node.comment.createdAt &&
                          !node.comment.deleted}"
-                      th:title="${#temporals.format(node.comment.updatedAt, 'dd.MM.yyyy HH:mm')}"
-                      th:text="'(изменено)'">
+                              th:title="${#temporals.format(node.comment.updatedAt, 'dd.MM.yyyy HH:mm')}"
+                              th:text="'(изменено)'">
                 </span>
+                    </div>
+                    <p class="comment__text"
+                       th:if="${node.comment.deleted}"
+                       th:text="'[комментарий удалён]'">
+                    </p>
+                    <p class="comment__text"
+                       th:unless="${node.comment.deleted}"
+                       th:text="${node.comment.text}"></p>
+                </div>
             </div>
-            <p class="comment__text"
-                th:if="${node.comment.deleted}"
-                th:text="'[комментарий удалён]'">
-            </p>
-            <p class="comment__text"
-               th:unless="${node.comment.deleted}"
-               th:text="${node.comment.text}"></p>
 
             <div class="comment__actions"
                  sec:authorize="isAuthenticated()"

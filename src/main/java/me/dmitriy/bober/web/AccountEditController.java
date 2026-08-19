@@ -31,11 +31,11 @@ public class AccountEditController {
     public String editAccountForm(Model model,
                                   @PathVariable int id) {
         User currentUser = userService.getCurrentUser();
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
-        List<String> fieldNames = user.fieldNames();
-        model.addAttribute("user", user);
+        if (currentUser.getId() != id) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нельзя редактировать чужой профиль!");
+        }
+        List<String> fieldNames = currentUser.fieldNames();
+        model.addAttribute("user", currentUser);
         model.addAttribute("fieldNames", fieldNames);
         model.addAttribute("currentUser", currentUser);
         return "account-edit";
@@ -43,7 +43,7 @@ public class AccountEditController {
 
     @PostMapping("/edit/{id}")
     public String editAccountProcess(@PathVariable int id,
-                                     @ModelAttribute User user,
+                                     @ModelAttribute User formUser,
                                      @RequestParam(required = false) MultipartFile userPictureFile,
                                      @RequestParam(value = "removePicture", defaultValue = "false") boolean removePicture,
                                      @RequestParam(required = false) String currentPassword,
@@ -53,25 +53,23 @@ public class AccountEditController {
         User existingUser = userRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setBirthDate(user.getBirthDate());
-        existingUser.setBio(user.getBio());
+        existingUser.setFirstName(formUser.getFirstName());
+        existingUser.setLastName(formUser.getLastName());
+        existingUser.setEmail(formUser.getEmail());
+        existingUser.setBirthDate(formUser.getBirthDate());
+        existingUser.setBio(formUser.getBio());
         String currentPath = existingUser.getUserPicturePath();
         if (removePicture) {
             if (currentPath != null && !currentPath.isBlank()) {
                 fileStorageService.delete(currentPath);
             }
-            user.setUserPicturePath(null);
+            existingUser.setUserPicturePath(null);
         } else if (userPictureFile != null &&  !userPictureFile.isEmpty()) {
             if (currentPath != null && !currentPath.isBlank()) {
                 fileStorageService.delete(currentPath);
             }
             String newUserPicturePath = fileStorageService.store(userPictureFile, "userPictures").storedPath();
-            user.setUserPicturePath(newUserPicturePath);
-        } else {
-            user.setUserPicturePath(currentPath);
+            existingUser.setUserPicturePath(newUserPicturePath);
         }
 
         if (newPassword != null && !newPassword.isBlank()) {

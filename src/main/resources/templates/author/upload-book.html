@@ -29,7 +29,9 @@
                 <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <label>Файл книги (обязательно!)</label>
-                <input type="file"
+                <label>Максимальный размер: 100 МБ</label>
+                <input id="bookFile"
+                       type="file"
                        name="bookFile"
                        accept=".pdf, .fb2, .epub, .txt"
                        class="form-security__input" required>

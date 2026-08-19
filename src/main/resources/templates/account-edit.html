@@ -30,12 +30,16 @@
                   enctype="multipart/form-data">
                 <th:block th:each="field : ${fieldNames}">
 
-                    <label class="profile-edit__label" th:if="!${field == 'userPicturePath' || field == 'password'}" th:text="${field}" th:for="${field}"></label>
+                    <label class="profile-edit__label"
+                           th:if="!${field == 'userPicturePath' || field == 'password'}"
+                           th:text="${field}"
+                           th:for="${field}"></label>
 
                     <input th:if="${#strings.contains(field, 'birthDate')}"
                            type="date"
                            th:id="${field}"
-                           th:field="*{__${field}__}"
+                           name="birthDate"
+                           th:value="${user.birthDate != null ? #temporals.format(user.birthDate, 'yyyy-MM-dd') : ''}"
                            class="form-security__input">
 
                     <label class="profile-edit__label" th:if="${#strings.contains(field, 'userPicturePath')}">Текущая аватарка: </label>

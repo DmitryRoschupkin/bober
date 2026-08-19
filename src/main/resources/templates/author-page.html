@@ -6,7 +6,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="stylesheet" th:href="@{/css/account.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script th:src="@{/js/header.js}" defer></script>
     <script th:src="@{/js/image-modal.js}" defer></script>
@@ -59,25 +61,89 @@
         </div>
     </div>
 
-    <h1 class="section-label">Великие творения великого автора</h1>
+    <div class="author__content">
+        <div class="author__books-listing">
+            <h1 class="section-label">Великие творения великого автора</h1>
 
-    <div class="books-grid">
-        <a th:each="book: ${author.books}"
-           th:href="@{/books/{id}(id=${book.id})}"
-           class="book-card">
-            <div class="book-card__cover">
-                <img th:if="${book.coverPath}"
-                     th:src="@{/files/{path}(path=${book.coverPath})}"
-                     th:alt="${book.title}"
-                     class="book-cover-img" />
-                <!-- default cover will be designed soon -->
-                <img th:unless="${book.coverPath}"
-                     th:src="@{/img/default-cover.png}"
-                     alt="No cover"
-                     class="book-cover-img" />
+            <div class="author__books-grid">
+                <a th:each="book: ${author.books}"
+                   th:href="@{/books/{id}(id=${book.id})}"
+                   class="author-book-card">
+                    <div class="author-book-card__cover">
+                        <img th:if="${book.coverPath}"
+                             th:src="@{/files/{path}(path=${book.coverPath})}"
+                             th:alt="${book.title}"
+                             class="book-cover-img"/>
+                        <!-- default cover will be designed soon -->
+                        <img th:unless="${book.coverPath}"
+                             th:src="@{/img/default-cover.png}"
+                             alt="No cover"
+                             class="book-cover-img"/>
+                    </div>
+                    <p class="book-card__title" th:text="${book.title}"></p>
+                </a>
             </div>
-            <p class="book-card__title" th:text="${book.title}"></p>
-        </a>
+        </div>
+        <div class="author-microblog">
+            <h1 class="section-label">Новости автора</h1>
+
+            <form class="author-microblog__form" th:if="${isOwner}" th:action="@{/authors/{id}/post(id=${author.id})}" method="post">
+                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="text" name="title" class="author-microblog__input" placeholder="Тема (необязательно)">
+                <input type="hidden" name="id" th:value="${author.id}">
+                <textarea class="author-microblog-textarea author-microblog__input" name="text" placeholder="Что нового?"
+                          required></textarea>
+                <button type="submit" class="author-microblog__post-btn">Опубликовать</button>
+            </form>
+
+            <div class="author-microblog__posts-listing">
+                <div class="author-microblog__post"
+                     th:each="post: ${author.posts}"
+                     th:if="${!author.getPosts().isEmpty() && author.getPosts() != null}">
+                    <p th:text="${author.firstName+' '+author.lastName}" class="author-microblog__post-fullname"></p>
+                    <p th:if="${post.title != null && !post.title.isBlank()}"
+                       th:text="${post.title}"
+                       class="author-microblog__post-title"></p>
+                    <p th:text="${post.text}"
+                       class="author-microblog__post-text"></p>
+                    <div class="author-microblog__post-marks">
+                        <form th:action="@{/authors/{id}/post/mark(id=${author.id})}" method="post">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}"/>
+                            <input type="hidden" name="isLike" value="true">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <button type="submit"
+                                    class="author-microblog__post-mark post-btn-like"
+                                    th:disabled="${currentUser == null}"
+                                    th:classappend="${userPostMarks != null && userPostMarks[post.id] == true ? 'active' : ''}">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <span class="author-microblog__post-marks-count"
+                                      th:text="${post.likesCount ?: 0}">0</span>
+                            </button>
+                        </form>
+                        <form th:action="@{/authors/{id}/post/mark(id=${author.id})}" method="post">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}"/>
+                            <input type="hidden" name="isLike" value="false">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <button type="submit"
+                                    class="author-microblog__post-mark post-btn-dislike"
+                                    th:disabled="${currentUser == null}"
+                                    th:classappend="${userPostMarks != null && userPostMarks[post.id] == false ? 'active' : ''}">
+                                <i class="fa-solid fa-thumbs-down"></i>
+                                <span class="author-microblog__post-marks-count"
+                                      th:text="${post.dislikesCount ?: 0}">0</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div th:unless="${!author.getPosts().isEmpty() && author.getPosts() != null}"
+                     class="author-microblog__empty">
+                    <p><span th:text="${author.firstName}+' '+${author.lastName}"></span> пока не опубликовал ни одной записи.
+                        Подпишитесь, чтобы узнать о новых заметках автора!</p>
+                </div>
+            </div>
+        </div>
     </div>
     <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
 </div>

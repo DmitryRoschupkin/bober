@@ -25,11 +25,11 @@ public class Post {
     private String text;
 
     @Column(name = "likes_count")
-    private int likes_count;
+    private int likesCount;
 
     @Column(name = "dislikes_count")
-    private int dislikes_count;
+    private int dislikesCount;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 }

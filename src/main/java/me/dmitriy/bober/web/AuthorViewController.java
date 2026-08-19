@@ -1,8 +1,9 @@
 package me.dmitriy.bober.web;
 
 import me.dmitriy.bober.data.AuthorRepository;
-import me.dmitriy.bober.models.Author;
-import me.dmitriy.bober.models.User;
+import me.dmitriy.bober.data.PostMarkRepository;
+import me.dmitriy.bober.models.*;
+import me.dmitriy.bober.service.PostService;
 import me.dmitriy.bober.service.SubscriptionService;
 import me.dmitriy.bober.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/authors")
@@ -24,9 +29,14 @@ public class AuthorViewController {
 
     private final SubscriptionService subscriptionService;
     private final UserService userService;
-    public AuthorViewController(SubscriptionService subscriptionService, UserService userService) {
+    private final PostService postService;
+    @Autowired
+    private PostMarkRepository postMarkRepository;
+
+    public AuthorViewController(SubscriptionService subscriptionService, UserService userService, PostService postService) {
         this.subscriptionService = subscriptionService;
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping("/{id}")
@@ -39,14 +49,28 @@ public class AuthorViewController {
         int subscribersCount = author.getSubscriptions().size();
         int booksAmount = author.getBooksAmount();
         boolean isSubscribed = false;
+        boolean isOwner = false;
+        Map<Integer, Boolean> userPostMarks = new HashMap<>();
+        User currentUser = null;
         if(principal != null) {
-            User currentUser = userService.getCurrentUser();
+            currentUser = userService.getCurrentUser();
             isSubscribed = subscriptionService.isSubscribed(currentUser, author);
+            isOwner = author.getUser() != null && currentUser.getId()== author.getUser().getId();
+
+            if (!author.getPosts().isEmpty()) {
+                List<PostMark> marks = postMarkRepository.findAllByUserIdAndPosts(currentUser.getId(), author.getPosts());
+                for (PostMark mark : marks) {
+                    userPostMarks.put(mark.getPost().getId(), mark.isLike());
+                }
+            }
         }
         model.addAttribute("author", author);
         model.addAttribute("subscribersCount", subscribersCount);
         model.addAttribute("isSubscribed", isSubscribed);
         model.addAttribute("booksAmount", booksAmount);
+        model.addAttribute("isOwner", isOwner);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("userPostMarks", userPostMarks);
         return "author-page";
     }
 
@@ -64,5 +88,31 @@ public class AuthorViewController {
             subscriptionService.toggleSubscription(currentUser, author);
         }
         return "redirect:/authors/" + id;
+    }
+
+    @PostMapping("{id}/post")
+    @PreAuthorize("isAuthenticated()")
+    public String post(@PathVariable int id,
+                       @RequestParam(required = false) String title,
+                       @RequestParam String text) {
+        Author author = authorRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+        User currentUser = userService.getCurrentUser();
+        boolean isOwner = currentUser.getId() == author.getUser().getId();
+        if (!isOwner) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Нельзя публиковать записи от чужого имени!");
+        } else {
+            postService.postMessage(author, title, text);
+        }
+        return "redirect:/authors/" + id;
+    }
+
+    @PostMapping("{id}/post/mark")
+    @PreAuthorize("isAuthenticated()")
+    public String markPost(@PathVariable("id") int authorId, @RequestParam int postId, @RequestParam boolean isLike) {
+        User currentUser = userService.getCurrentUser();
+        postService.toggleMark(postId, currentUser.getId(), isLike);
+        return "redirect:/authors/" + authorId;
     }
 }

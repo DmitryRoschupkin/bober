@@ -84,4 +84,7 @@ public class Author {
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Subscription> subscriptions;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Post> posts;
 }

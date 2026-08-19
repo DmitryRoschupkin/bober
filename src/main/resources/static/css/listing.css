@@ -299,6 +299,7 @@
     aspect-ratio: 3 / 4;
     border-radius: 10px;
     background: linear-gradient(160deg, #3a2f15, #0d0d0d);
+    cursor: pointer;
 }
 
 .book-detail__cover img{

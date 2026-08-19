@@ -5,6 +5,7 @@ import me.dmitriy.bober.data.AuthorRequestRepository;
 import me.dmitriy.bober.data.BookRepository;
 import me.dmitriy.bober.data.UserRepository;
 import me.dmitriy.bober.service.AuthorRequestService;
+import me.dmitriy.bober.service.AuthorService;
 import me.dmitriy.bober.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,14 +22,16 @@ public class AdminController {
     private final BookRepository bookRepository;
     private final AuthorRequestRepository authorRequestRepository;
     private final AuthorRequestService authorRequestService;
+    private final AuthorService authorService;
 
-    public AdminController(UserRepository userRepository, UserService userService, AuthorRepository authorRepository, BookRepository bookRepository, AuthorRequestRepository authorRequestRepository, AuthorRequestService authorRequestService) {
+    public AdminController(UserRepository userRepository, UserService userService, AuthorRepository authorRepository, BookRepository bookRepository, AuthorRequestRepository authorRequestRepository, AuthorRequestService authorRequestService, AuthorService authorService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.authorRequestRepository = authorRequestRepository;
         this.authorRequestService = authorRequestService;
+        this.authorService = authorService;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUDO')")
@@ -94,6 +97,13 @@ public class AdminController {
     @PostMapping("/author-requests/{id}/reject")
     public String rejectAuthorRequest(@PathVariable int id) {
         authorRequestService.reject(id);
+        return "redirect:/admin";
+    }
+
+    @PreAuthorize("hasAnyRole('SUDO', 'ADMIN')")
+    @PostMapping("/authors/link-with-coauthor")
+    public String linkWithCoauthor(@RequestParam int authorId, @RequestParam String coauthor) {
+        authorService.coauthorToAuthorConnect(authorId, coauthor);
         return "redirect:/admin";
     }
 }

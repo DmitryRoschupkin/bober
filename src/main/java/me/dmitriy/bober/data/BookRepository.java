@@ -34,4 +34,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             @Param("authorId") Integer authorId,
             Pageable pageable
     );
+
+    @Query("SELECT b FROM Book b" +
+            " WHERE LOWER(b.coauthors) LIKE LOWER(CONCAT('%', CAST(:coauthor as string), '%'))")
+    List<Book> findBooksWithCertainCoauthor(String coauthor);
 }

@@ -134,7 +134,6 @@
         </div>
     </div>
 
-    <!-- АВТОРЫ -->
     <div class="admin-page__section-header">
         <h2>Авторы</h2>
     </div>
@@ -170,7 +169,6 @@
         </table>
     </div>
 
-    <!-- КНИГИ -->
     <div class="admin-page__section-header">
         <h2>Книги</h2>
     </div>
@@ -215,6 +213,40 @@
             </tbody>
         </table>
     </div>
+
+    <div class="admin-page__section-header">
+        <h2>Привязка незарегистрированных соавторов книг к зарегистрированным авторам</h2>
+    </div>
+
+    <table class="admin-page__table">
+        <thead class="admin-page__thead">
+            <tr class="admin-page__tr">
+                <td>Незарегистрированный соавтор</td>1
+                <td>Связать с авторским аккаунтом</td>
+            </tr>
+        </thead>
+        <tbody class="admin-page__tbody">
+            <th:block th:each="book: ${books}">
+                <tr th:each="coauthor: ${book.coauthors}" class="admin-page__tr">
+                        <td th:text="${coauthor} + '(Книга: ' + ${book.title} + ')'"></td>
+                        <td>
+                            <form th:action="@{/admin/authors/link-with-coauthor}" method="post">
+                                <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}"/>
+                                <input type="hidden" th:name="coauthor" th:value="${coauthor}">
+                                <select name="authorId" class="admin-select" required>
+                                    <option value="" disabled selected>Выберите авторский аккаунт...</option>
+                                    <option th:each="author: ${authors}"
+                                            th:value="${author.id}"
+                                            th:text="${author.user.nickname + ' (' + author.user.email + ')'}"></option>
+                                </select>
+                                <button type="submit" class="admin-btn">Создать связь</button>
+                            </form>
+                        </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
 
     <footer th:replace="~{fragments/layout::footer(hero=false)}"></footer>
 </div>

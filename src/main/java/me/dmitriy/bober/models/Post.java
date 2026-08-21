@@ -22,7 +22,7 @@ public class Post {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "post_text")
+    @Column(name = "post_text",  nullable = false)
     private String text;
 
     @Column(name = "likes_count")
@@ -31,13 +31,16 @@ public class Post {
     @Column(name = "dislikes_count")
     private int dislikesCount;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<PostComment> comments;
 
     public int getCommentsAmount() {
-        return comments.size();
+        return comments != null ? comments.size() : 0;
     }
 }

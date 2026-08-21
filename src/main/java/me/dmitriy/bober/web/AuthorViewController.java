@@ -2,7 +2,9 @@ package me.dmitriy.bober.web;
 
 import me.dmitriy.bober.data.AuthorRepository;
 import me.dmitriy.bober.data.PostMarkRepository;
+import me.dmitriy.bober.data.PostRepository;
 import me.dmitriy.bober.models.*;
+import me.dmitriy.bober.service.PostCommentService;
 import me.dmitriy.bober.service.PostService;
 import me.dmitriy.bober.service.SubscriptionService;
 import me.dmitriy.bober.service.UserService;
@@ -32,6 +34,10 @@ public class AuthorViewController {
     private final PostService postService;
     @Autowired
     private PostMarkRepository postMarkRepository;
+    @Autowired
+    private PostCommentService postCommentService;
+    @Autowired
+    private PostRepository postRepository;
 
     public AuthorViewController(SubscriptionService subscriptionService, UserService userService, PostService postService) {
         this.subscriptionService = subscriptionService;
@@ -51,6 +57,13 @@ public class AuthorViewController {
         boolean isSubscribed = false;
         boolean isOwner = false;
         Map<Integer, Boolean> userPostMarks = new HashMap<>();
+        List<Post> posts = postRepository.findAllByAuthorIdWithComments(id);
+        Map<Integer, List<PostCommentNode>> postCommentTrees = new HashMap<>();
+        for(Post post : posts) {
+            if(post.getComments() != null) {
+                postCommentTrees.put(post.getId(), postCommentService.buildTree(post.getComments()));
+            }
+        }
         User currentUser = null;
         if(principal != null) {
             currentUser = userService.getCurrentUser();
@@ -71,6 +84,8 @@ public class AuthorViewController {
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userPostMarks", userPostMarks);
+        model.addAttribute("posts", posts);
+        model.addAttribute("postCommentTrees", postCommentTrees);
         return "author-page";
     }
 
@@ -132,4 +147,33 @@ public class AuthorViewController {
         postService.editPost(postId, title, text);
         return "redirect:/authors/" + authorId;
     }
+
+    @PostMapping("/posts/{postId}/comments")
+    @PreAuthorize("isAuthenticated()")
+    public String commentPost(@PathVariable int postId,
+                              @RequestParam int authorId,
+                              @RequestParam String text,
+                              @RequestParam(required = false) Integer parentId) {
+        postCommentService.addComment(postId, parentId, text);
+        return "redirect:/authors/" + authorId;
+    }
+
+
+    @PostMapping("/posts/comment/{commentId}/delete")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteComment(@PathVariable int commentId,
+                                @RequestParam(required = false) Integer authorId) {
+        postCommentService.softDelete(commentId);
+        return "redirect:/authors/" + authorId;
+    }
+
+    @PostMapping("/posts/comments/{commentId}/edit")
+    @PreAuthorize("isAuthenticated()")
+    public String editComment(@PathVariable int commentId,
+                              @RequestParam int authorId,
+                              @RequestParam String text) {
+        postCommentService.editComment(commentId, text);
+        return "redirect:/authors/" + authorId;
+    }
+
 }

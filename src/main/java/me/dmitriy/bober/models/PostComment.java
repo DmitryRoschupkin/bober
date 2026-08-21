@@ -28,4 +28,13 @@ public class PostComment {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "parent_id")
+    private Integer parentId;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

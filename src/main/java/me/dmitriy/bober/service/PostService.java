@@ -94,6 +94,7 @@ public class PostService {
         }
         post.setTitle(title.trim());
         post.setText(text.trim());
+        post.setUpdatedAt(LocalDateTime.now());
         postRepository.save(post);
     }
 }

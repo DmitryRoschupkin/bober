@@ -40,7 +40,7 @@
                          !node.comment.deleted}"
                               th:title="${#temporals.format(node.comment.updatedAt, 'dd.MM.yyyy HH:mm')}"
                               th:text="'(изменено)'">
-                </span>
+                        </span>
                     </div>
                     <p class="comment__text"
                        th:if="${node.comment.deleted}"
@@ -103,6 +103,106 @@
         <div class="comment__replies" th:if="${node.replies != null and !node.replies.isEmpty()}">
             <div th:each="reply : ${node.replies}">
                 <div th:replace="~{fragments/comment :: commentNode(${reply}, ${bookId})}"></div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="postCommentNode(node, postId, authorId)"
+         class="post-comment"
+         th:if="${node != null && node.postComment != null}"
+         th:attr="data-comment-id=${node.postComment.id}">
+            <div class="post-comment__body"
+                 th:with="isCommentAuthor=${node.postComment.user != null && #authorization.expression('isAuthenticated()') && #authentication.name == node.postComment.user.nickname},
+                          canDelete=${isCommentAuthor || isOwner || #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
+
+                <div class="post-comment__header">
+                    <a class="userpic"
+                       th:href="@{/account/{id}(id=${node.postComment.user.id})}">
+                        <div th:if="${node.postComment.user.userPicturePath}"
+                             class="comment__avatar-pic">
+                            <img th:src="@{/files/{path}(path=${node.postComment.user.userPicturePath})}"
+                                 alt="userpic">
+                        </div>
+                        <div th:unless="${node.postComment.user.userPicturePath}">
+                            <span th:text="${#strings.substring(node.postComment.user.nickname, 0, 1)}"></span>
+                        </div>
+                    </a>
+                    <div class="post-comment__content">
+                        <div class="post-comment__meta">
+                            <a class="post-comment__author"
+                               th:href="@{/account/{id}(id=${node.postComment.user.id})}"
+                               th:text="${node.postComment.user != null ? node.postComment.user.nickname : 'Гость'}"></a>
+                            <span th:if="${node.postComment.user != null}"
+                                  th:replace="~{fragments/role-badge :: roleBadge(${node.postComment.user.role}, ${isOwner})}"></span>
+                            <span class="post-comment__date"
+                                  th:text="${#temporals.format(node.postComment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
+                            <span class="post-comment__edited"
+                                  th:if="${node.postComment.updatedAt != null &&
+                             node.postComment.updatedAt != node.postComment.createdAt &&
+                             !node.postComment.deleted}"
+                                  th:title="${#temporals.format(node.postComment.updatedAt, 'dd.MM.yyyy HH:mm')}"
+                                  th:text="'(изменено)'">
+                            </span>
+                        </div>
+                        <p class="comment__text"
+                           th:if="${node.postComment.deleted}"
+                           th:text="'[комментарий удалён]'">
+                        </p>
+                        <p class="comment__text"
+                           th:unless="${node.postComment.deleted}"
+                           th:text="${node.postComment.text}">
+                        </p>
+                    </div>
+                </div>
+                <div class="comment__actions"
+                     sec:authorize="isAuthenticated()"
+                     th:unless="${node.postComment.deleted}">
+
+                    <button type="button"
+                            class="comment__reply-btn">
+                        Ответить
+                    </button>
+                    <button type="button"
+                            class="comment__edit-btn"
+                            th:if="${isCommentAuthor}">
+                        Редактировать
+                    </button>
+                    <form th:if="${canDelete}"
+                          th:action="@{/authors/posts/comment/{commentId}/delete(commentId=${node.postComment.id})}"
+                          method="post"
+                          onsubmit="return confirm('Вы уверены, что хотите удалить этот комментарий?');">
+                        <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="authorId" th:value="${authorId}"/>
+                        <button type="submit" class="comment__delete-btn">
+                            Удалить
+                        </button>
+                    </form>
+                    <form th:action="@{/authors/posts/{id}/comments(id=${postId})}"
+                          class="comment__reply-form"
+                          sec:authorize="isAuthenticated()"
+                          method="post">
+                        <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="parentId" th:value="${node.postComment.id}"/>
+                        <input type="hidden" name="authorId" th:value="${authorId}"/>
+                        <textarea name="text" class="comment__reply-input" placeholder="Что скажем?" required></textarea>
+                        <button type="submit" class="comment__reply-submit">Опозориться</button>
+                    </form>
+                    <form th:action="@{/authors/posts/comments/{commentId}/edit(commentId=${node.postComment.id})}"
+                          th:if="${isCommentAuthor}"
+                          class="comment__edit-form"
+                          sec:authorize="isAuthenticated()"
+                          method="post">
+                        <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="postId" th:value="${postId}"/>
+                        <input type="hidden" name="authorId" th:value="${authorId}"/>
+                        <textarea name="text" class="comment__edit-input" required th:text="${node.postComment.text}"></textarea>
+                        <button type="submit" class="comment__edit-submit">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        <div class="comment__replies" th:if="${node.replies != null and !node.replies.isEmpty()}">
+            <div th:each="reply : ${node.replies}">
+                <div th:replace="~{fragments/comment :: postCommentNode(${reply}, ${postId})}"></div>
             </div>
         </div>
     </div>

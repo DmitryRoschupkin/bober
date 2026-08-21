@@ -1,11 +1,12 @@
 document.addEventListener('click', (e) => {
     const replyBtn = e.target.closest('.comment__reply-btn');
     if (replyBtn) {
-        const commentBody = replyBtn.closest('.comment__body');
-        const replyForm = commentBody.querySelector(':scope > .comment__reply-form');
+        const commentBody = replyBtn.closest('.comment__body, .post-comment__body');
+        if (!commentBody) return;
 
+        const replyForm = commentBody.querySelector('.comment__reply-form');
         if (replyForm) {
-            const editForm = commentBody.querySelector(':scope > .comment__edit-form');
+            const editForm = commentBody.querySelector('.comment__edit-form');
             if (editForm?.classList.contains('is-open')) {
                 toggleEditForm(commentBody, editForm, false);
             }
@@ -20,11 +21,12 @@ document.addEventListener('click', (e) => {
 
     const editBtn = e.target.closest('.comment__edit-btn');
     if (editBtn) {
-        const commentBody = editBtn.closest('.comment__body');
-        const editForm = commentBody.querySelector(':scope > .comment__edit-form');
+        const commentBody = editBtn.closest('.comment__body, .post-comment__body');
+        if (!commentBody) return;
 
+        const editForm = commentBody.querySelector('.comment__edit-form');
         if (editForm) {
-            const replyForm = commentBody.querySelector(':scope > .comment__reply-form');
+            const replyForm = commentBody.querySelector('.comment__reply-form');
             if (replyForm?.classList.contains('is-open')) {
                 replyForm.classList.remove('is-open');
             }
@@ -36,8 +38,9 @@ document.addEventListener('click', (e) => {
 });
 
 function toggleEditForm(commentBody, editForm, show) {
-    const textElements = commentBody.querySelectorAll(':scope > .comment__text');
+    const textElements = commentBody.querySelectorAll('.comment__text');
     let textElement = null;
+
     textElements.forEach(el => {
         if (!el.textContent.includes('[комментарий удалён]')) {
             textElement = el;

@@ -9,11 +9,14 @@
     <link rel="stylesheet" th:href="@{/css/listing.css}">
     <link rel="stylesheet" th:href="@{/css/account.css}">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/comment.css}">
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script th:src="@{/js/header.js}" defer></script>
     <script th:src="@{/js/image-modal.js}" defer></script>
+    <script th:src="@{/js/post.js}" defer></script>
+    <script th:src="@{/js/comment.js}" defer></script>
 
 </head>
 <body>
@@ -101,8 +104,8 @@
             <div class="author-microblog__posts-listing"
                  th:with="canDelete=${isOwner or #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
                 <div class="author-microblog__post"
-                     th:each="post: ${author.posts}"
-                     th:if="${!author.getPosts().isEmpty() && author.getPosts() != null}">
+                     th:each="post: ${posts}"
+                     th:if="${!posts.isEmpty() && posts != null}">
 
                     <div class="author-microblog__post-metadata">
                         <p th:text="${author.firstName+' '+author.lastName}" class="author-microblog__post-fullname"></p>
@@ -148,7 +151,13 @@
                             <span class="author-microblog__post-marks-count" th:text="${post.getCommentsAmount()}"></span>
                         </button>
                         <div class="author-microblog__post-date">
-                            <p th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></p>
+                            <p class="author-microblog__post-created"
+                               th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></p>
+                            <p  class="author-microblog__post-updated"
+                                th:if="${post.updatedAt != null &&
+                                    post.updatedAt != post.createdAt}"
+                                th:title="${#temporals.format(post.updatedAt, 'dd.MM.yyyy HH:mm')}"
+                                th:text="'(изменено)'"></p>
                         </div>
                     </div>
                     <div class="author-microblog__post-actions">
@@ -170,6 +179,7 @@
                     </div>
 
                     <form th:action="@{/authors/posts/{postId}/edit(postId=${post.id})}"
+                          th:if="${isOwner}"
                           method="post"
                           class="author-microblog__post-edit-form"
                           sec:authorize="isAuthenticated()">
@@ -187,8 +197,37 @@
                         <button type="submit" class="author-microblog__post-edit-submit">Сохранить</button>
                     </form>
 
+                    <div class="post-comments-section">
+                        <div class="post-comments-section__wrapper">
+                            <h2>Комментарии</h2>
+                        </div>
+                        <form th:action="@{/authors/posts/{postId}/comments(postId=${post.id})}"
+                              method="post"
+                              class="author-microblog__post-comment-form"
+                              sec:authorize="isAuthenticated()">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="authorId" th:value="${author.id}"/>
+                            <textarea name="text"
+                                      class="author-microblog__post-comment-text"
+                                      required
+                                      placeholder="Что думаете об этой записи?"></textarea>
+                            <button type="submit" class="author-microblog__post-comment-submit">Оставить комментарий</button>
+                        </form>
+                        <p class="post-comments-section__login-prompt" sec:authorize="isAnonymous()">
+                            Чтобы оставить комментарий, <a th:href="@{/login}">войдите в аккаунт</a>.
+                        </p>
+                        <div class="post-comments-list">
+                            <div th:each="rootNode: ${postCommentTrees[post.id]}">
+                                <div th:replace="~{fragments/comment :: postCommentNode(${rootNode}, ${post.id}, ${author.id})}"></div>
+                            </div>
+                            <p class="post-comments-list__empty" th:if="${post.comments == null || post.comments.isEmpty()}">
+                                Комментариев пока нет - будь первым!
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
-                <div th:unless="${!author.getPosts().isEmpty() && author.getPosts() != null}"
+                <div th:unless="${!posts.isEmpty() && posts != null}"
                      class="author-microblog__empty">
                     <p><span th:text="${author.firstName}+' '+${author.lastName}"></span> пока не опубликовал ни одной записи.
                         Подпишитесь, чтобы узнать о новых заметках автора!</p>

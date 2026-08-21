@@ -748,12 +748,14 @@
     box-sizing: border-box;
 }
 
-.author-microblog__input:focus {
+.author-microblog__input:focus,
+.author-microblog__post-comment-text:focus {
     border-color: #ffe4b7;
     box-shadow: 0 0 0 3px rgba(255, 228, 183, 0.08);
 }
 
-.author-microblog__post-btn {
+.author-microblog__post-btn,
+.author-microblog__post-comment-submit {
     margin-top: 6px;
     margin-bottom: 12px;
     background: #ffefcc;
@@ -771,7 +773,8 @@
     align-self: flex-end;
 }
 
-.author-microblog__post-btn:hover {
+.author-microblog__post-btn:hover,
+.author-microblog__post-comment-submit:hover {
     box-shadow: 0 0 20px rgba(255, 228, 183, 0.35);
     transform: translateY(-1px);
 }
@@ -801,7 +804,13 @@
 }
 
 .author-microblog__post-date {
+    display: flex;
+    gap: 10px;
     margin-left: auto;
+}
+
+.author-microblog__post-updated {
+    cursor: help;
 }
 
 .author-microblog__post-fullname,
@@ -970,10 +979,14 @@
 }
 
 .author-microblog__post-edit-form {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 10px;
     margin-top: 15px;
+}
+
+.author-microblog__post-edit-form.is-open {
+    display: flex;
 }
 
 .author-microblog__post-edit-title,
@@ -996,6 +1009,7 @@
 
 .author-microblog__post-edit-text {
     min-height: 100px;
+    max-height: 500px;
     width: 100%;
 }
 
@@ -1017,4 +1031,52 @@
 .author-microblog__post-edit-submit:hover {
     border-color: #ffe4b7;
     background: rgba(255, 228, 183, 0.05);
+}
+
+.post-comments-section {
+    display: none;
+}
+
+.post-comments-section.is-open {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-comments-section__wrapper h2{
+    color: #ffefcc;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.author-microblog__post-comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-microblog__post-comment-text {
+    background: #0d0d0d;
+    border: 1px solid rgba(255, 239, 204, 0.25);
+    color: #fff6db;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 13px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .3s, box-shadow .3s;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    min-height: 80px;
+    resize: none;
+    font-family: inherit;
+    line-height: 1.5;
+    width: 100%;
+}
+
+.author-microblog__post-comment-submit {
+    margin-top: 0;
+    font-size: 12px;
+    padding: 12px;
+    transition: box-shadow .3s, transform .3s;
 }

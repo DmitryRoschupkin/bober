@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
-    <th:block th:fragment="roleBadge(role, isBookAuthor)">
-        <span th:if="${isBookAuthor}" class="role-badge role-badge--author-of-book">Автор книги</span>
-        <span th:switch="${role}">
-            <span th:case="'SUDO'" class="role-badge role-badge--sudo">Админ</span>
-            <span th:case="'ADMIN'" class="role-badge role-badge--admin">Модератор</span>
-            <span th:case="'AUTHOR'" th:unless="${isBookAuthor}" class="role-badge role-badge--author">Сотрудник Бобра</span>
-            <span th:case="*"></span>
+<th:block th:fragment="roleBadge(role, isBookAuthor, isPostAuthor)">
+    <span th:if="${isBookAuthor == true}"
+          class="role-badge role-badge--author-of-book">Автор книги</span>
+
+    <span th:if="${isPostAuthor == true}"
+          class="role-badge role-badge--author-of-book">Автор поста</span>
+
+    <span th:if="${role != null}" th:with="roleStr=${#strings.toString(role)}">
+            <span th:if="${roleStr == 'SUDO'}"
+                  class="role-badge role-badge--sudo">Админ</span>
+
+            <span th:if="${roleStr == 'ADMIN'}"
+                  class="role-badge role-badge--admin">Модератор</span>
+
+            <span th:if="${roleStr == 'AUTHOR' and isBookAuthor != true and isPostAuthor != true}"
+                  class="role-badge role-badge--author">Сотрудник Бобра</span>
         </span>
-    </th:block>
+</th:block>
 </body>
 </html>

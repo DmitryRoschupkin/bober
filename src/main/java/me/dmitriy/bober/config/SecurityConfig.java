@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,7 +37,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setRequestMatcher(request -> {
+            String uri = request.getRequestURI();
+            return !uri.startsWith("/files/") &&
+                    !uri.startsWith("/css/") &&
+                    !uri.startsWith("/js/") &&
+                    !uri.startsWith("/img/") &&
+                    !uri.startsWith("/fonts/");
+        });
         http
+                .requestCache(cache -> cache.requestCache(requestCache))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/", "/home", "/about",
@@ -44,7 +55,7 @@ public class SecurityConfig {
                                 "/login", "/registration",
                                 "/error", "/authors/books/**",
                                 "/css/**", "/img/**", "/js/**",
-                                "/fonts/**", "/files/covers/**").permitAll()
+                                "/fonts/**", "/files/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/registration").permitAll()
                         .requestMatchers("/account/**").hasAnyRole(
                                 UserRole.USER.name(),

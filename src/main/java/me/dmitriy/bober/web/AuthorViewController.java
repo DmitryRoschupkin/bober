@@ -115,4 +115,21 @@ public class AuthorViewController {
         postService.toggleMark(postId, currentUser.getId(), isLike);
         return "redirect:/authors/" + authorId;
     }
+
+    @PostMapping("/posts/{postId}/delete")
+    @PreAuthorize("isAuthenticated()")
+    public String deletePost(@PathVariable int postId, @RequestParam int authorId) {
+        postService.deletePost(postId);
+        return "redirect:/authors/" + authorId;
+    }
+
+    @PostMapping("/posts/{postId}/edit")
+    @PreAuthorize("isAuthenticated()")
+    public String editPost(@PathVariable int postId,
+                           @RequestParam int authorId,
+                           @RequestParam String title,
+                           @RequestParam String text) {
+        postService.editPost(postId, title, text);
+        return "redirect:/authors/" + authorId;
+    }
 }

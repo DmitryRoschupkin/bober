@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,4 +33,11 @@ public class Post {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<PostComment> comments;
+
+    public int getCommentsAmount() {
+        return comments.size();
+    }
 }

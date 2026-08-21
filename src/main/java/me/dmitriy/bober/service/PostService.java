@@ -17,11 +17,13 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostMarkRepository postMarkRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public PostService(PostRepository postRepository, PostMarkRepository postMarkRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, PostMarkRepository postMarkRepository, UserRepository userRepository, UserService userService) {
         this.postRepository = postRepository;
         this.postMarkRepository = postMarkRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public void postMessage(Author author, String title, String text) {
@@ -70,6 +72,28 @@ public class PostService {
 
         post.setLikesCount(likes);
         post.setDislikesCount(dislikes);
+        postRepository.save(post);
+    }
+
+    @Transactional
+    public void deletePost(int postId) {
+        postRepository.deleteById(postId);
+    }
+
+    public void editPost(int postId, String title, String text) {
+        Post post = postRepository
+                .findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post with id " + postId + " does not exist"));
+        User user = userService.getCurrentUser();
+        boolean isOwner = post.getAuthor().getUser().getId() == user.getId();
+        if(!isOwner) {
+            throw new IllegalStateException("Нельзя редактировать чужие посты!");
+        }
+        if (text == null || text.isBlank()) {
+            throw new IllegalArgumentException("Пост не может быть пустым!");
+        }
+        post.setTitle(title.trim());
+        post.setText(text.trim());
         postRepository.save(post);
     }
 }

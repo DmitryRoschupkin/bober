@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title th:text="${author.firstName} + ' ' + ${author.lastName}"></title>
@@ -96,11 +98,16 @@
                 <button type="submit" class="author-microblog__post-btn">Опубликовать</button>
             </form>
 
-            <div class="author-microblog__posts-listing">
+            <div class="author-microblog__posts-listing"
+                 th:with="canDelete=${isOwner or #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
                 <div class="author-microblog__post"
                      th:each="post: ${author.posts}"
                      th:if="${!author.getPosts().isEmpty() && author.getPosts() != null}">
-                    <p th:text="${author.firstName+' '+author.lastName}" class="author-microblog__post-fullname"></p>
+
+                    <div class="author-microblog__post-metadata">
+                        <p th:text="${author.firstName+' '+author.lastName}" class="author-microblog__post-fullname"></p>
+                    </div>
+
                     <p th:if="${post.title != null && !post.title.isBlank()}"
                        th:text="${post.title}"
                        class="author-microblog__post-title"></p>
@@ -135,7 +142,51 @@
                                       th:text="${post.dislikesCount ?: 0}">0</span>
                             </button>
                         </form>
+                        <button type="button"
+                                class="author-microblog__post-mark comments-btn">
+                            <i class="fa-solid fa-message"></i>
+                            <span class="author-microblog__post-marks-count" th:text="${post.getCommentsAmount()}"></span>
+                        </button>
+                        <div class="author-microblog__post-date">
+                            <p th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></p>
+                        </div>
                     </div>
+                    <div class="author-microblog__post-actions">
+                        <button type="button"
+                                class="author-microblog__post-edit-btn"
+                                th:if="${isOwner}">
+                            Редактировать пост
+                        </button>
+                        <form th:if="${canDelete}"
+                              th:action="@{/authors/posts/{postId}/delete(postId=${post.id})}"
+                              method="post"
+                              onsubmit="return confirm('Вы уверены, что хотите удалить этот пост?');">
+                            <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="authorId" th:value="${post.author.id}" />
+                            <button type="submit" class="author-microblog__post-delete-btn">
+                                Удалить
+                            </button>
+                        </form>
+                    </div>
+
+                    <form th:action="@{/authors/posts/{postId}/edit(postId=${post.id})}"
+                          method="post"
+                          class="author-microblog__post-edit-form"
+                          sec:authorize="isAuthenticated()">
+                        <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="authorId" th:value="${post.author.id}">
+                        <input type="text"
+                               name="title"
+                               th:value="${post.title}"
+                               class="author-microblog__post-edit-title"
+                               placeholder="Заголовок">
+                        <textarea name="text"
+                                  class="author-microblog__post-edit-text"
+                                  required th:text="${post.text}"
+                                  placeholder="Напиши хоть что-то, нельзя оставлять пост пустым!"  ></textarea>
+                        <button type="submit" class="author-microblog__post-edit-submit">Сохранить</button>
+                    </form>
+
                 </div>
                 <div th:unless="${!author.getPosts().isEmpty() && author.getPosts() != null}"
                      class="author-microblog__empty">

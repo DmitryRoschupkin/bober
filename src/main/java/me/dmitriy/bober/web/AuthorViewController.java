@@ -9,6 +9,7 @@ import me.dmitriy.bober.service.PostService;
 import me.dmitriy.bober.service.SubscriptionService;
 import me.dmitriy.bober.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -46,18 +47,33 @@ public class AuthorViewController {
     }
 
     @GetMapping("/{id}")
-    public String getAuthor(Model model, @PathVariable int id, Principal principal) {
+    public String getAuthor(Model model, @PathVariable int id,
+                            @RequestParam(defaultValue = "date") String sort,
+                            @RequestParam(defaultValue = "desc") String dir,
+                            Principal principal) {
         Author author = authorRepository
                 .findByIdWithBooks(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Author not found"));
+
         int subscribersCount = author.getSubscriptions().size();
         int booksAmount = author.getBooksAmount();
+
         boolean isSubscribed = false;
         boolean isOwner = false;
+        boolean isAsc = "asc".equalsIgnoreCase(dir);
         Map<Integer, Boolean> userPostMarks = new HashMap<>();
-        List<Post> posts = postRepository.findAllByAuthorIdWithComments(id);
+        List<Post> posts;
+        if ("popularity".equalsIgnoreCase(sort)) {
+            posts = isAsc
+                    ? postRepository.findByAuthorIdSortByPopularityAsc(id)
+                    : postRepository.findByAuthorIdSortByPopularityDesc(id);
+        } else {
+            Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+            posts = postRepository.findByAuthorId(id, Sort.by(direction, "createdAt"));
+        }
+
         Map<Integer, List<PostCommentNode>> postCommentTrees = new HashMap<>();
         for(Post post : posts) {
             if(post.getComments() != null) {

@@ -157,14 +157,16 @@ html {
     color: #1a1305;
 }
 
-.sort-tabs {
+.sort-tabs,
+.author-microblog__sort {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: calc(var(--index) * 1.8);
 }
 
-.sort-tab {
+.sort-tab,
+.author-microblog__sort-tab {
     text-decoration: none;
     color: #a89d7c;
     font-size: 12px;
@@ -175,11 +177,13 @@ html {
     transition: color .25s, border-color .25s;
 }
 
-.sort-tab:hover {
+.sort-tab:hover,
+.author-microblog__sort-tab:hover {
     color: #ffefcc;
 }
 
-.sort-tab.is-active {
+.sort-tab.is-active,
+.author-microblog__sort-tab.is-active {
     color: #ffe4b7;
     border-color: #ffe4b7;
 }

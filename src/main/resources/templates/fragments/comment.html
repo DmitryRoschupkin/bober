@@ -15,7 +15,19 @@
                       canDelete=${isCommentAuthor or isBookAuthor or #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
 
         <div class="comment__header">
-            <a class="userpic" th:href="@{/account/{id}(id=${node.comment.user.id})}">
+            <a class="userpic"
+               th:href="@{/account/{id}(id=${node.comment.user.id})}"
+               th:if="${node.comment.user.role != 'AUTHOR'}">
+                <div th:if="${node.comment.user.userPicturePath}" class="comment__avatar-pic">
+                    <img th:src="@{/files/{path}(path=${node.comment.user.userPicturePath})}" alt="userpic">
+                </div>
+                <div th:unless="${node.comment.user.userPicturePath}">
+                    <span th:text="${#strings.substring(node.comment.user.nickname, 0, 1)}"></span>
+                </div>
+            </a>
+            <a class="userpic"
+               th:href="@{/authors/{id}(id=${node.comment.user.author.id})}"
+               th:unless="${node.comment.user.role != 'AUTHOR'}">
                 <div th:if="${node.comment.user.userPicturePath}" class="comment__avatar-pic">
                     <img th:src="@{/files/{path}(path=${node.comment.user.userPicturePath})}" alt="userpic">
                 </div>
@@ -113,7 +125,17 @@
                       canDelete=${isCommentAuthor || isOwner || #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
 
         <div class="post-comment__header">
-            <a class="userpic" th:href="@{/account/{id}(id=${node.postComment.user.id})}">
+            <a class="userpic" th:href="@{/account/{id}(id=${node.postComment.user.id})}"
+               th:if="${node.postComment.user.role != 'AUTHOR'}">
+                <div th:if="${node.postComment.user.userPicturePath}" class="comment__avatar-pic">
+                    <img th:src="@{/files/{path}(path=${node.postComment.user.userPicturePath})}" alt="userpic">
+                </div>
+                <div th:unless="${node.postComment.user.userPicturePath}">
+                    <span th:text="${#strings.substring(node.postComment.user.nickname, 0, 1)}"></span>
+                </div>
+            </a>
+            <a class="userpic" th:href="@{/authors/{id}(id=${node.postComment.user.author.id})}"
+               th:unless="${node.postComment.user.role != 'AUTHOR'}">
                 <div th:if="${node.postComment.user.userPicturePath}" class="comment__avatar-pic">
                     <img th:src="@{/files/{path}(path=${node.postComment.user.userPicturePath})}" alt="userpic">
                 </div>

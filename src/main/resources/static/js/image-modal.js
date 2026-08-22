@@ -34,4 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal()
         }
     })
+
+    window.addEventListener('pagehide', closeModal)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            closeModal()
+        }
+    })
 })

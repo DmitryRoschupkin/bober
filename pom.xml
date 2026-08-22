@@ -41,13 +41,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>positiondev</id>
-            <url>https://raw.githubusercontent.com/psiegman/mvn-repo/master/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -134,15 +127,9 @@
             <version>3.0.3</version>
         </dependency>
         <dependency>
-            <groupId>nl.siegmann.epublib</groupId>
+            <groupId>com.positiondev.epublib</groupId>
             <artifactId>epublib-core</artifactId>
             <version>3.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
     </dependencies>

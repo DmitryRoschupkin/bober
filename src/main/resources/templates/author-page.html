@@ -93,16 +93,16 @@
             <h1 class="section-label">Новости автора</h1>
 
             <div class="author-microblog__sort">
-                <a th:href="@{/authors/{id}(id=${author.id}, sort='popularity', dir=${param.dir ?: 'desc'})}"
-                   th:classappend="${param.sort != null and param.sort[0] == 'popularity' ? 'is-active' : ''}"
-                   class="author-microblog__sort-tab">
-                    По популярности
-                </a>
-
                 <a th:href="@{/authors/{id}(id=${author.id}, sort='date', dir=${param.dir ?: 'desc'})}"
                    th:classappend="${param.sort == null or param.sort[0] == 'date' ? 'is-active' : ''}"
                    class="author-microblog__sort-tab">
                     По дате
+                </a>
+
+                <a th:href="@{/authors/{id}(id=${author.id}, sort='popularity', dir=${param.dir ?: 'desc'})}"
+                   th:classappend="${param.sort != null and param.sort[0] == 'popularity' ? 'is-active' : ''}"
+                   class="author-microblog__sort-tab">
+                    По популярности
                 </a>
 
                 <a th:href="@{/authors/{id}(id=${author.id}, sort=${param.sort ?: 'date'}, dir=${param.dir != null and param.dir[0] == 'asc' ? 'desc' : 'asc'})}"

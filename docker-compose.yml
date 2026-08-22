@@ -1,0 +1,46 @@
+services:
+  bober_db:
+    image: postgres:15-alpine
+    container_name: bober_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - bober_net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${DB_USERNAME} -d ${DB_NAME}
+      interval: 3s
+      timeout: 3s
+      retries: 5
+  app:
+    build: .
+    container_name: bober_app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://bober_db:5432/bober_db
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      UPLOAD_DIR: /app/uploads
+    networks:
+      - bober_net
+    depends_on:
+      bober_db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/uploads
+
+networks:
+  bober_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  uploads_data:

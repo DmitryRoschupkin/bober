@@ -105,7 +105,8 @@
                  th:with="canDelete=${isOwner or #authorization.expression('hasAnyRole(''ADMIN'', ''SUDO'')')}">
                 <div class="author-microblog__post"
                      th:each="post: ${posts}"
-                     th:if="${!posts.isEmpty() && posts != null}">
+                     th:if="${!posts.isEmpty() && posts != null}"
+                     th:id="'post-'+${post.id}">
 
                     <div class="author-microblog__post-metadata">
                         <p th:text="${author.firstName+' '+author.lastName}" class="author-microblog__post-fullname"></p>

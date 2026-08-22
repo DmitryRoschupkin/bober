@@ -128,7 +128,7 @@ public class AuthorViewController {
     public String markPost(@PathVariable("id") int authorId, @RequestParam int postId, @RequestParam boolean isLike) {
         User currentUser = userService.getCurrentUser();
         postService.toggleMark(postId, currentUser.getId(), isLike);
-        return "redirect:/authors/" + authorId;
+        return "redirect:/authors/" + authorId + "#post-" + postId;
     }
 
     @PostMapping("/posts/{postId}/delete")
@@ -145,7 +145,7 @@ public class AuthorViewController {
                            @RequestParam String title,
                            @RequestParam String text) {
         postService.editPost(postId, title, text);
-        return "redirect:/authors/" + authorId;
+        return "redirect:/authors/" + authorId + "#post-" + postId;
     }
 
     @PostMapping("/posts/{postId}/comments")
@@ -155,7 +155,7 @@ public class AuthorViewController {
                               @RequestParam String text,
                               @RequestParam(required = false) Integer parentId) {
         postCommentService.addComment(postId, parentId, text);
-        return "redirect:/authors/" + authorId;
+        return "redirect:/authors/" + authorId + "#post-" + postId;
     }
 
 

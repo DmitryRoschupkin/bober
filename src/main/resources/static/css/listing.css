@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .page {
     max-width: 1200px;
     margin: 0 auto;
@@ -300,6 +304,7 @@
     font-size: 18px;
     background: #1a1305;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .author-card__avatar-pic {
@@ -418,6 +423,7 @@
     background: #1a1305;
     text-transform: uppercase;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .author-detail__name {
@@ -801,6 +807,7 @@
     border-radius: 10px;
     padding: 14px 16px;
     margin-bottom: 15px;
+    scroll-margin-top: 150px;
 }
 
 .author-microblog__post-date {

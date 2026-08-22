@@ -2,8 +2,7 @@ package me.dmitriy.bober.models;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import me.dmitriy.bober.data.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +13,10 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"subscriptions", "author"})
+@EqualsAndHashCode(exclude = {"subscriptions", "author"})
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(force = true)
@@ -52,6 +54,9 @@ public class User {
     @Column(name = "user_picture_path")
     private String userPicturePath;
 
+    @OneToOne(mappedBy = "user")
+    private Author author;
+
     public User(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
@@ -86,8 +91,5 @@ public class User {
         }
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
-
-    @OneToOne(mappedBy = "user")
-    private Author author;
 
 }

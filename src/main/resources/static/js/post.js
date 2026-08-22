@@ -49,3 +49,19 @@ function toggleCommentsSection(commentsSection, show) {
         commentsSection.classList.remove('is-open');
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.location.hash) {
+        const hash = window.location.hash;
+        const target = document.querySelector(hash);
+
+        if (target) {
+            setTimeout(() => {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 150);
+        }
+    }
+});

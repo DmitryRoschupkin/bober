@@ -1,17 +1,19 @@
 package me.dmitriy.bober.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = {"books", "subscriptions", "user", "posts"})
+@EqualsAndHashCode(exclude = {"books", "subscriptions", "user", "posts"})
 @Entity
 @Table(name = "author")
-@ToString(exclude = {"books", "subscriptions"})
 public class Author {
 
     @Id

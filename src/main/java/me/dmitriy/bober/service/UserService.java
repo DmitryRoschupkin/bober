@@ -1,7 +1,9 @@
 package me.dmitriy.bober.service;
 
 import jakarta.transaction.Transactional;
+import me.dmitriy.bober.data.AuthorRepository;
 import me.dmitriy.bober.data.UserRepository;
+import me.dmitriy.bober.models.Author;
 import me.dmitriy.bober.models.User;
 import me.dmitriy.bober.models.UserRole;
 import org.springframework.http.HttpStatus;

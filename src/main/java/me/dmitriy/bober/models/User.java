@@ -4,6 +4,8 @@ package me.dmitriy.bober.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.dmitriy.bober.data.AuthorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(force = true)
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -83,5 +86,8 @@ public class User {
         }
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
+
+    @OneToOne(mappedBy = "user")
+    private Author author;
 
 }

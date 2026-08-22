@@ -26,7 +26,12 @@
             <div class="comment__content">
                 <div class="comment__meta">
                     <a class="comment__author"
+                       th:if="${node.comment.user.role != 'AUTHOR'}"
                        th:href="@{/account/{id}(id=${node.comment.user.id})}"
+                       th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></a>
+                    <a class="comment__author"
+                       th:unless="${node.comment.user.role != 'AUTHOR'}"
+                       th:href="@{/authors/{id}(id=${node.comment.user.author.id})}"
                        th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></a>
                     <span th:if="${node.comment.user != null}"
                           th:replace="~{fragments/role-badge :: roleBadge(${node.comment.user.role}, ${isBookAuthor}, false)}"></span>
@@ -119,7 +124,12 @@
             <div class="post-comment__content">
                 <div class="post-comment__meta">
                     <a class="post-comment__author"
+                       th:if="${node.postComment.user.role != 'AUTHOR'}"
                        th:href="@{/account/{id}(id=${node.postComment.user.id})}"
+                       th:text="${node.postComment.user != null ? node.postComment.user.nickname : 'Гость'}"></a>
+                    <a class="post-comment__author"
+                       th:unless="${node.postComment.user.role != 'AUTHOR'}"
+                       th:href="@{/authors/{id}(id=${node.postComment.user.author.id})}"
                        th:text="${node.postComment.user != null ? node.postComment.user.nickname : 'Гость'}"></a>
                     <span th:if="${node.postComment.user != null}"
                           th:replace="~{fragments/role-badge :: roleBadge(${node.postComment.user.role}, false, ${isPostAuthor})}"></span>

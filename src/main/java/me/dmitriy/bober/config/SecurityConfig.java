@@ -48,7 +48,7 @@ public class SecurityConfig {
         });
         http
                 .requestCache(cache -> cache.requestCache(requestCache))
-                .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/", "/home", "/about",
                                 "/books/**", "/authors/**",

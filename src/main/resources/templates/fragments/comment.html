@@ -51,7 +51,7 @@
                           th:datetime="${#temporals.formatISO(node.comment.createdAt)}"
                           th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></time>
                     <time class="comment__edited"
-                          th:datetime="${#temporals.formatISO(node.comment.updateddAt)}"
+                          th:datetime="${#temporals.formatISO(node.comment.updatedAt)}"
                           th:if="${node.comment.updatedAt != null &&
                          node.comment.updatedAt != node.comment.createdAt &&
                          !node.comment.deleted}"

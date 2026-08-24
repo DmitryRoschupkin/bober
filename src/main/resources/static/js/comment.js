@@ -84,7 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isNaN(date.getTime())) {
             const formattedDate = formatter.format(date);
 
-            if (timeEl.classList.contains('author-microblog__post-updated')) {
+            if (timeEl.classList.contains('author-microblog__post-updated')
+                || timeEl.classList.contains('post-comment__edited')
+                || timeEl.classList.contains('comment__edited')) {
                 timeEl.setAttribute('title', formattedDate);
             } else {
                 timeEl.textContent = formattedDate;

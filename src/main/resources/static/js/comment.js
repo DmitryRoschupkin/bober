@@ -61,3 +61,34 @@ function toggleEditForm(commentBody, editForm, show) {
         if (textElement) textElement.style.display = '';
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const formatter = new Intl.DateTimeFormat('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    });
+
+    document.querySelectorAll('time[datetime]').forEach(timeEl => {
+        let isoString = timeEl.getAttribute('datetime');
+        if (!isoString) return;
+
+        if (!isoString.endsWith('Z') && !isoString.includes('+') && !isoString.includes('-')) {
+            isoString += 'Z';
+        }
+
+        const date = new Date(isoString);
+        if (!isNaN(date.getTime())) {
+            const formattedDate = formatter.format(date);
+
+            if (timeEl.classList.contains('author-microblog__post-updated')) {
+                timeEl.setAttribute('title', formattedDate);
+            } else {
+                timeEl.textContent = formattedDate;
+            }
+        }
+    });
+});

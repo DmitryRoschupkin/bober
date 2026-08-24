@@ -47,15 +47,16 @@
                        th:text="${node.comment.user != null ? node.comment.user.nickname : 'Гость'}"></a>
                     <span th:if="${node.comment.user != null}"
                           th:replace="~{fragments/role-badge :: roleBadge(${node.comment.user.role}, ${isBookAuthor}, false)}"></span>
-                    <span class="comment__date"
-                          th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
-                    <span class="comment__edited"
+                    <time class="comment__date"
+                          th:datetime="${#temporals.formatISO(node.comment.createdAt)}"
+                          th:text="${#temporals.format(node.comment.createdAt, 'dd.MM.yyyy HH:mm')}"></time>
+                    <time class="comment__edited"
+                          th:datetime="${#temporals.formatISO(node.comment.updateddAt)}"
                           th:if="${node.comment.updatedAt != null &&
                          node.comment.updatedAt != node.comment.createdAt &&
                          !node.comment.deleted}"
                           th:title="${#temporals.format(node.comment.updatedAt, 'dd.MM.yyyy HH:mm')}"
-                          th:text="'(изменено)'">
-                        </span>
+                          th:text="'(изменено)'"></time>
                 </div>
                 <p class="comment__text"
                    th:if="${node.comment.deleted}"
@@ -155,15 +156,17 @@
                        th:text="${node.postComment.user != null ? node.postComment.user.nickname : 'Гость'}"></a>
                     <span th:if="${node.postComment.user != null}"
                           th:replace="~{fragments/role-badge :: roleBadge(${node.postComment.user.role}, false, ${isPostAuthor})}"></span>
-                    <span class="post-comment__date"
-                          th:text="${#temporals.format(node.postComment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
-                    <span class="post-comment__edited"
+                    <time class="post-comment__date"
+                          th:datetime="${#temporals.formatISO(node.postComment.createdAt)}"
+                          th:text="${#temporals.format(node.postComment.createdAt, 'dd.MM.yyyy HH:mm')}"></time>
+                    <time class="post-comment__edited"
+                          th:datetime="${#temporals.formatISO(node.postComment.updatedAt)}"
                           th:if="${node.postComment.updatedAt != null &&
                          node.postComment.updatedAt != node.postComment.createdAt &&
                          !node.postComment.deleted}"
                           th:title="${#temporals.format(node.postComment.updatedAt, 'dd.MM.yyyy HH:mm')}"
                           th:text="'(изменено)'">
-                        </span>
+                        </time>
                 </div>
                 <p class="comment__text"
                    th:if="${node.postComment.deleted}"

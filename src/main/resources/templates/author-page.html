@@ -174,13 +174,15 @@
                             <span class="author-microblog__post-marks-count" th:text="${post.getCommentsAmount()}"></span>
                         </button>
                         <div class="author-microblog__post-date">
-                            <p class="author-microblog__post-created"
-                               th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></p>
-                            <p  class="author-microblog__post-updated"
-                                th:if="${post.updatedAt != null &&
-                                    post.updatedAt != post.createdAt}"
-                                th:title="${#temporals.format(post.updatedAt, 'dd.MM.yyyy HH:mm')}"
-                                th:text="'(изменено)'"></p>
+                            <time class="author-microblog__post-created"
+                                  th:datetime="${#temporals.formatISO(post.createdAt)}"
+                                  th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></time>
+                            <time class="author-microblog__post-updated"
+                                  th:datetime="${#temporals.formatISO(post.updatedAt)}"
+                                  th:if="${post.updatedAt != null &&
+                                       post.updatedAt != post.createdAt}"
+                                  th:title="${#temporals.format(post.updatedAt, 'dd.MM.yyyy HH:mm')}"
+                                  th:text="'(изменено)'"></time>
                         </div>
                     </div>
                     <div class="author-microblog__post-actions">

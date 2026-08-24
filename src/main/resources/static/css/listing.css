@@ -825,7 +825,7 @@ html {
 }
 
 .author-microblog__post-fullname,
-.author-microblog__post-date p{
+.author-microblog__post-date time{
     color: #b9a57b;
     font-size: 13px;
     font-weight: 500;

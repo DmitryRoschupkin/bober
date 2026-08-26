@@ -10,6 +10,7 @@
     <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/comment.js}" defer></script>
 </head>
 <body>
 <div class="page">
@@ -88,13 +89,15 @@
                             </button>
                         </form>
                         <div class="author-microblog__post-date">
-                            <p class="author-microblog__post-created"
-                               th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></p>
-                            <p  class="author-microblog__post-updated"
-                                th:if="${post.updatedAt != null &&
+                            <time class="author-microblog__post-created"
+                                    th:datetime="${#temporals.formatISO(post.createdAt)}"
+                                    th:text="${#temporals.format(post.createdAt, 'dd.MM.yyyy HH:mm')}"></time>
+                            <time th:datetime="${#temporals.formatISO(post.updatedAt)}"
+                                    class="author-microblog__post-updated"
+                                    th:if="${post.updatedAt != null &&
                                     post.updatedAt != post.createdAt}"
-                                th:title="${#temporals.format(post.updatedAt, 'dd.MM.yyyy HH:mm')}"
-                                th:text="'(изменено)'"></p>
+                                    th:title="${#temporals.format(post.updatedAt, 'dd.MM.yyyy HH:mm')}"
+                                    th:text="'(изменено)'"></time>
                         </div>
                     </div>
                 </div>

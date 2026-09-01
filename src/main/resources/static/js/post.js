@@ -70,6 +70,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const fileInput = document.getElementById('photoFile');
     const fileNameText = document.getElementById('fileNameText');
     const defaultText = fileNameText.textContent;
+    const previewContainer = document.querySelector('.author-microblog__post-photo-preview');
+    const previewImage = document.getElementById('postPhotoImage');
+    const removeBtn = document.getElementById('removePhotoBtn');
+
+    function resetPhoto() {
+        fileInput.value = "";
+        previewImage.src = "";
+        previewContainer.style.display = "none";
+    }
 
     fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -77,6 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (file) {
             const maxLength = 20;
             let fileName = file.name;
+
+            previewImage.src = URL.createObjectURL(file);
+            previewContainer.style.display = "block";
 
             if (fileName.length > maxLength) {
                 const extension = fileName.split('.').pop();
@@ -87,6 +99,14 @@ document.addEventListener("DOMContentLoaded", () => {
             fileNameText.textContent = fileName;
         } else {
             fileNameText.textContent = defaultText;
+            previewImage.src = "";
+            previewContainer.style.display = "none";
+            resetPhoto();
         }
+    });
+
+    removeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        resetPhoto();
     });
 });

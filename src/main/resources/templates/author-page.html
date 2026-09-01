@@ -123,6 +123,12 @@
                 <input type="text" name="title" class="author-microblog__input" placeholder="Тема (необязательно)">
                 <textarea class="author-microblog-textarea author-microblog__input" name="text" placeholder="Что нового?"
                           required></textarea>
+                <div class="author-microblog__post-photo-preview">
+                    <img class="photo-preview__content" id="postPhotoImage" alt="Ваша фоточка">
+                    <button type="button" class="photo-preview__remove-btn" id="removePhotoBtn" title="Удалить фото">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
                 <div class="author-microblog__post-buttons">
                     <input type="file"
                            name="photoFile"

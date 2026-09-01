@@ -776,6 +776,32 @@ html {
     gap: 8px;
 }
 
+.author-microblog__post-photo-preview {
+    display: none;
+}
+
+.photo-preview__content {
+    max-height: 250px;
+}
+
+.photo-preview__remove-btn {
+    height: 28px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.2s, transform 0.1s;
+}
+
+.photo-preview__remove-btn:hover {
+    color: rgba(220, 53, 69, 0.9);
+}
+
+.photo-preview__remove-btn:active {
+    transform: scale(0.9);
+}
+
 .author-microblog__photo-upload-btn span {
     color: rgba(255, 246, 219, 0.35);
     text-transform: uppercase;

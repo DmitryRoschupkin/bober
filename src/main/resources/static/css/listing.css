@@ -841,6 +841,18 @@ html {
     word-break: break-word;
 }
 
+.author-microblog__post-photo {
+
+}
+
+.author-microblog__post-photo img {
+    max-width: 100%;
+    max-height: calc(var(--index)*20);
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
 .author-microblog__post-title {
     color: #d8cfb2;
     font-size: 17px;

@@ -141,12 +141,12 @@
                     <p th:if="${post.title != null && !post.title.isBlank()}"
                        th:text="${post.title}"
                        class="author-microblog__post-title"></p>
+                    <div class="author-microblog__post-photo"
+                         th:if="${post.getPhotoPath() != null && !post.getPhotoPath().isEmpty()}">
+                        <img th:src="@{/files/{path}(path=${post.getPhotoPath()})}" alt="" class="js-pic-preview">
+                    </div>
                     <p th:text="${post.text}"
                        class="author-microblog__post-text"></p>
-                    <div class="author-microblog__post-photo"
-                        th:if="${post.getPhotoPath() != null && !post.getPhotoPath().isEmpty()}">
-                        <img th:src="@{/files/{path}(path=${post.getPhotoPath()})}" alt="">
-                    </div>
                     <div class="author-microblog__post-marks">
                         <form th:action="@{/authors/{id}/post/mark(id=${author.id})}" method="post">
                             <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}"

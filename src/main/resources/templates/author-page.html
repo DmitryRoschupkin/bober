@@ -123,8 +123,17 @@
                 <input type="text" name="title" class="author-microblog__input" placeholder="Тема (необязательно)">
                 <textarea class="author-microblog-textarea author-microblog__input" name="text" placeholder="Что нового?"
                           required></textarea>
-                <input type="file" name="photoFile" accept="image/png, image/jpeg, image/svg+xml" class="author-microblog__input">
-                <button type="submit" class="author-microblog__post-btn">Опубликовать</button>
+                <div class="author-microblog__post-buttons">
+                    <input type="file"
+                           name="photoFile"
+                           accept="image/png, image/jpeg, image/svg+xml"
+                           class="author-microblog__file-input" id="photoFile">
+                    <label for="photoFile" class="author-microblog__photo-upload-btn">
+                        <i class="fa-solid fa-image"></i>
+                        <span>Загрузить фото</span>
+                    </label>
+                    <button type="submit" class="author-microblog__post-btn">Опубликовать</button>
+                </div>
             </form>
 
             <div class="author-microblog__posts-listing"

@@ -742,6 +742,9 @@ html {
 .author-microblog__form {
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(255, 239, 204, 0.25);
+    border-radius: 12px;
+    padding: 15px;
 }
 
 .author-microblog__input {
@@ -756,6 +759,32 @@ html {
     transition: border-color .3s, box-shadow .3s;
     margin-bottom: 20px;
     box-sizing: border-box;
+}
+
+.author-microblog__file-input {
+    display: none;
+}
+
+.author-microblog__photo-upload-btn{
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #ffefcc;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-left: 10px;
+    gap: 8px;
+}
+
+.author-microblog__photo-upload-btn span {
+    color: rgba(255, 246, 219, 0.35);
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.author-microblog__photo-upload-btn:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 0 15px #ffefcc;
 }
 
 .author-microblog__input:focus,
@@ -839,6 +868,12 @@ html {
     margin-bottom: 8px;
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+.author-microblog__post-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .author-microblog__post-photo {

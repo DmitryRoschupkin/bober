@@ -65,3 +65,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById('photoFile');
+    const fileNameText = document.getElementById('fileNameText');
+    const defaultText = fileNameText.textContent;
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const maxLength = 20;
+            let fileName = file.name;
+
+            if (fileName.length > maxLength) {
+                const extension = fileName.split('.').pop();
+                const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+                fileName = nameWithoutExt.substring(0, maxLength - 5) + '...' + extension;
+            }
+
+            fileNameText.textContent = fileName;
+        } else {
+            fileNameText.textContent = defaultText;
+        }
+    });
+});

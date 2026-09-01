@@ -25,6 +25,9 @@ public class Post {
     @Column(name = "post_text",  nullable = false)
     private String text;
 
+    @Column(name = "photo_path")
+    private String photoPath;
+
     @Column(name = "likes_count")
     private int likesCount;
 

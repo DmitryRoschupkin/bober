@@ -114,12 +114,16 @@
             </div>
 
 
-            <form class="author-microblog__form" th:if="${isOwner}" th:action="@{/authors/{id}/post(id=${author.id})}" method="post">
+            <form class="author-microblog__form"
+                  th:if="${isOwner}"
+                  th:action="@{/authors/{id}/post(id=${author.id})}"
+                  method="post"
+                  enctype="multipart/form-data">
                 <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="text" name="title" class="author-microblog__input" placeholder="Тема (необязательно)">
-                <input type="hidden" name="id" th:value="${author.id}">
                 <textarea class="author-microblog-textarea author-microblog__input" name="text" placeholder="Что нового?"
                           required></textarea>
+                <input type="file" name="photoFile" accept="image/png, image/jpeg, image/svg+xml" class="author-microblog__input">
                 <button type="submit" class="author-microblog__post-btn">Опубликовать</button>
             </form>
 
@@ -139,6 +143,10 @@
                        class="author-microblog__post-title"></p>
                     <p th:text="${post.text}"
                        class="author-microblog__post-text"></p>
+                    <div class="author-microblog__post-photo"
+                        th:if="${post.getPhotoPath() != null && !post.getPhotoPath().isEmpty()}">
+                        <img th:src="@{/files/{path}(path=${post.getPhotoPath()})}" alt="">
+                    </div>
                     <div class="author-microblog__post-marks">
                         <form th:action="@{/authors/{id}/post/mark(id=${author.id})}" method="post">
                             <input th:if="${_csrf}" type="hidden" th:name="${_csrf.parameterName}"

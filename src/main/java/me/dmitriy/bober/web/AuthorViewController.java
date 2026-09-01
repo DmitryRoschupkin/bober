@@ -8,6 +8,7 @@ import me.dmitriy.bober.service.PostCommentService;
 import me.dmitriy.bober.service.PostService;
 import me.dmitriy.bober.service.SubscriptionService;
 import me.dmitriy.bober.service.UserService;
+import me.dmitriy.bober.storage.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -15,13 +16,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/authors")
@@ -39,6 +39,8 @@ public class AuthorViewController {
     private PostCommentService postCommentService;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     public AuthorViewController(SubscriptionService subscriptionService, UserService userService, PostService postService) {
         this.subscriptionService = subscriptionService;
@@ -125,17 +127,29 @@ public class AuthorViewController {
     @PreAuthorize("isAuthenticated()")
     public String post(@PathVariable int id,
                        @RequestParam(required = false) String title,
-                       @RequestParam String text) {
+                       @RequestParam String text,
+                       @RequestParam MultipartFile photoFile) throws IOException {
+
+        final Set<String> ALLOWED_PHOTO_EXTENSIONS = Set.of("png", "jpg", "jpeg", "svg");
+
         Author author = authorRepository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
         User currentUser = userService.getCurrentUser();
         boolean isOwner = currentUser.getId() == author.getUser().getId();
         if (!isOwner) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Нельзя публиковать записи от чужого имени!");
-        } else {
-            postService.postMessage(author, title, text);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нельзя публиковать записи от чужого имени!");
         }
+        String photoPath = null;
+        if (photoFile != null && !photoFile.isEmpty()) {
+            String originalFilename = photoFile.getOriginalFilename();
+            String extension = extensionOf(originalFilename != null ? originalFilename.toLowerCase() : "");
+            if (!ALLOWED_PHOTO_EXTENSIONS.contains(extension)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Расширение не поддерживается: "+extension);
+            }
+            photoPath = fileStorageService.store(photoFile, "photos").storedPath();
+        }
+        postService.postMessage(author, title, text, photoPath);
         return "redirect:/authors/" + id;
     }
 
@@ -190,6 +204,11 @@ public class AuthorViewController {
                               @RequestParam String text) {
         postCommentService.editComment(commentId, text);
         return "redirect:/authors/" + authorId;
+    }
+
+    private String extensionOf(String filename) {
+        if (filename == null || !filename.contains(".")) return "";
+        return filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
     }
 
 }

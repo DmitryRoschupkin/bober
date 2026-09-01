@@ -26,11 +26,12 @@ public class PostService {
         this.userService = userService;
     }
 
-    public void postMessage(Author author, String title, String text) {
+    public void postMessage(Author author, String title, String text, String photoPath) {
         Post post = new Post();
         post.setAuthor(author);
         post.setTitle(title);
         post.setText(text);
+        post.setPhotoPath(photoPath);
         post.setCreatedAt(LocalDateTime.now());
         postRepository.save(post);
     }

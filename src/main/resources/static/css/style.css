@@ -244,7 +244,6 @@ body {
     max-width: calc(var(--index) * 30);
     transform: var(--main-article-transform);
     will-change: transform;
-
 }
 
 .footer {
@@ -506,4 +505,36 @@ body {
     color: #7d735a;
     transform: none !important;
     box-shadow: none !important;
+}
+
+@media (width < 445px) {
+    .main-article {
+        align-items: flex-start;
+        padding-top: 35vh;
+    }
+
+    .main-article__content {
+        display: flex;
+        flex-direction: column;
+        padding: 0 10%;
+    }
+
+    .main-article__header {
+        font-size: calc(var(--index) * 3);
+        letter-spacing: calc(var(--index) / 19);
+    }
+
+    .main-article__paragraph {
+        max-width: calc(var(--index) * 30);
+    }
+
+    .avg-btn {
+        display: flex;
+        justify-self: center;
+        align-self: center;
+        width: 50%;
+        justify-content: center;
+        align-items: center;
+        font-size: calc(var(--index)*2);
+    }
 }

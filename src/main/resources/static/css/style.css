@@ -271,9 +271,13 @@ body {
     padding: 10px;
     text-decoration: none;
     transition: .3s;
+    display: flex;
+    width: fit-content;
 }
 .avg-btn:hover {
     text-shadow: 0 0 8px #ffe4b7;
+    box-shadow: 0 0 8px #ffe4b7;
+    color: #ffefcc;
 }
 
 .profile-info,

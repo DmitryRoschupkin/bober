@@ -4,6 +4,7 @@
     gap: calc(var(--index) * 3);
     align-items: center;
     min-height: 62vh;
+    flex: 1;
 }
 
 .auth-panel {
@@ -193,4 +194,24 @@
     min-height: 120px;
     font-family: inherit;
     line-height: 1.5;
+}
+
+@media (width < 445px) {
+    .login-page__img, .registration-page__img {
+        display: none;
+    }
+
+    .login-page__title h1{
+        font-size: calc(var(--index) * 3);
+        letter-spacing: calc(var(--index) / 10);
+    }
+
+    .login-page__title h3 {
+        font-size: 18px;
+    }
+
+    .auth-layout {
+        min-height: 100vh;
+        flex: 1;
+    }
 }
